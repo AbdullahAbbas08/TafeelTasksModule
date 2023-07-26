@@ -1,0 +1,35 @@
+<div class="backdrop">
+  <div *ngIf="!isLoading">
+    <img class="image-box" [src]="currentImage" />
+  </div>
+
+  <h3 class="title">{{ file?.attachmentName }}</h3>
+
+  <div class="action">
+    <a (click)="onClose()">&times;</a>
+  </div>
+
+  <a class="btn" (click)="downloadFile()"><i class="fa fa-download"></i></a>
+
+  <a class="right" (click)="onRight()" *ngIf="showRightButton()">
+    <i nz-icon nzType="right" nzTheme="outline" class="icon"></i>
+  </a>
+
+  <a class="left" (click)="onLeft()" *ngIf="showLeftButton()">
+    <i nz-icon nzType="left" nzTheme="outline" class="icon"></i>
+  </a>
+
+  <ul
+    class="scrollmenu thumb-list list-unstyled m-0 p-0 mt-1 d-flex align-items-center"
+  >
+    <ng-container *ngFor="let item of images; let i = index">
+      <a (click)="displayImage(i)"
+        ><li class="attachment-thumb">
+          <img
+            [src]="item.thumbUrl"
+            [ngClass]="{ selected: currentIndex === i }"
+          /></li
+      ></a>
+    </ng-container>
+  </ul>
+</div>

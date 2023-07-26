@@ -1,0 +1,395 @@
+@import '../../fonts';
+@import "../icons/masar-icons-styles.css";
+@import "../fonts/fontawesome/fontawesome.css";
+@import "../../variables";
+@import "shared-styles";
+
+body {
+  font-family: 'Tajawal', sans-serif;
+
+  &:not([class^=cke]) {
+    margin: 0;
+  }
+
+  &.rtl {
+    direction: rtl;
+  }
+
+  &#masar_print {
+    width: 21cm;
+    margin: auto;
+  }
+}
+
+.container {
+  width: 21cm;
+  margin: 0 auto;
+  padding: 0.75in 0.5in;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+p {
+  font-size: 14px;
+}
+
+/* Table Styles Start Here */
+.table {
+  max-width: 100%;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+    max-width: 200px;
+    /* Border Styles Start Here */
+    &.b-0 {
+      border: none;
+    }
+
+    &.bt-0 {
+      border-top: none;
+    }
+
+    &.br-0 {
+      border-right: none;
+    }
+
+    &.bb-0 {
+      border-bottom: none;
+    }
+
+    &.bl-0 {
+      border-left: none;
+    }
+
+    &.select {
+      padding: 10px;
+
+      > span {
+        display: flex;
+        justify-content: space-between;
+
+        span {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          border: 1px solid black;
+        }
+      }
+    }
+
+    &.text-right {
+      text-align: right;
+    }
+  }
+
+  .nested {
+    padding: 0;
+    vertical-align: text-top;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 70px;
+  }
+}
+
+.main-title {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    padding: 5px;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .bordered-title {
+    margin-bottom: 0;
+    padding: 5px 10px;
+    font-size: 21px;
+    border: 1px solid black;
+  }
+
+  .types {
+    display: flex;
+
+    .types-title {
+
+    }
+
+    .type {
+      .label {
+        position: relative;
+        padding-right: 22px;
+        margin-right: 15px;
+
+        &::before {
+          content: '';
+          width: 15px;
+          height: 15px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: inline-block;
+          border: 1px solid black;
+        }
+      }
+    }
+  }
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &.fe {
+    align-items: flex-end;
+  }
+
+  span {
+    margin: 5px 0;
+  }
+
+  &.small {
+    span {
+      margin: 2px 0;
+    }
+  }
+
+  .equivalent {
+    span {
+      margin-right: 10px;
+    }
+  }
+}
+
+.receipt {
+  position: relative;
+  padding: 5px 5px 90px 5px;
+
+  .type {
+    width: 70%;
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .recipient {
+    font-size: 18px;
+    text-align: right;
+    font-weight: bold;
+    margin: 20px 40px 10px 0;
+  }
+  
+  .instructions {
+    position: absolute;
+    right: 3px;
+    bottom: 4px;
+    width: 80%;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+
+    span {
+      font-size: 10px;
+      white-space: nowrap;
+
+      img {
+        width: 15px;
+      }
+    }
+  }
+}
+
+.postman {
+  .sup-title {
+    width: 90px;
+    margin: 0 auto;
+    font-size: 10px;
+    display: inline-block;
+  }
+
+  .main-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0 10px;
+  }
+}
+
+.postman, .receipt {
+  display: flex;
+  flex-direction: column;
+
+  .data {
+    width: 85%;
+    margin: 0 auto;
+    font-size: 12px;
+
+    .braces {
+      margin: 0 40px;
+    }
+
+    .signature {
+      width: 100%;
+      text-align: right;
+      position: relative;
+
+      .dashed-border {
+        width: 86%;
+        display: inline-block;
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        border-bottom: 1px dashed black;
+      }
+    }
+
+  }
+
+  .stamp {
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 60px;
+  }
+}
+
+/* Thired Report Styles Start Here */
+.tn {
+  text-align: center;
+
+  img {
+    width: 60px;
+    margin: 0 auto 5px;
+  }
+}
+
+/* Extra styles */
+/* Page break */
+.page-break {
+  &::before, &::after {
+    content: '';
+    display: block
+  }
+
+  &::after {
+    page-break-before: always
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.table {
+  &.cell-padding-2 {
+    > thead th, > tbody td {
+      padding: 2px;
+    }
+  }
+
+  &.cell-padding-0x2 {
+    > thead th, > tbody td {
+      padding: 0 2px;
+    }
+  }
+
+
+}
+
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.barcode-content-replacer {
+  width: 35px;
+}
+
+#squareBarcode {
+  &.barcode-content-replacer {
+    width: 35px;
+    height: 50px;
+  }
+}
+
+#horizontalBarcode {
+  &.second-barcode-here {
+    width: 150px;
+    height: 50px;
+  }
+}
+
+.barcodeTemplate1 {
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+  padding: 15px 10px;
+  width: 100%;
+  font-weight: 500;
+
+  & .d-flex {
+    display: flex;
+  }
+
+  & .min-w-80 {
+    min-width: 80px;
+  }
+
+  & .organizationName {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  & .transactionData {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  & .barCodeSection {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5%;
+
+    & .squareBarcode {
+      width: 50px;
+    }
+
+    & .horizontalBarcode {
+      width: 200px;
+      height: 50px;
+    }
+  }
+}
+
+header > img#JADAH-logo {
+  height: 340px;
+  background-color: white;
+  bottom: 80px;
+  opacity: 0.1;
+  position: absolute;
+  right: -200px;
+  transform: rotate(-40deg);
+  width: 600px;
+}

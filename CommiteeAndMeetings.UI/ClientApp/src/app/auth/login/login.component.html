@@ -1,0 +1,263 @@
+<section class="login-container" *ngIf="!isLoading">
+  <div class="login-content">
+    <div class="row">
+      <div class="col-lg-6 col-12 p-0">
+        <div class="login-details">
+          <div class="logo">
+            <img src="../../../assets/images/logologin.jpg" class="img-fluid" />
+          </div>
+          <div class="login-input mt-4">
+            <h3 class="text-center main-header-item">
+              {{ "Login To Your Account" | translate }}
+            </h3>
+            <div class="align-form" *ngIf="!showVerivication">
+              <form
+                [formGroup]="loginForm"
+                (ngSubmit)="onSubmit()"
+                (keydown.enter)="onSubmit()"
+              >
+                <div>
+                  <nz-alert
+                    *ngIf="errorMessages"
+                    nzType="error"
+                    [nzMessage]="errorMessages | translate"
+                    nzShowIcon
+                  ></nz-alert>
+                </div>
+                <div class="input-group form-group" style="margin-bottom: 2rem">
+                  <span
+                    class="invalid-input"
+                    *ngIf="
+                      !loginForm.get('username').valid &&
+                      loginForm.get('username').touched
+                    "
+                    style="width: 100%"
+                  >
+                    <span
+                      *ngIf="loginForm.get('username').errors['required']"
+                      >{{ "Requiredusername" | translate }}</span
+                    >
+                  </span>
+                  <input
+                    type="text"
+                    [placeholder]="'Username' | translate"
+                    formControlName="username"
+                    required
+                    class="form-control"
+                  />
+                </div>
+                <div class="input-group form-group mb-4">
+                  <span
+                    class="invalid-input"
+                    *ngIf="
+                      !loginForm.get('password').valid &&
+                      loginForm.get('password').touched
+                    "
+                    style="width: 100%"
+                  >
+                    <span
+                      *ngIf="loginForm.get('password').errors['required']"
+                      >{{ "RequiredPassword" | translate }}</span
+                    >
+                  </span>
+                  <input
+                    type="password"
+                    [placeholder]="'Password' | translate"
+                    formControlName="password"
+                    required
+                    class="form-control"
+                  />
+                </div>
+                <div class="">
+                  <button
+                    type="button"
+                    class="change-lang btn p-0 d-flex align-items-center"
+                    (click)="localizationService.changeLocal()"
+                  >
+                    <!-- <img
+                    class="img-fluid"
+                    [src]="
+                      currentLang === 'en'
+                        ? 'assets/images/langAr.png'
+                        : 'assets/images/langEn.png'
+                    "
+                  /> -->
+                    <span class="mx-2"> {{ "ChangeLang" | translate }}</span>
+                    <i
+                      [ngClass]="
+                        currentLang === 'en'
+                          ? 'fas fa-chevron-right'
+                          : 'fas fa-chevron-left'
+                      "
+                    ></i>
+                  </button>
+                </div>
+                <div class="submit">
+                  <button
+                    type="submit"
+                    class="btn btn-login"
+                    [disabled]="!loginForm.valid"
+                  >
+                    {{ "Login" | translate }}
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="align-form" *ngIf="showVerivication">
+              <form
+                (ngSubmit)="submitAfterVerification()"
+                [formGroup]="submitAfterVerifyForm"
+              >
+                <div class="form-group">
+                  <input
+                    type="text"
+                    formControlName="verCode"
+                    class="form-control"
+                    placeholder="{{ 'EnterVerCode' | translate }}"
+                    required
+                  />
+                </div>
+                <div class="d-flex justify-content-between verify-links">
+                  <a
+                    class=""
+                    href="javascript:"
+                    (click)="resendVerificationCode()"
+                    >{{ "ResendCode" | translate }}</a
+                  >
+                  <a class="" href="javascript:" (click)="returnToLogin()">{{
+                    "ReturnToLogin" | translate
+                  }}</a>
+                </div>
+                <button
+                  type="submit"
+                  [disabled]="!submitAfterVerifyForm.valid"
+                  class="btn btn-block mt-4 btn-verify"
+                >
+                  {{ "Verify" | translate }}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-12 p-0">
+        <div class="login-bg position-relative">
+          <div class="login-content-text">
+            <p>
+              {{
+                "Masar system is one of the most important technical solutions"
+                  | translate
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <div class="container-fluid" style="height: 100vh">
+  <div class="login-back-img">
+    <div class="align-form" *ngIf="!isLoading">
+      <form
+        [formGroup]="loginForm"
+        class="loginForm"
+        (ngSubmit)="onSubmit()"
+        (keydown.enter)="onSubmit()"
+      >
+        <div>
+          <img
+            src="assets/images/logo2x.png"
+            alt=""
+            class="img-fluid"
+            style="margin: 0 auto; display: block"
+          />
+        </div>
+        <div style="min-height: 3rem">
+          <nz-alert
+            *ngIf="errorMessages"
+            nzType="error"
+            [nzMessage]="errorMessages | translate"
+            nzShowIcon
+          ></nz-alert>
+        </div>
+        <div class="input-group form-group" style="margin-bottom: 2rem">
+          <div class="input-group-prepend">
+            <span
+              class="input-group-text br-n bt-n bl-n b-r-0 back-trans b-w-2"
+              style="border: none; z-index: 10"
+            >
+              <i class="fas fa-user fa-1-5x"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            [placeholder]="'Username' | translate"
+            formControlName="username"
+            required
+            class="form-control b-w-2 bt-n bl-n br-n b-r-0 p-4 login-input"
+          />
+          <span
+            class="invalid-input"
+            *ngIf="
+              !loginForm.get('username').valid &&
+              loginForm.get('username').touched
+            "
+            style="width: 100%"
+          >
+            <span *ngIf="loginForm.get('username').errors['required']">{{
+              "Requiredusername" | translate
+            }}</span>
+          </span>
+        </div>
+        <div class="input-group form-group mb-4">
+          <div class="input-group-prepend">
+            <span
+              class="input-group-text br-n bt-n bl-n b-r-0 back-trans b-w-2"
+              style="border: none; z-index: 10"
+            >
+              <i class="fas fa-unlock-alt fa-1-5x"></i>
+            </span>
+          </div>
+          <input
+            type="password"
+            [placeholder]="'Password' | translate"
+            formControlName="password"
+            required
+            class="form-control b-w-2 bt-n bl-n br-n b-r-0 p-4 login-input mr--40"
+          />
+          <span
+            class="invalid-input"
+            *ngIf="
+              !loginForm.get('password').valid &&
+              loginForm.get('password').touched
+            "
+            style="width: 100%"
+          >
+            <span *ngIf="loginForm.get('password').errors['required']">{{
+              "RequiredPassword" | translate
+            }}</span>
+          </span>
+        </div>
+         <div class="mt-3 mb-3 d-flex justify-content-between">
+          <button
+            type="button"
+            class="change-lang btn p-0"
+            (click)="localizationService.changeLocal()"
+          >
+            {{ "ChangeLang" | translate }}
+          </button>
+        </div> 
+         <div class="submit">
+          <button
+            type="submit"
+            class="btn btn-login"
+            [disabled]="!loginForm.valid"
+          >
+            {{ "Login" | translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  -->

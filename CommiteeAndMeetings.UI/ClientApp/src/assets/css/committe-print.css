@@ -1,0 +1,92 @@
+@font-face {
+    font-family: "Tajawal";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Tajawal"), local("Tajawal-Regular"), url("/assets/fonts/Tajawal-Regular.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Tajawal";
+    font-style: normal;
+    font-weight: 500;
+    src: local("Tajawal Medium"), local("Tajawal-Medium"), url("/assets/fonts/Tajawal-Medium.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Tajawal";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Tajawal Bold"), local("Tajawal-Bold"), url("/assets/fonts/Tajawal-Bold.ttf") format("truetype");
+  }
+body{
+    width: 21cm;
+    margin: auto;
+    font-family: "Tajawal", sans-serif;
+}
+/*Start Header Design */
+
+/*End Header Design*/
+.print-container h4{
+    font-weight:600;
+    text-align: center;
+    font-size: 25px;
+}
+/* Start Meeting Design */
+.meeting-details div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.meeting-details div span {
+    font-weight: 600;
+}
+.meeting-details div p {
+    margin: 0px 10px;
+}
+.meeting-details .date {
+    display: flex;
+    align-items: center;
+    font-weight: normal !important;
+}
+.meeting-details .date span {
+    padding:  0px 6px;
+    font-weight: 400 !important;
+}
+/*End Meeting Design*/
+/*Start Meeting Schedule */
+.meeting-schedule h5 , .committe-attendes h5 ,.meeting-recommendations h5 {
+    font-weight: 600;
+    font-size: 20px;
+}
+.meeting-schedule table , .committe-attendes table ,.meeting-recommendations table , .task-container table {
+    border-collapse: collapse;
+    border: 1px solid black !important;
+    width: 100%;
+}
+.task-container table thead {
+    font-size: 13px;
+}
+
+.meeting-schedule table tbody td,.committe-attendes table tbody td{
+    border:1px solid black ;
+    padding: 8px;
+}
+.meeting-schedule table tbody td p ,.committe-attendes table tbody td p {
+    margin: 0px;
+}
+.committe-attendes table thead th {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+
+
+/* End Meeting Schedule */
+
+.text-center{
+    text-align: center;
+}
+.fs-25 {
+    font-size: 25px;
+}
+.font-weight-bold{
+    font-weight: bold;
+}

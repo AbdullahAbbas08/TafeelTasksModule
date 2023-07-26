@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FileNetIntegration.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ECMServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://FN521DC901:9080/wsi/FNCEWS40MTOM/</Value>
+    </Setting>
+    <Setting Name="ECMUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">p8admin</Value>
+    </Setting>
+    <Setting Name="ECMPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">P@ssw0rd</Value>
+    </Setting>
+    <Setting Name="ECMRepository" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">OS</Value>
+    </Setting>
+    <Setting Name="RelativeDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Documents</Value>
+    </Setting>
+    <Setting Name="YearIsHijri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="LFServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Tafeel-Srv</Value>
+    </Setting>
+    <Setting Name="LFRepository" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HajjMASARRep</Value>
+    </Setting>
+    <Setting Name="LFUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Admin</Value>
+    </Setting>
+    <Setting Name="LFPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">P@ssw0rd</Value>
+    </Setting>
+    <Setting Name="DocumentClass" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">TransactionInfo</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

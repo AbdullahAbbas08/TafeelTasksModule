@@ -1,0 +1,102 @@
+@import "./../../../../../variables";
+@import "../../../../../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-icons/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../../../../../../node_modules/@syncfusion/ej2-richtexteditor/styles/material.css";
+.action-btns {
+  margin: 1rem 0 1.2rem;
+  & > * {
+    font-size: 1rem;
+    width: 7rem;
+    height: 2.1rem;
+    font-weight: 500;
+    border-radius: 0.3rem;
+  }
+
+  .save-btn {
+    background-color: $persianBlue;
+    color: #fff;
+    &:disabled {
+      background-color: #5b8f97;
+    }
+  }
+
+  .cancel-btn {
+    background-color: #f2f2f2;
+    color: $persianBlue;
+    margin: 0 1rem;
+  }
+}
+
+.select {
+  margin: 0 1rem 1rem;
+}
+
+nz-radio-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  [nz-radio] {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    line-height: 32px;
+    font-weight: 600;
+    color: $persianBlue;
+    margin: 0 0.8rem;
+  }
+}
+
+nz-select {
+  display: block;
+}
+
+.topics-list {
+  margin-bottom: 1.8rem;
+  .search-container {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
+    .item {
+      flex: 1;
+    }
+    .btn-add {
+      margin-bottom: 16px;
+      flex: 0 17%;
+    }
+  }
+}
+
+.selected-topics {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 0.3rem;
+  min-height: 3.2rem;
+  border: 1px solid #d9d9d9;
+  padding: 0.5rem;
+
+  .topic-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.4rem;
+    flex: 0 1 45%;
+    background-color: $whiteLilac;
+    padding: 0.3rem;
+    margin: 0.3rem;
+    color: $black;
+    font-size: $fs13;
+    font-weight: 500;
+    margin: 2px;
+    .delete-topic {
+      color: $red;
+      font-size: $fs13;
+      cursor: pointer;
+    }
+  }
+}

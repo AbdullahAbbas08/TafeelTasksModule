@@ -1,0 +1,45 @@
+<div
+  class="main-container"
+  *ngIf="meetingId"
+  [ngStyle]="{
+    direction: translate.currentLang === 'ar' ? 'rtl' : 'ltr'
+  }"
+>
+  <div class="row">
+    <div
+      class="col-xl-9 col-md-12"
+      [ngClass]="{
+        'col-xl-12':
+          singleMeeting.meeting?.closed || singleMeeting.meeting?.isFinished || singleMeeting.meeting?.isCanceled
+      }"
+    >
+      <app-search-users
+        (userIdEmitter)="onAddAttendee($event)"
+        *ngIf="
+          (isCoordinator || isCreator) &&
+          !singleMeeting.meeting.isFinished &&
+          !singleMeeting.meeting?.closed &&
+          !singleMeeting.meeting?.isCanceled
+        "
+        [attendee]="attendees"
+        [userType]="userType._2"
+      ></app-search-users>
+      <app-users-list
+        [attendees]="attendees"
+        [userType]="userType._2"
+      ></app-users-list>
+    </div>
+    <div
+      class="col-xl-3 col-md-12"
+      *ngIf="
+        !singleMeeting.meeting?.closed && !singleMeeting.meeting?.isFinished &&  !singleMeeting.meeting?.isCanceled
+      "
+    >
+      <app-user-schedule
+        [attendees]="attendees"
+        [userType]="userType._2"
+        [viewDate]="meetingDate"
+      ></app-user-schedule>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+@import "../../../../../variables";
+.committe-members{
+
+    .member-name h6 {
+        font-size: 12px !important;
+    }
+    .member-name p {
+        font-size: 12px !important;
+    }
+}
+.all-members {
+    p {
+        color: $lochmara;
+        font-size: 15px;
+        margin-bottom: 7px;
+    }
+}
+img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.users-number{
+    background-color: $lightBlue;
+    color: $lochmara;
+    border-radius: 50%;
+    padding: 5px;
+    padding: 5px 5px;
+    font-size: 12px;
+}
+.delegated-number{
+    padding: 1px 5px;
+}

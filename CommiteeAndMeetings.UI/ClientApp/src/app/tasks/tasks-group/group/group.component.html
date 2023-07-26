@@ -1,0 +1,80 @@
+<div class="settings-add-edit">
+    <form nz-form nzLayout="vertical" [formGroup]="taskgroupForm">
+        <div class="box-shadow expanded bkg-gray">
+            <p class="box-title">{{'GroupData' | translate}}</p>
+            <div class="custom-form">
+              <div class="form-box">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>{{'groupNameAr' | translate}}</label>
+                      <nz-form-control [nzErrorTip]="arTpl">
+                        <input type="text"  formControlName="NameAr" class="form-control">
+                        <ng-template #arTpl let-control>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            {{'NotArabicText'|translate}}
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>{{'groupNameEn' | translate}}</label>
+                      <nz-form-control [nzErrorTip]="enTpl">
+                        <input type="text" formControlName="NameEn" class="form-control">
+                        <ng-template #enTpl let-control>
+                          <ng-container *ngIf="control.hasError('pattern')">
+                            {{'NotEnglishText'|translate}}
+                          </ng-container>
+                        </ng-template>
+                      </nz-form-control>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <nz-form-item>
+                      <nz-form-label>{{ "AllUsers" | translate }}</nz-form-label>
+                      <nz-form-control>
+                        <nz-select
+                          [ngClass]="{ rtl: currentLang === 'ar' }"
+                          nzPlaceHolder=""
+                          nzAllowClear
+                          nzShowSearch
+                          nzServerSearch
+                          formControlName="allUsers"
+                          (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+                          nzMode="multiple"
+                        >
+                          <ng-container *ngFor="let opt of AllUsers">
+                            <nz-option
+                              *ngIf="!isLoading"
+                              [nzValue]="opt?.id"
+                              [nzLabel]="opt?.name"
+                            ></nz-option>
+                          </ng-container>
+                          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                            <i nz-icon nzType="loading" class="loading-icon"></i>
+                            {{ "LoadingData" | translate }}
+                          </nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-right">
+                <button *ngIf="!groupCreate" type="button"  nz-button nzType="primary" (click)="editGroup()" [disabled]="!taskgroupForm.valid">
+                  {{'SaveChanges' | translate}}
+                </button>
+                <button *ngIf="groupCreate" type="button"  nz-button nzType="primary" (click)="submitNewGroup()" [disabled]="!taskgroupForm.valid">
+                  {{'InsertGroup' | translate}}
+                </button>
+              </p>
+            </div>
+          </div>
+    </form>
+
+  </div>
+  

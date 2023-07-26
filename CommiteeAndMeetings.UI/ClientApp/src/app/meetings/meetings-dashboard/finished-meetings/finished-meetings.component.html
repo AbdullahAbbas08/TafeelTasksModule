@@ -1,0 +1,38 @@
+<div class="confirm-meetings p-2">
+    <div class="meetingBox-title pb-1 d-flex align-item-center">
+        <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+         <div class="">
+             <h6 class="font-weight-bold mx-1 mt-1">{{'finishedMeetings' | translate}}</h6>
+         </div>
+    </div>
+    <div
+    class="search-results"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [infiniteScrollContainer]="'.ps'">
+    <perfect-scrollbar [autoPropagation]="true">
+      <div class="confirmBox-details">
+        <ul class="p-0 m-0" *ngIf="finishedMeetings.length">
+          <li class="mt-2 d-flex justify-content-between mx-2" *ngFor="let meeting of finishedMeetings">
+            <div class="confirmBox-content">
+              <div >
+                <span>{{this.translateService.currentLang === 'ar' ? (meeting?.meetingFromTime | customDate) :(meeting?.meetingFromTime | date:'yyy/MM/dd')}}</span>
+    
+                <!-- <span> - </span> -->
+    
+                <!-- <span> {{this.translateService.currentLang === 'ar' ? (meeting?.meetingToTime | customDate) : (meeting?.meetingToTime | date:'yy/M/dd')}}</span> -->
+              </div>
+                <p [routerLink]="['schedule-meeting', meeting.id]" >{{meeting.title}}</p>
+             </div>
+          </li>
+        </ul>
+        <div class="text-center no-data" *ngIf="!finishedMeetings.length">
+          <p class="m-2">{{'No fininshed meetings' | translate}} </p>
+        </div>
+      </div>
+    </perfect-scrollbar>
+
+  </div>
+ </div>

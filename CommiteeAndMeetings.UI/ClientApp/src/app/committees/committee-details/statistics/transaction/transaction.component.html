@@ -1,0 +1,150 @@
+<div class="div-wrapper mt-3" *ngIf="permittedInboxTransactions || permittedOutboxTransactions">
+    <nz-tabset [nzTabBarExtraContent]="headerTitle" (nzSelectedIndexChange)="onTransactionTypeChange($event)">
+      <nz-tab *ngIf="permittedInboxTransactions" [nzTitle]="'Inbox'|translate">
+       
+        <ng-template nz-tab>
+           <p *ngIf="!loadingData && !transactionContainer.length" class="text-center" style="font-size: 19px;">{{'noData' | translate}} </p>
+            <div class="table-scroll" *ngIf="transactionContainer.length">
+              <div class="table-wrapper table-responsive"
+              *ngIf="!loadingData" infiniteScroll
+              [infiniteScrollDistance]="2"
+              [infiniteScrollThrottle]="50"
+              (scrolled)="onScroll()"
+              >
+              <table >
+                <thead>
+                  <tr>
+                    <th class="trans-num">{{'transactionnumber' | translate}}</th>
+                    <th class="subject">{{'transactionSubject' | translate}}</th>
+                    <th class="sender-side">{{'transactionFromName' | translate}}</th>
+                    <th class="sender">{{'sent' | translate}}</th>
+                    <th class="trans-date">{{'Referral' | translate}}</th>
+                    <th >{{'transactionDate' | translate}}</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="!loadingData">
+                  <tr *ngFor="let transaction of transactionContainer">
+                    <td><span>{{transaction?.transactionNumberFormatted}}</span></td>
+                    <td>
+                      <p class="mb-0" nz-tooltip [nzTooltipTitle]="subjectName">{{this.translateService.currentLang === 'ar' ? (transaction?.subject | maxLenth:15) : (transaction?.subjectEn | maxLenth:15)}}</p>
+                      <ng-template #subjectName>
+                        <span>{{this.translateService.currentLang === 'ar' ? transaction?.subject : transaction.subjectEn }}</span>
+                      </ng-template>  
+                    </td>
+                    <td class="d-flex align-items-center">
+                      <p class="mb-0" nz-tooltip [nzTooltipTitle]="incomingName">{{transaction.incomingOrganizationName != ""
+                        ? transaction.incomingOrganizationName
+                        : ("internalInbox" | translate)
+                        }}</p>
+                     <ng-template #incomingName>
+                       <span>{{transaction.incomingOrganizationName != ""
+                        ? transaction.incomingOrganizationName
+                        : ("internalInbox" | translate)
+                        }}</span>
+                     </ng-template>            
+                    </td>
+                    <td>
+                      <p class="mb-0" nz-tooltip [nzTooltipTitle]="oucomingName">{{transaction?.directedFromName | maxLenth: 25}}</p>
+                      <ng-template #oucomingName>
+                        <span>{{transaction?.directedFromName}}</span>
+                      </ng-template>   
+                    </td>
+                    <td><p  class="mb-0 mr-2" nz-tooltip [nzTooltipTitle]="requiredActionName">{{transaction?.requiredActionName | maxLenth: 15 }}</p>
+                      <ng-template #requiredActionName>
+                        <span>{{transaction?.requiredActionName}}</span>
+                      </ng-template> 
+                    </td>
+                     <td>{{this.translateService.currentLang === 'ar' ? (transaction?.createdOn | customDate) : transaction?.createdOn | date:"MM/dd/yy" }}</td>
+                 </tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+           
+        </ng-template>
+      </nz-tab>
+      <nz-tab [nzTitle]="'Outbox'|translate" *ngIf="permittedOutboxTransactions">
+        <ng-template nz-tab>
+            <p *ngIf="!loadingData && !transactionContainer.length" class="text-center" style="font-size: 19px;">{{'noData' | translate}} </p>
+                <div class="table-scroll"  infiniteScroll
+                [infiniteScrollDistance]="2"
+                [infiniteScrollThrottle]="50"
+                (scrolled)="onScroll()" *ngIf="!loadingData && transactionContainer.length">
+                  <perfect-scrollbar [autoPropagation]="true">
+                    <table >
+                      <thead>
+                        <tr>
+                          <th class="trans-num">{{'transactionnumber' | translate}}</th>
+                          <th class="subject">{{'transactionSubject' | translate}}</th>
+                          <th class="sender-side">{{'transactionFrom' | translate}}</th>
+                          <th class="sender">{{'Referral' | translate}}</th>
+                          <th class="trans-date">{{'transactionDate' | translate}}</th>
+                          <th>{{'transactionReferral' | translate}}</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="!loadingData">
+                        <tr *ngFor="let transaction of transactionContainer">
+                          <td><span>{{transaction?.transactionNumberFormatted}}</span></td>
+                          <td>
+                            <p class="mb-0" nz-tooltip [nzTooltipTitle]="subjectName">{{this.translateService.currentLang === 'ar' ? (transaction.subject | maxLenth:15) : (transaction.subjectEn | maxLenth:15)}}</p>
+                            <ng-template #subjectName>
+                              <span>{{this.translateService.currentLang === 'ar' ? transaction.subject : transaction.subjectEn }}</span>
+                            </ng-template>  
+                          </td>
+                          <td class="d-flex align-items-center">
+                            <p class="mb-0" nz-tooltip [nzTooltipTitle]="incomingName">{{transaction.directedToName | maxLenth: 20}}</p>
+                           <ng-template #incomingName>
+                             <span>{{transaction.directedToName}}</span>
+                           </ng-template>            
+                          </td>
+                          <td>
+                            <p class="mb-0" nz-tooltip [nzTooltipTitle]="oucomingName">{{transaction.requiredActionName | maxLenth: 15}}</p>
+                            <ng-template #oucomingName>
+                              <span>{{transaction.requiredActionName}}</span>
+                            </ng-template>   
+                          </td>
+                           <td>{{this.translateService.currentLang === 'ar' ? (transaction.createdOn | customDate) : transaction.createdOn | date:"MM/dd/yy" }}</td>
+                           <td>{{transaction?.transactionStatus }}</td>
+                       </tr>
+                      </tbody>
+                  </table>
+            
+                  
+                  </perfect-scrollbar>
+                </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ng-template #headerTitle>
+      <h6>
+        <svg width="30" height="30" viewBox="0 0 30 30">
+          <defs>
+            <style>
+              .transactionA {
+                fill: #fff;
+              }
+
+              .transactionB {
+                fill: #0075c9;
+              }
+            </style>
+          </defs>
+          <g transform="translate(79 -4166)">
+            <rect class="transactionA" width="30" height="30" transform="translate(-79 4166)" />
+            <g transform="translate(-767.626 3400.942)">
+              <path class="transactionB"
+                d="M713.931,880.959a.525.525,0,0,0-.663.328,9.955,9.955,0,0,1-12.623,6.232,10.023,10.023,0,0,1-6.674-8.159l1.124.944.672-.8-2.17-1.821a.522.522,0,0,0-.736.065l-1.821,2.169.8.672,1.068-1.272a11.021,11.021,0,0,0,10.943,9.782,11.02,11.02,0,0,0,10.407-7.474A.524.524,0,0,0,713.931,880.959Z"
+                transform="translate(0 -97.815)" />
+              <path class="transactionB"
+                d="M737.838,777.768l-1.054,1.256a11,11,0,0,0-21.348-2.278.523.523,0,0,0,.991.337,9.952,9.952,0,0,1,19.3,1.926l-1.141-.956-.672.8,2.17,1.821a.525.525,0,0,0,.736-.064l1.821-2.17Z"
+                transform="translate(-22.013 0)" />
+              <path class="transactionB"
+                d="M747.338,814.452a7.342,7.342,0,1,1,7.342,7.342A7.351,7.351,0,0,1,747.338,814.452Zm1.046,0a6.3,6.3,0,1,0,6.3-6.3A6.3,6.3,0,0,0,748.384,814.452Z"
+                transform="translate(-50.856 -34.175)" />
+            </g>
+          </g>
+        </svg>
+        <span class="mx-2">{{transactionType|translate}}</span>
+      </h6>
+    </ng-template>
+  </div>

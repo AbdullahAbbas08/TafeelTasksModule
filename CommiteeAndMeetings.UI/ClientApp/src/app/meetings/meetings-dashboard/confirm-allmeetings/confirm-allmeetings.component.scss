@@ -1,0 +1,89 @@
+@import "../../../../variables";
+.confirm-meetings {
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 16%);
+    padding: 10px;
+    height: 392px;
+    background-color: #fff;
+    overflow: scroll;
+    .meetingBox-title{
+        border-bottom: 2px solid #EEEEEE;
+        h6,i {
+            color: $lochmara;
+        }
+        i{
+            font-size: 21px;
+        }
+        span{
+            color: #b3abab;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+    }
+    .confirmBox-details{
+        ul {
+            li:not(:last-child) {
+                list-style: none;
+                border-bottom: 2px dotted #EEEEEE;
+            }
+            .confirmBox-content{
+                span{
+                    color: #b3abab;
+                    font-size: 14px;
+                }
+                p{
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    .confirmBox-action{
+        .confirmed {
+            margin-top: 2px;
+           span{
+            background-color: #C9F7F4;
+            color: #3ACCC6;
+            padding: 0px 9px;
+            border-radius: 5px;
+            font-weight: bold;
+           }
+        }
+        .refused {
+            margin-top: 2px;
+            span {
+                background-color: #FFE2E5;
+                color: #F77381;
+                padding: 0px 9px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+        }
+        .pending {
+            margin-top: 2px;
+            span {
+             background-color: #FFF4DE;
+             color: #FFC24C;
+             padding: 0px 9px;
+             border-radius: 5px;
+             font-weight: bold;
+            }
+        }
+        .controlMeeting-icon{
+            color: $lochmara !important;
+            background-color: #f5faff !important;
+        }
+    }
+    .no-data {
+        p{
+            font-size: 16px;
+            font-weight: bold;
+            vertical-align: middle;
+            line-height: 50px;
+        }
+    }
+}
+.confirm-meetings::-webkit-scrollbar {
+    display: none;
+  }

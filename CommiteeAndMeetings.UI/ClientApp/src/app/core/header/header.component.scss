@@ -1,0 +1,108 @@
+@import "../../../variables";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 5px 20px;
+  box-shadow: 0px 0px 20px 1px $boxShadow;
+  background-color: $white;
+
+  .header-name {
+    display: flex;
+    align-items: center;
+
+    .user-img {
+      width: 40px;
+      height: 40px;
+      margin: 0 10px;
+
+      img {
+        width: 100%;
+      }
+    }
+    .user-name {
+      flex: 1;
+      color: $madison;
+      font-family: $font-family-medium;
+      font-size: $fs15;
+      font-weight: 600;
+    }
+  }
+
+  .logo-img {
+    cursor: pointer;
+    img {
+      outline: none;
+      width: 265px;
+    }
+  }
+
+  .header-actions {
+    li {
+      margin: 0 10px;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  .logout {
+    list-style: none;
+  }
+}
+.meeting-icon {
+  img {
+    object-fit: cover;
+    width: 31px;
+    height: 24px;
+  }
+  i {
+    font-size: 21px;
+    margin-top: 5px;
+  }
+}
+
+// Primary Buttons
+::ng-deep .ant-btn:hover,
+::ng-deep .ant-btn:focus {
+  color: #45a7b6;
+  border-color: #45a7b6;
+}
+
+::ng-deep .ant-btn-primary,
+.ant-btn-primary:hover {
+  color: #fff;
+  background: $persianBlue;
+  border-color: $persianBlue;
+  &:hover,
+  &:focus {
+    color: #fff;
+    background: #45a7b6;
+    border-color: #45a7b6;
+  }
+}
+
+.logout-icon {
+  height: 1rem;
+  width: 1rem;
+  fill: #fff;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+.task-icon {
+  i {
+    font-size: 20px;
+  }
+}
+
+.logo-container {
+  position: absolute;
+  left: 43%;
+  top: -18px;
+}

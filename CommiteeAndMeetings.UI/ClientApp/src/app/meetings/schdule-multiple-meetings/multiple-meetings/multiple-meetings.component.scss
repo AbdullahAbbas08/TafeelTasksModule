@@ -1,0 +1,38 @@
+@import "./../../../../variables";
+
+.buttons {
+  margin: auto 0;
+  button {
+    width: 6rem;
+    height: 2rem;
+  }
+}
+
+::ng-deep .ant-timeline-item-head-custom {
+  top: 0.6rem;
+  z-index: 5;
+}
+
+::ng-deep .ant-timeline-item-content {
+  top: -5.7rem;
+}
+::ng-deep .ant-tabs-nav {
+  z-index: 5;
+}
+
+::ng-deep .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  border-bottom: 1px solid $solitude;
+  background-image: linear-gradient($white, $solitude);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+}
+
+::ng-deep
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  .ant-collapse-arrow {
+  padding-top: 15px;
+  font-size: 1rem;
+}

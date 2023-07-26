@@ -1,0 +1,22 @@
+@import 'variables';
+
+@mixin respond-to($media) {
+  @if $media == s {
+    @media only screen and (max-width: $s) { @content; }
+  }
+  @else if $media == m {
+    @media only screen and (min-width: $s + 1) and (max-width: $ms - 1) { @content; }
+  }
+  @else if $media == mw {
+    @media only screen and (min-width: $ms + 1) and (max-width: $m - 1) { @content; }
+  }
+  @else if $media == mm {
+    @media only screen and (min-width: $ms + 1) and (max-width: $ml - 1) { @content; }
+  }
+  @else if $media == l {
+    @media only screen and (min-width: $ml + 1) and (max-width: $xl - 1) { @content; }
+  }
+  @else if $media == xl {
+    @media only screen and (min-width: $xl) { @content; }
+  }
+}

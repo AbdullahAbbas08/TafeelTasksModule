@@ -1,0 +1,360 @@
+<form
+  (ngSubmit)="saveTransaction()"
+  [formGroup]="transactionForm"
+  nz-form
+  nzLayout="vertical"
+  class="popup-form"
+>
+  <div class="row">
+    <div class="col-1">
+      <!-- Menu -->
+      <div>
+        <i
+          class="control-icon"
+          nz-icon
+          nzType="ellipsis"
+          nz-popover
+          [nzPopoverContent]="controlTmp"
+          nzPopoverPlacement="bottomLeft"
+          [(nzPopoverVisible)]="visible"
+        ></i>
+        <ng-template #controlTmp>
+          <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+            <li (click)="referralTo('emp')" *ngIf="!toEmployee">
+              {{ "toEmployee" | translate }}
+            </li>
+            <li (click)="referralTo('org')" *ngIf="toEmployee">
+              {{ "toOrganization" | translate }}
+            </li>
+            <li (click)="isCcEmp = !isCcEmp; visible = false">
+              {{ "CopytoEmployees" | translate }}
+            </li>
+            <li (click)="isCcOrg = !isCcOrg; visible = false">
+              {{ "CopytoOrganizations" | translate }}
+            </li>
+          </ul>
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-11">
+      <!-- Employee -->
+      <nz-form-item *ngIf="toEmployee">
+        <nz-form-control *ngIf="!isDecision">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'toEmployee' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="toEmployee"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+        <!-- If a Decision Then Send List -->
+        <nz-form-control *ngIf="isDecision">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'toEmployee' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="toEmployeeList"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Organization -->
+      <nz-form-item *ngIf="!toEmployee">
+        <nz-form-control *ngIf="!isDecision">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'toOrganization' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="toOrganization"
+            (nzOnSearch)="onSearch(lookupTypes.ORGANIZATION, $event)"
+          >
+            <ng-container *ngFor="let opt of organizations">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+          <!-- If a Decision Then Send List -->
+        <nz-form-control *ngIf="isDecision">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'toOrganization' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="toOrganizationList"
+            (nzOnSearch)="onSearch(lookupTypes.ORGANIZATION, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of organizations">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Correspondent -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'Correspondent' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="correspondent"
+            (nzOnSearch)="onSearch(lookupTypes.CORRESPONDENT, $event)"
+          >
+            <ng-container *ngFor="let opt of correspondents">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Copy to Employees -->
+      <nz-form-item *ngIf="isCcEmp">
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'CopytoEmployees' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="ccEmployees"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Copy to Organizations -->
+      <nz-form-item *ngIf="isCcOrg">
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'CopytoOrganizations' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="ccOrganaizations"
+            (nzOnSearch)="onSearch(lookupTypes.ORGANIZATION, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of organizations">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Required Action -->
+
+      <nz-form-item>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [nzPlaceHolder]="'RequiredAction' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="requiredAction"
+            (nzOnSearch)="onSearch(lookupTypes.REQUIRED_ACTIONS, $event)"
+          >
+            <ng-container *ngFor="let opt of requirdActions">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.text"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- Subject -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="">
+          <textarea
+            nz-input
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            formControlName="subject"
+            rows="2"
+            [placeholder]="'TransactionSubject' | translate"
+            autocomplete="off"
+          ></textarea>
+          <!-- <ng-template #titleTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{ "PleaseEnterSubject" | translate }}
+            </ng-container>
+          </ng-template> -->
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Explanation -->
+      <nz-form-item>
+        <nz-form-control>
+          <textarea
+            nz-input
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            rows="2"
+            formControlName="explanation"
+            [placeholder]="'Explanation' | translate"
+            autocomplete="off"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- File Upload -->
+      <div *ngFor="let file of files; let i = index">
+        <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+          {{ file.name }}
+          <i
+            class="delete-file"
+            nz-icon
+            nzType="close"
+            (click)="removeSelectedFile(i)"
+          ></i>
+        </p>
+      </div>
+
+     <div class="mt-3 d-flex justify-content-between align-items-center"> 
+      
+      <p class="mt-3 d-flex justify-content-between align-items-center">
+        <a nz-button (click)="fileInput.click()" [disabled]="saved"
+          ><i nz-icon nzType="upload"> </i> {{ "Upload" | translate }}</a
+        >
+        <input
+          hidden
+          type="file"
+          #fileInput
+          (change)="onSelectFile($event)"
+          multiple
+        />
+
+      </p>
+      <div *ngIf="canSendMinutesOfCommitte">
+        <nz-form-control>
+          <label  nz-checkbox formControlName="committeMom" (ngModelChange)="checkValues($event)">{{
+            "sendCommitteMom" | translate
+          }}</label>
+        </nz-form-control>
+      </div>
+     </div>
+  
+    </div>
+  </div>
+
+  <!-- Form Footer -->
+  <div class="d-flex justify-content-between mt-3">
+    <div class="d-flex px-2">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-switch formControlName="isSecret"></nz-switch>
+          <span class="mx-2">{{ "Secret" | translate }}</span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="mx-2" *ngIf="enableDecisions">
+        <nz-form-control>
+          <nz-switch formControlName="isDecision"></nz-switch>
+          <span class="mx-2">{{
+            translate.currentLang == "ar" ? "قرار" : "Decision"
+          }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div [ngClass]="{ rtl: currentLang === 'ar' }">
+      <button class="mx-2" type="button" nz-button (click)="close()">
+        {{ "Cancel" | translate }}
+      </button>
+      <button
+        type="submit"
+        nz-button
+        nzType="primary"
+        [disabled]="!transactionForm.valid"
+        [nzLoading]="saving"
+        [ngClass]="{ rtl: currentLang === 'ar' }"
+      >
+        {{ "Referral" | translate }}
+      </button>
+    </div>
+  </div>
+</form>

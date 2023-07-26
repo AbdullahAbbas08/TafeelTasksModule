@@ -1,0 +1,141 @@
+<div class="meeting-timing">
+  <div
+    class="meeting-timing__clock"
+    [ngClass]="{
+      'meeting-timing__clock-running': timingState === topicTimingState.Running,
+      'meeting-timing__clock-warning': timingState === topicTimingState.Warning,
+      'meeting-timing__clock-alarm': timingState === topicTimingState.Alarm,
+      'meeting-timing__clock-completed':
+        timingState === topicTimingState.Completed
+    }"
+  >
+    <div class="meeting-timing__clock-wrapper">
+      <svg class="meeting-timing__clock-icon">
+        <use xlink:href="assets\images\sprite.svg#icon-clock"></use>
+      </svg>
+    </div>
+    <div class="meeting-timing__timer">
+      <div
+        class="meeting-timing__countdown"
+        *ngIf="
+          !originalTimeFinished || timingState === topicTimingState.Completed
+        "
+      >
+        <countdown
+          [config]="{
+            leftTime: topic?.reminingDuration?.remining
+              ? topic.reminingDuration.remining
+              : topicDuration,
+            demand: demand,
+            notify: [180]
+          }"
+          (event)="handleEvent($event)"
+          #cd
+        ></countdown>
+      </div>
+      <div
+        class="meeting-timing__countup"
+        *ngIf="
+          originalTimeFinished && timingState !== topicTimingState.Completed
+        "
+        [ngStyle]="{ direction: 'ltr' }"
+      >
+        <countup-timer [countUpTimerConfig]="config"></countup-timer>
+      </div>
+      <div [ngSwitch]="timingState">
+        <div
+          *ngSwitchCase="topicTimingState.NotStarted"
+          class="meeting-timing__text"
+        >
+          {{ "NotStarted" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="topicTimingState.Running"
+          class="meeting-timing__text"
+        >
+          {{ "RemainingTime" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="topicTimingState.Warning"
+          class="meeting-timing__text"
+        >
+          {{ "EndSoon" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="topicTimingState.Alarm"
+          class="meeting-timing__text"
+        >
+          {{ "ExtraTime" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="topicTimingState.Completed"
+          class="meeting-timing__text"
+        >
+          {{ "Finished" | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="meeting-timing__pause">
+    <button
+      nz-button
+      nzShape="circle"
+      class="meeting-timing__pause-btn"
+      *ngIf="!paused"
+      (click)="onPause()"
+      [disabled]="
+        timingState === topicTimingState.Completed ||
+        timingState === topicTimingState.NotStarted ||
+        !(isCoordinator || isCreator) ||
+        topic.topicState === topicState._5
+      "
+    >
+      <svg class="meeting-timing__pause-icon">
+        <use xlink:href="assets\images\sprite-2.svg#icon-pause"></use>
+      </svg>
+    </button>
+    <button
+      nz-button
+      nzShape="circle"
+      class="meeting-timing__resume-btn"
+      *ngIf="paused"
+      (click)="onResume()"
+      [disabled]="
+        timingState === topicTimingState.Completed ||
+        timingState === topicTimingState.NotStarted ||
+        !(isCoordinator || isCreator) ||
+        topic.topicState === topicState._5
+      "
+    >
+      <svg class="meeting-timing__resume-icon">
+        <use xlink:href="assets\images\sprite-2.svg#icon-play_arrow"></use>
+      </svg>
+    </button>
+    <div class="meeting-timing__pause-text">
+      {{ paused ? ("ResumeTimer" | translate) : ("StopTimer" | translate) }}
+    </div>
+  </div>
+  <div class="meeting-timing__next">
+    <button
+      nz-button
+      nzShape="circle"
+      class="meeting-timing__next-btn"
+      (click)="onNextTopic()"
+      [disabled]="
+        timingState === topicTimingState.Completed ||
+        timingState === topicTimingState.NotStarted ||
+        !(isCoordinator || isCreator)
+      "
+    >
+      <svg class="meeting-timing__next-icon" *ngIf="!lastTopic">
+        <use xlink:href="assets\images\sprite-2.svg#icon-step-forward"></use>
+      </svg>
+      <svg class="meeting-timing__next-icon" *ngIf="lastTopic">
+        <use xlink:href="assets\images\sprite-2.svg#icon-switch"></use>
+      </svg>
+    </button>
+    <div class="meeting-timing__next-text">
+      {{ !lastTopic ? ("NextTopic" | translate) : ("EndTopic" | translate) }}
+    </div>
+  </div>
+</div>

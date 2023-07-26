@@ -1,0 +1,27 @@
+<div *ngIf="userType === checkType._1">
+  <div
+    *ngFor="let coordinator of coordinators; let i = index; let first = first"
+  >
+    <app-user-item
+      [coordinator]="coordinator"
+      [userType]="userType"
+      (deleted)="removeParticipant(i)"
+      [first]="first"
+    ></app-user-item>
+    <nz-divider
+      nzDashed="true"
+      *ngIf="i !== coordinators.length - 1"
+    ></nz-divider>
+  </div>
+</div>
+
+<div *ngIf="userType === checkType._2">
+  <div *ngFor="let attendee of attendees; let i = index">
+    <app-user-item
+      [attendee]="attendee"
+      [userType]="userType"
+      (deleted)="removeParticipant(i)"
+    ></app-user-item>
+    <nz-divider nzDashed="true" *ngIf="i !== attendees.length - 1"></nz-divider>
+  </div>
+</div>

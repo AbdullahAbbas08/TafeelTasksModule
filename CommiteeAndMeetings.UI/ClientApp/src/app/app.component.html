@@ -1,0 +1,29 @@
+<app-header *ngIf="showHeader"></app-header>
+<nav aria-label="breadcrumb" *ngIf="showHeader">
+  <ol class="breadcrumb">
+    <li
+      *ngFor="let breadcrumb of breadcrumbs$; index as i"
+      [class.active]="i === breadcrumbs$.length - 1"
+      class="breadcrumb-item"
+      [class.d-none]="
+        breadcrumb.label === 'CommitteeDetails' ||
+        breadcrumb.label === 'transactions' ||
+        breadcrumb.label === 'auth' ||
+        breadcrumb.label === 'schedule-meeting' ||
+        breadcrumb.label === 'multiple-meeting' ||
+        breadcrumb.label === 'MeetingDetails'
+      "
+    >
+      <a [routerLink]="breadcrumb.url" *ngIf="i !== breadcrumbs$.length - 1">
+        {{ breadcrumb.label | translate }}
+      </a>
+      <ng-container *ngIf="i === breadcrumbs$.length - 1">
+        {{ breadcrumb.label | translate }}
+      </ng-container>
+    </li>
+  </ol>
+</nav>
+<div class="overlay" *ngIf="isloading">
+  <app-spinner></app-spinner>
+</div>
+<router-outlet></router-outlet>

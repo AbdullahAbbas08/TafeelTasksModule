@@ -1,0 +1,42 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{'LocalizationData' | translate}}</p>
+    <div class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'LocalizationNameAr' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="localization.commiteeLocalizationAr">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'LocalizationNameEn' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="localization.commiteeLocalizationEn">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'LocalizationCode' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="localization.key" [disabled]="!localizationCreate">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <p class="text-right">
+        <button type="button" nz-button nzType="primary" *ngIf="!localizationCreate"
+          (click)="editLocalization()" [disabled]="!localization.commiteeLocalizationAr || !localization.commiteeLocalizationEn || !localization.key">
+          {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" nz-button nzType="primary" *ngIf="localizationCreate"
+          (click)="insertLocalization()"
+          [disabled]="!localization.commiteeLocalizationAr || !localization.commiteeLocalizationEn || !localization.key">
+          {{'InsertLocalization' | translate}}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

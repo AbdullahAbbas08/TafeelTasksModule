@@ -1,0 +1,238 @@
+<form nz-form nzLayout="vertical" [formGroup]="committeeForm">
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'CommitteeName'|translate}}</nz-form-label>
+    <nz-form-control [nzErrorTip]="nameTpl">
+      <input nz-input formControlName="name" placeholder="" autocomplete="off" />
+      <ng-template #nameTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{'PleaseInputCommitteeName'|translate}}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'CommitteeTitle'|translate}}</nz-form-label>
+    <nz-form-control [nzErrorTip]="titleTpl">
+      <input nz-input formControlName="title" placeholder="" autocomplete="off" />
+      <ng-template #titleTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{'PleaseInputCommitteeTitle'|translate}}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'CommitteeDescription'|translate}}</nz-form-label>
+    <nz-form-control [nzErrorTip]="descriptionTpl">
+      <textarea formControlName="description" nz-input rows="2" placeholder=""></textarea>
+      <ng-template #descriptionTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{'PleaseInputCommitteeDescription'|translate}}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="mb-2" [ngClass]="committeeId ? 'd-none' : 'd-block'">
+   <label style="font-size: 15px;" nz-checkbox (ngModelChange)="checkDateValue($event)" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" >{{'committePermenant' | translate}} </label> 
+  </div>
+  <div [ngClass]="committeeId ? 'd-none' : 'd-block'" *ngIf="!isChecked">
+    <nz-form-item >
+      <nz-form-control>
+        <div>
+          <hijri-gregorian-datepicker
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [placeHolder]="'dd/mm/yyyy' | translate"
+            [label]="'selectedDateFrom' | translate"
+            [isRequired]="true"
+            [disabled]="committeeId"
+            [GregLabel]="'Greg' | translate"
+            [hijriLabel]="'Hijri' | translate"
+            [selectedDateType]="selectedDateType"
+            #datePicker
+            (select)="dateFromSelected($event)"
+            (selectedDateChange)="dateFromSelected($event)"
+            [readonly]="true"
+            [maxHijri]="maxdateHijiri"
+            [maxGreg]="maxDateGorge"
+          >
+          </hijri-gregorian-datepicker>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <div>
+        <hijri-gregorian-datepicker
+          [ngClass]="{ rtl: currentLang === 'ar' }"
+          [placeHolder]="'dd/mm/yyyy' | translate"
+          [label]="'selectDateTo' | translate"
+          [isRequired]="true"
+          [disabled]="committeeId"
+          [GregLabel]="'Greg' | translate"
+          [hijriLabel]="'Hijri' | translate"
+          [selectedDateType]="selectedDateType"
+          #datePicker
+          (select)="dateToSelected($event)"
+          (selectedDateChange)="dateToSelected($event)"
+          [readonly]="true"
+          [minHijri]="mindateHijiri"
+          [minGreg]="minDateGorge"
+        >
+        </hijri-gregorian-datepicker>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'CommitteeType'|translate}}</nz-form-label>
+    <nz-form-control [nzErrorTip]="typeTpl">
+      <nz-select   nzShowSearch nzServerSearch 
+        formControlName="commiteeTypeId" (nzOnSearch)="onSearch(lookupTypes.TYPE, $event)">
+        <ng-container *ngFor="let opt of committeeTypes">
+          <nz-option *ngIf="!isLoading" [nzValue]="opt?.commiteeTypeId" [nzLabel]="opt?.commiteeTypeName"></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+        </nz-option>
+      </nz-select>
+      <ng-template #typeTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{'PleaseSelectCommitteeType'|translate}}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>{{'CommitteeCategories'|translate}}</nz-form-label>
+    <nz-form-control [nzErrorTip]="categoryTpl">
+      <nz-select  nzShowSearch nzServerSearch
+        formControlName="categoryId" (nzOnSearch)="onSearch(lookupTypes.CATEGORY, $event)">
+        <ng-container *ngFor="let opt of committeeCategories">
+          <nz-option *ngIf="!isLoading" [nzValue]="opt?.categoryId" [nzLabel]="opt?.categoryName"></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+        </nz-option>
+      </nz-select>
+      <ng-template #categoryTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{'PleaseSelectCommitteeCategory'|translate}}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>{{'ParentCommittee'|translate}}</nz-form-label>
+    <nz-form-control>
+      <nz-select  nzAllowClear nzShowSearch 
+        formControlName="parentCommiteeId" (nzOnSearch)="onSearch(lookupTypes.PARENTCOMMITTEE, $event)">
+        <ng-container *ngFor="let opt of parentCommittees">
+          <nz-option *ngIf="!isLoading" [nzValue]="opt?.commiteeId" [nzLabel]="opt?.name"></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+   <div class="departmentlink">
+    <nz-form-item>
+      <nz-form-label [nzRequired]="form_controls['enableTransactions'].value || form_controls['enableDecisions'].value">
+        {{'CommitteeLinkedDepartment'|translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="departmentTpl">
+        <nz-select  nzShowSearch nzServerSearch nzPlaceHolder="{{committeeId ? (this.translateService.currentLang === 'ar' ? organizationNameAr : organizationNameEn) : '' }}"
+          formControlName="departmentLinkId" (nzOnSearch)="onSearch(lookupTypes.ORGANIZATION, $event)">
+          <ng-container *ngFor="let opt of organizations">
+            <nz-option *ngIf="!isLoading" [nzValue]="opt?.organizationId" [nzLabel]="opt?.organizationName"></nz-option>
+          </ng-container>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+          </nz-option>
+        </nz-select>
+        <ng-template #departmentTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            {{'PleaseSelectCommitteeLinkedDepartment'|translate}}
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  
+   </div>
+   <div class="currentHead">
+    <nz-form-item>
+      <nz-form-label nzRequired>{{'CommitteeHeadUser'|translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="usersTpl">
+        <nz-select nzShowSearch (ngModelChange)="getSelectedHeadUnit($event)" nzServerSearch nzPlaceHolder="{{committeeId ? (this.translateService.currentLang === 'ar' ? currentHeadNameAr : currentHeadNameEn) : '' }}"
+          formControlName="currenHeadUnitId" (nzOnSearch)="onSearch(lookupTypes.USERS, $event)">
+          <ng-container *ngFor="let opt of users">
+            <nz-option *ngIf="!isLoading" [nzValue]="opt?.id" [nzLabel]="opt?.name"></nz-option>
+          </ng-container>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+          </nz-option>
+        </nz-select>
+        <ng-template #usersTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            {{'PleaseSelectCommitteeHeadUser'|translate}}
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+   </div>
+   <div class="currentHead">
+    <nz-form-item>
+      <nz-form-label nzRequired>{{'CommitteeSecretary'|translate}}</nz-form-label>
+      <nz-form-control [nzErrorTip]="userSecretaryTp">
+        <nz-select  (ngModelChange)="removeSelectedSecertary($event)"  nzShowSearch nzServerSearch nzPlaceHolder="{{committeeId ? (this.translateService.currentLang === 'ar' ? committeSecretaryNameAr : committeSecretaryNameEn) : '' }}"
+          formControlName="committeeSecretary" (nzOnSearch)="onSearch(lookupTypes.COMMITTEESECRETARY, $event)">
+          <ng-container *ngFor="let opt of committeSecrtary">
+            <nz-option *ngIf="!isLoading" [nzValue]="opt?.id" [nzLabel]="opt?.name"></nz-option>
+          </ng-container>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i nz-icon nzType="loading" class="loading-icon"></i> {{'LoadingData'|translate}}
+          </nz-option>
+        </nz-select>
+        <ng-template #userSecretaryTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            {{'PleaseSelectCommitteeSecretary'|translate}}
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+   </div>
+
+  <div class="d-flex align-items-center justify-content-between">
+    <nz-form-item>
+      <nz-form-label>{{'EnableTransactions'|translate}}</nz-form-label>
+      <nz-form-control>
+        <nz-switch formControlName="enableTransactions" 
+           (ngModelChange)="changeCheckStatus()"></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>{{'EnableDecisions'|translate}}</nz-form-label>
+      <nz-form-control>
+        <nz-switch formControlName="enableDecisions" [nzDisabled]="!this.committeeForm.controls['enableTransactions'].value"
+         (ngModelChange)="changeCheckStatus()"></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>{{'IsSecrete'|translate}}</nz-form-label>
+      <nz-form-control>
+        <nz-switch formControlName="isSecrete"
+          ></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div class="text-center mt-auto">
+    <button type="button" class="mx-2" nz-button (click)="close()">{{'Close'|translate}}</button>
+    <button type="submit" nz-button nzType="primary" [disabled]="!committeeForm.valid"
+      (click)="submitCommitteeData()">{{(committeeId ? 'EditCommitteeSubmit' : 'CreateCommitteeSubmit')|translate}}</button>
+  </div>
+</form>

@@ -1,0 +1,12 @@
+<div class="task-stats">
+    <nz-form-item>
+        <nz-form-label class="font-weight-bold" *ngIf="task.completed">{{ "ReOpenReson" | translate }}</nz-form-label>
+        <nz-form-label class="font-weight-bold" *ngIf="!task.completed">{{ "MarkCompleteReason" | translate }}</nz-form-label>
+          <textarea nz-input rows="3" [(ngModel)]="reasontext"  nz-input placeholder=""  ></textarea>
+      </nz-form-item>
+      <div>
+        <button type="submit" (click)="submitToggleTask()"  [disabled]="!reasontext" nz-button nzType="primary"
+        >{{'Save'|translate}}</button>
+        <button type="button" class="mx-2" nz-button (click)="close()">{{'Close'|translate}}</button>
+      </div>
+</div>

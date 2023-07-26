@@ -1,0 +1,125 @@
+<div class="meeting-day">
+  {{ viewDate | date }}
+  <div class="meeting-state">
+    <div class="meeting-state__details">
+      <div class="meeting-state__title">
+        {{ "CurrentStateForMeeting" | translate }}
+      </div>
+      <div class="meeting-state__count">
+        {{ availableUsersCount }} {{ "Available" | translate }} &nbsp;
+        {{ unAvailableUsersCount }} {{ "NotAvailable" | translate }}
+      </div>
+    </div>
+    <div class="meeting-state__icon">
+      <svg class="meeting-state__icon-calendar">
+        <use xlink:href="assets\images\sprite-2.svg#icon-calendar"></use>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<mwl-calendar-day-view
+  [viewDate]="viewDate"
+  [events]="events"
+  [eventTemplate]="eventTemplate"
+  [refresh]="refresh"
+></mwl-calendar-day-view>
+<ng-template #eventTemplate let-dayEvent="weekEvent">
+  <div
+    class="event-template mt-3 d-flex align-item-center"
+    nz-popover
+    nzType="primary"
+    [nzPopoverContent]="custom"
+    nzPopoverPlacement="top"
+  >
+    <div class="border-div"></div>
+    <div class="event-details">
+      <div style="display: flex; flex-wrap: wrap;">
+        <span>{{ dayEvent.event.start | date: "shortTime" }}</span>
+        &nbsp;
+        <span>{{ dayEvent.event.end | date: "shortTime" }}</span>
+      </div>
+      <div class="event-details">
+        <div class="title">
+          {{ dayEvent.event.title | maxLenth: 22 }}
+        </div>
+
+        <div class="members-imgs">
+          <div>
+            <img
+              *ngFor="let participant of dayEvent?.event?.meta?.attendees"
+              [src]="
+                participant.attendee.profileImage
+                  ? 'data:image/png;base64,' + participant.attendee.profileImage
+                  : 'assets/images/unknown.png'
+              "
+              [alt]=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #custom>
+    <div class="meeting-popup">
+      <div class="meeting-title">
+        {{ dayEvent.event.title | maxLenth: 22 }}
+      </div>
+      <div class="meeting-content">
+        {{ dayEvent.event.meta?.subject | maxLenth: 50 }}
+      </div>
+      <div class="meeting-time">
+        <div class="meeting-time-details">
+          <div>
+            {{ viewDate | date }}
+          </div>
+          <div style="display: flex">
+            <span> {{ dayEvent.event.start | date: "shortTime" }}</span>
+            &nbsp;
+            <span> {{ dayEvent.event.end | date: "shortTime" }}</span>
+          </div>
+        </div>
+      </div>
+      <perfect-scrollbar [autoPropagation]="true">
+        <div class="meeting-coordinators">
+          <div
+            *ngFor="let participant of dayEvent?.event?.meta?.attendees"
+            class="meeting-coordinator d-flex justify-content-between"
+          >
+            <div class="meeting-coordinators-details d-flex align-item-center">
+              <img
+                [src]="
+                  participant.attendee.profileImage
+                    ? 'data:image/png;base64,' +
+                      participant.attendee.profileImage
+                    : 'assets/images/unknown.png'
+                "
+              />
+              <p class="mb-0 mx-1">
+                {{
+                  currentLang === "ar"
+                    ? participant.attendee.fullNameAr
+                    : (participant.attendee.fullNameEn | maxLenth: 19)
+                }}
+              </p>
+            </div>
+            <div class="">
+              <i
+                class="far fa-check-circle pending"
+                [ngClass]="{
+                  confirmed: participant.state === stateType._3,
+                  closed: participant.state === stateType._4
+                }"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+      <!-- <div class="meetings-details-button">
+        <button nzBlock nz-button nzType="primary">
+          <span class="mx-2"> {{ "details" | translate }} </span>
+        </button>
+      </div> -->
+    </div>
+  </ng-template>
+</ng-template>

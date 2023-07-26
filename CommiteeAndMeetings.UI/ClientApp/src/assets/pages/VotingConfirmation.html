@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voting Confirmation Page</title>
+  </head>
+  <body>
+    <script>
+      window.onload = function() {
+        document.getElementById("confirm-btn").style.display ="block";
+        document.getElementById("confirmation").style.display  = "none";
+        document.getElementById("refused").style.display  = "none";
+      };
+      function callAPI() {
+        const searchParams = new URLSearchParams(window.location.search);
+        const SurveyAnswerId = searchParams.get("SurveyAnswerId");
+        const userId = searchParams.get("userId");
+        fetch(
+          `${window.location.origin}/api/SurveyAnswerUsers/InsertCustomeFormEmail?userId=${userId}&SurveyAnswerId=${SurveyAnswerId}`,
+          {
+            method: "POST",
+            body: JSON.stringify({}),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then((response) => {
+           if(response){
+            document.getElementById("confirm-btn").style.display ="none";
+            document.getElementById("confirmation").style.display  = "block";
+           }
+          })
+          .catch((error) => {
+            document.getElementById("confirm-btn").style.display ="none";
+            document.getElementById("confirmation").style.display  = "none";
+            document.getElementById("refused").style.display  = "block";
+          });
+      }
+    </script>
+     <div style="position: fixed;
+     top: 50%;
+     left: 36%;
+     width: 50em;
+     height: 18em;
+     margin-top: -9em;
+     margin-left: -15em;
+     /* border: 1px solid #ccc; */
+     /* background-color: #f3f3f3; */
+     text-align: center;">
+      <h1>Voting Confirmation Page</h1>
+      <p style="margin-bottom: 0px;">
+        Thank you for confirming your Voting. Please click the "Confirm" button
+        below to proceed.
+      </p>
+      <button style="display: block;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      background-color: #4d57a2;
+      color: #Fff;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 9px;
+      border-color: none;
+      
+      " id="confirm-btn" onclick="callAPI()">Confirm</button>
+      <p id="confirmation">Thanks For Voting</p>
+      <p id="refused">Canot Send Your Vote</p>
+     </div>
+
+ 
+  </body>
+</html>

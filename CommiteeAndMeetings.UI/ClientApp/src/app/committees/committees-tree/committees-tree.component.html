@@ -1,0 +1,706 @@
+
+<div style="position: relative;">
+  <div class="oc-options" [class.d-none]="!noData" style="position: absolute; top: 10px;right: -0.5rem;width: 160px;height: 30px;font-size: 14px;z-index: 9;">
+    <div style="position: absolute; left: 40px;cursor: pointer;" (click)="resetView(true)" class="fa fa-home fa-2x fa-fw"></div>
+    <div style="position: absolute; left: 80px;cursor: pointer;" (click)="zoomOut()" class="fa fa-search-minus fa-2x fa-fw"></div>
+    <div style="position: absolute; left: 120px;cursor: pointer;" (click)="zoomIn()" class="fa fa-search-plus fa-2x fa-fw"></div>
+  </div>
+</div>
+<pan-zoom [config]="panzoomConfig" [class.d-none]="!noData">
+  <div *ngIf="!loadingData" style="position: relative;">
+    <div 
+    class="d-flex justify-content-SB" style="position: relative;top: 50px;left: 35%;right: 55%;"
+      [ngClass]="{
+        'hv-wrapper-ltr': currentLang === 'en',
+        'hv-wrapper-rtl': currentLang === 'ar'
+      }"
+    >
+      <ng-container *ngFor="let child of committees | converter">
+        <ng-container
+          *ngTemplateOutlet="Item; context: { $implicit: child }"
+        ></ng-container>
+      </ng-container>
+  
+      <ng-template #Item let-item>
+        <ng-container *ngIf="!item.items.length; else Component">
+          <div
+            class="committee-item"
+            (click)="navigateTo(item?.commiteeId)"
+            [ngStyle]="{
+              backgroundColor:
+                item?.currentStatus.currentStatusId == 1
+                  ? '#fcfdf2'
+                  : 'rgba(201, 201, 201, 0.856)'
+            }"
+          >
+            <div class="header">
+              <div  
+              [nzTooltipTitle]="item.name"
+            nzTooltipPlacement="bottom"
+            nz-tooltip>
+                {{ item.name| maxLenth: 18 }}
+              </div>
+              <div
+                *appHasAuthUserViewPermission="[
+                  'EditCommittee',
+                  'ActiveDisactiveCommittee'
+                ]"
+              >
+                <i
+                  class="control-icon"
+                  nz-icon
+                  nzType="ellipsis"
+                  nz-popover
+                  [nzPopoverContent]="controlTmp"
+                  nzPopoverPlacement="right"
+                ></i>
+                <ng-template #controlTmp>
+                  <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                    <li
+                      *appHasAuthUserViewPermission="['EditCommittee']"
+                      (click)="editCommittee(item?.commiteeId)"
+                    >
+                      {{ "EditCommittee" | translate }}
+                    </li>
+                    <ng-container
+                      *ngIf="item.currentStatus?.currentStatusId === 2"
+                    >
+                      <li
+                        *appHasAuthUserViewPermission="[
+                          'ActiveDisactiveCommittee'
+                        ]"
+                        (click)="onChangeCommitteStatus(item?.commiteeId)"
+                      >
+                        {{ "ActiveStatus" | translate }}
+                      </li>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="item.currentStatus?.currentStatusId === 1"
+                    >
+                      <li
+                        *appHasAuthUserViewPermission="[
+                          'ActiveDisactiveCommittee'
+                        ]"
+                        (click)="onChangeCommitteStatus(item?.commiteeId)"
+                      >
+                        {{ "disActiveStatus" | translate }}
+                      </li>
+                    </ng-container>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+            <div class="head">
+              <span class="admin-image ml-2 mr-0">
+                <img
+                  nz-image
+                  [nzSrc]="
+                    item?.currenHeadUnit?.profileImage
+                      ? 'data:image/png;base64,' +
+                        item?.currenHeadUnit?.profileImage
+                      : 'assets/images/unknown.png'
+                  "
+                  [nzFallback]="fallback"
+                />
+              </span>
+              <span
+                [nzTooltipTitle]="
+                  ('CommitteHead' | translate) +
+                  ' : ' +
+                  (currentLang === 'ar'
+                    ? item.currenHeadUnit?.fullNameAr
+                    : item.currenHeadUnit?.fullNameEn)
+                "
+                nzTooltipPlacement="bottom"
+                nz-tooltip
+              >
+                {{
+                  currentLang === "ar"
+                    ? (item.currenHeadUnit?.fullNameAr | maxLenth: 18)
+                    : (item.currenHeadUnit?.fullNameEn | maxLenth: 18)
+                }}
+              </span>
+            </div>
+            <div class="committee-date my-1"  (click)="navigateTo(item?.commiteeId)" 
+            *ngIf="item?.validityPeriod[
+            item.validityPeriod.length - 1
+          ].validityPeriodFrom.getFullYear() > 1900 && item?.validityPeriod[
+          item.validityPeriod.length - 1
+        ].validityPeriodTo.getFullYear() > 1900
+          "
+            >
+              <i nz-icon nzType="clock-circle"></i>
+              <!-- <span> {{'CommitteeFinishedDate' | translate}} </span> -->
+              <span>
+                {{ "From" | translate }}
+                {{
+                  this.translateService.currentLang === "ar"
+                    ? (item?.validityPeriod[
+                    item.validityPeriod.length - 1
+                      ].validityPeriodFrom | customDate)
+                    : (item?.validityPeriod[
+                    item.validityPeriod.length - 1
+                      ].validityPeriodFrom | date: "dd/MM/yy")
+                }}</span
+              >
+              <span>
+                - {{ "To" | translate }}
+                {{
+                  this.translateService.currentLang === "ar"
+                    ? (item?.validityPeriod[
+                    item.validityPeriod.length - 1
+                      ].validityPeriodTo | customDate)
+                    : (item?.validityPeriod[
+                    item.validityPeriod.length - 1
+                      ].validityPeriodTo | date: "dd/MM/yy")
+                }}</span
+              >
+            </div>
+            <div class="committee-date my-1" (click)="navigateTo(item?.commiteeId)"
+            *ngIf="item?.validityPeriod[
+            item.validityPeriod.length - 1
+          ].validityPeriodFrom.getFullYear() < 1900 || item?.validityPeriod[
+          item.validityPeriod.length - 1
+        ].validityPeriodTo.getFullYear() < 1900
+          "
+            >
+               <span>{{'committePermenant' | translate}}</span>
+            </div>
+            <div class="footer my-2">
+              <div class="status-desc">
+                <span>{{
+                  currentLang === "ar"
+                    ? item?.commiteeType?.commiteeTypeNameAr
+                    : item?.commiteeType?.commiteeTypeNameEn
+                }}</span>
+                <nz-divider nzType="vertical" nzDashed></nz-divider>
+                <span>{{
+                  currentLang === "ar"
+                    ? item.currentStatus?.currentStatusNameAr
+                    : item.currentStatus?.currentStatusNameEn
+                }}</span>
+                <i
+                  nz-icon
+                  nzType="check"
+                  *ngIf="item.currentStatus?.currentStatusId === 1"
+                ></i>
+                <i
+                  nz-icon
+                  nzType="close"
+                  *ngIf="item.currentStatus?.currentStatusId === 2"
+                ></i>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <ul class="list-unstyled m-0 p-0">
+                  <li class="online-user-img d-flex align-items-center">
+                    <ng-container
+                      *ngFor="let memeber of item?.members | slice: 0:4"
+                    >
+                      <img
+                        nz-image
+                        [nzTooltipTitle]="
+                        (this.translateService.currentLang === 'ar' ? memeber?.commiteeRoles[0]?.role.commiteeRolesNameAr : memeber?.commiteeRoles[0]?.role.commiteeRolesNameEn) +
+                        ' : ' +
+                        (this.translateService.currentLang === 'ar'
+                          ? memeber?.user?.fullNameAr : memeber?.user?.fullNameEn)
+                          
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                      [nzSrc]="memeber?.user?.profileImage ? 'data:image/png;base64,'+memeber?.user?.profileImage:'../../../assets/images/unknown.png'"
+                      />
+                    </ng-container>
+                    <span
+                      class="mx-2 users-number"
+                      *ngIf="item.members.length"
+                      >{{ item.members.length }}</span
+                    >
+                    <span class="mx-2" *ngIf="!item.members.length">{{
+                      "NOMEMBERS" | translate
+                    }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                class="
+                  committee-status
+                  d-flex
+                  align-items-center
+                  justify-content-around
+                "
+                (click)="navigateTo(item?.commiteeId)"
+              >
+                <div
+                  [nzTooltipTitle]="
+                    ('CommitteeStatus' | translate) +
+                    ' : ' +
+                    (this.translateService.currentLang === 'ar'
+                      ? item.category?.categoryNameAr
+                      : item.category?.categoryNameEn)
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                <i nz-icon nzType="apartment" nzTheme="outline"></i>
+                </div>
+                <div
+                  *ngIf="item.departmentLink != null"
+                  [nzTooltipTitle]="
+                    ('RelatedToOrganization' | translate) +
+                    ' : ' +
+                    (this.translateService.currentLang === 'ar'
+                      ? item.departmentLink?.organizationNameAr
+                      : item.departmentLink?.organizationNameEn)
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                  <i nz-icon nzType="link"></i>
+                </div>
+                <div
+                  *ngIf="item.departmentLink == null"
+                  [nzTooltipTitle]="
+                    ('RelatedToOrganization' | translate) +
+                    ' : ' +
+                    ('noData' | translate)
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                  <i nz-icon nzType="link"></i>
+                </div>
+                <div
+                  [nzTooltipTitle]="
+                    item?.committeeConfidentiality | translate
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                  <i nz-icon nzType="lock"></i>
+                </div>
+                <div
+                  *ngIf="item.parentCommitee != null"
+                  [nzTooltipTitle]="
+                    ('ParentCommittee' | translate) +
+                    ' : ' +
+                    item?.parentCommitee?.name
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                  <svg width="26" height="26" viewBox="0 0 26 26">
+                    <defs>
+                      <style>
+                        .fatherA {
+                          fill: #e1f0fe;
+                          opacity: 0.499;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-961 -728)">
+                      <rect
+                        class="fatherA"
+                        width="26"
+                        height="26"
+                        rx="13"
+                        transform="translate(961 728)"
+                      />
+                      <g transform="translate(914.524 734)">
+                        <path
+                          fill="#0075C9"
+                          d="M64.455,4.015,61.291.218a.648.648,0,0,0-.969,0l-3.164,3.8a.59.59,0,0,0-.089.672.6.6,0,0,0,.574.366h1.9v6.328H56.377a.3.3,0,0,0-.247.109l-1.582,1.9a.325.325,0,0,0-.04.346.287.287,0,0,0,.287.178h6.961a.3.3,0,0,0,.316-.316V5.053h1.9a.6.6,0,0,0,.574-.366A.571.571,0,0,0,64.455,4.015Z"
+                        />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <div
+                  *ngIf="item.parentCommitee == null"
+                  [nzTooltipTitle]="
+                    ('ParentCommittee' | translate) +
+                    ' : ' +
+                    ('noData' | translate)
+                  "
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                >
+                  <svg width="26" height="26" viewBox="0 0 26 26">
+                    <defs>
+                      <style>
+                        .fatherA {
+                          fill: #e1f0fe;
+                          opacity: 0.499;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-961 -728)">
+                      <rect
+                        class="fatherA"
+                        width="26"
+                        height="26"
+                        rx="13"
+                        transform="translate(961 728)"
+                      />
+                      <g transform="translate(914.524 734)">
+                        <path
+                          fill="#0075C9"
+                          d="M64.455,4.015,61.291.218a.648.648,0,0,0-.969,0l-3.164,3.8a.59.59,0,0,0-.089.672.6.6,0,0,0,.574.366h1.9v6.328H56.377a.3.3,0,0,0-.247.109l-1.582,1.9a.325.325,0,0,0-.04.346.287.287,0,0,0,.287.178h6.961a.3.3,0,0,0,.316-.316V5.053h1.9a.6.6,0,0,0,.574-.366A.571.571,0,0,0,64.455,4.015Z"
+                        />
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+  
+        <ng-template #Component>
+          <div class="hv-item">
+            <div class="hv-item-parent">
+              <div
+                class="committee-item"
+                (click)="navigateTo(item?.commiteeId)"
+                [ngStyle]="{
+                  backgroundColor:
+                    item?.currentStatus.currentStatusId == 1
+                      ? '#fcfdf2'
+                      : 'rgba(201, 201, 201, 0.856)'
+                }"
+              >
+                <div class="header">
+                  <div>
+                    {{ item.name }}
+                  </div>
+                  <div
+                    *appHasAuthUserViewPermission="[
+                      'EditCommittee',
+                      'ActiveDisactiveCommittee'
+                    ]"
+                  >
+                    <i
+                      class="control-icon"
+                      nz-icon
+                      nzType="ellipsis"
+                      nz-popover
+                      [nzPopoverContent]="controlTmp"
+                      nzPopoverPlacement="right"
+                    ></i>
+                    <ng-template #controlTmp>
+                      <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                        <li
+                          *appHasAuthUserViewPermission="['EditCommittee']"
+                          (click)="editCommittee(item?.commiteeId)"
+                        >
+                          {{ "EditCommittee" | translate }}
+                        </li>
+                        <ng-container
+                          *ngIf="item.currentStatus?.currentStatusId === 2"
+                        >
+                          <li
+                            *appHasAuthUserViewPermission="[
+                              'ActiveDisactiveCommittee'
+                            ]"
+                            (click)="onChangeCommitteStatus(item?.commiteeId)"
+                          >
+                            {{ "ActiveStatus" | translate }}
+                          </li>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="item.currentStatus?.currentStatusId === 1"
+                        >
+                          <li
+                            *appHasAuthUserViewPermission="[
+                              'ActiveDisactiveCommittee'
+                            ]"
+                            (click)="onChangeCommitteStatus(item?.commiteeId)"
+                          >
+                            {{ "disActiveStatus" | translate }}
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="head">
+                  <span class="admin-image ml-2 mr-0">
+                    <img
+                      nz-image
+                      [nzSrc]="
+                        item?.currenHeadUnit?.profileImage
+                          ? 'data:image/png;base64,' +
+                            item?.currenHeadUnit?.profileImage
+                          : 'assets/images/unknown.png'
+                      "
+                      [nzFallback]="fallback"
+                    />
+                  </span>
+                  <span
+                    [nzTooltipTitle]="
+                      ('CommitteHead' | translate) +
+                      ' : ' +
+                      (currentLang === 'ar'
+                        ? item.currenHeadUnit?.fullNameAr
+                        : item.currenHeadUnit?.fullNameEn)
+                    "
+                    nzTooltipPlacement="bottom"
+                    nz-tooltip
+                  >
+                    {{
+                      currentLang === "ar"
+                        ? (item.currenHeadUnit?.fullNameAr | maxLenth: 18)
+                        : (item.currenHeadUnit?.fullNameEn | maxLenth: 18)
+                    }}
+                  </span>
+                </div>
+                <div class="committee-date my-1"  (click)="navigateTo(item?.commiteeId)" 
+                *ngIf="item?.validityPeriod[
+                item.validityPeriod.length - 1
+              ].validityPeriodFrom.getFullYear() > 1900 && item?.validityPeriod[
+              item.validityPeriod.length - 1
+            ].validityPeriodTo.getFullYear() > 1900
+              "
+                >
+                  <i nz-icon nzType="clock-circle"></i>
+                  <!-- <span> {{'CommitteeFinishedDate' | translate}} </span> -->
+                  <span>
+                    {{ "From" | translate }}
+                    {{
+                      this.translateService.currentLang === "ar"
+                        ? (item?.validityPeriod[
+                        item.validityPeriod.length - 1
+                          ].validityPeriodFrom | customDate)
+                        : (item?.validityPeriod[
+                        item.validityPeriod.length - 1
+                          ].validityPeriodFrom | date: "dd/MM/yy")
+                    }}</span
+                  >
+                  <span>
+                    - {{ "To" | translate }}
+                    {{
+                      this.translateService.currentLang === "ar"
+                        ? (item?.validityPeriod[
+                        item.validityPeriod.length - 1
+                          ].validityPeriodTo | customDate)
+                        : (item?.validityPeriod[
+                        item.validityPeriod.length - 1
+                          ].validityPeriodTo | date: "dd/MM/yy")
+                    }}</span
+                  >
+                </div>
+                <div class="committee-date my-1" (click)="navigateTo(item?.commiteeId)"
+                *ngIf="item?.validityPeriod[
+                item.validityPeriod.length - 1
+              ].validityPeriodFrom.getFullYear() < 1900 || item?.validityPeriod[
+              item.validityPeriod.length - 1
+            ].validityPeriodTo.getFullYear() < 1900
+              "
+                >
+                   <span>{{'committePermenant' | translate}}</span>
+                </div>
+                <div class="footer">
+                  <div class="status-desc">
+                    <span>{{
+                      currentLang === "ar"
+                        ? item?.commiteeType?.commiteeTypeNameAr
+                        : item?.commiteeType?.commiteeTypeNameEn
+                    }}</span>
+                    <nz-divider nzType="vertical" nzDashed></nz-divider>
+                    <span>{{
+                      currentLang === "ar"
+                        ? item.currentStatus?.currentStatusNameAr
+                        : item.currentStatus?.currentStatusNameEn
+                    }}</span>
+                    <i
+                      nz-icon
+                      nzType="check"
+                      *ngIf="item.currentStatus?.currentStatusId === 1"
+                    ></i>
+                    <i
+                      nz-icon
+                      nzType="close"
+                      *ngIf="item.currentStatus?.currentStatusId === 2"
+                    ></i>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <ul class="list-unstyled m-0 p-0">
+                      <li class="online-user-img d-flex align-items-center">
+                        <ng-container
+                          *ngFor="let memeber of item?.members | slice: 0:4"
+                        >
+                          <img
+                            nz-image
+                            [nzTooltipTitle]="
+                            (this.translateService.currentLang === 'ar' ? memeber?.commiteeRoles[0]?.role.commiteeRolesNameAr : memeber?.commiteeRoles[0]?.role.commiteeRolesNameEn) +
+                            ' : ' +
+                            (this.translateService.currentLang === 'ar'
+                              ? memeber?.user?.fullNameAr : memeber?.user?.fullNameEn)
+                              
+                          "
+                          nzTooltipPlacement="bottom"
+                          nz-tooltip
+                          [nzSrc]="memeber?.user?.profileImage ? 'data:image/png;base64,'+memeber?.user?.profileImage:'../../../assets/images/unknown.png'"
+                          />
+                        </ng-container>
+                        <span
+                          class="mx-2 users-number"
+                          *ngIf="item.members.length"
+                          >{{ item.members.length }}</span
+                        >
+                        <span class="mx-2" *ngIf="!item.members.length">{{
+                          "NOMEMBERS" | translate
+                        }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="
+                      committee-status
+                      d-flex
+                      align-items-center
+                      justify-content-around
+                    "
+                    (click)="navigateTo(item?.commiteeId)"
+                  >
+                    <div
+                      [nzTooltipTitle]="
+                        ('CommitteeStatus' | translate) +
+                        ' : ' +
+                        (this.translateService.currentLang === 'ar'
+                          ? item.category?.categoryNameAr
+                          : item.category?.categoryNameEn)
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                    <i nz-icon nzType="apartment" nzTheme="outline"></i>
+                    </div>
+                    <div
+                      *ngIf="item.departmentLink != null"
+                      [nzTooltipTitle]="
+                        ('RelatedToOrganization' | translate) +
+                        ' : ' +
+                        (this.translateService.currentLang === 'ar'
+                          ? item.departmentLink?.organizationNameAr
+                          : item.departmentLink?.organizationNameEn)
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                      <i nz-icon nzType="link"></i>
+                    </div>
+                    <div
+                      *ngIf="item.departmentLink == null"
+                      [nzTooltipTitle]="
+                        ('RelatedToOrganization' | translate) +
+                        ' : ' +
+                        ('noData' | translate)
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                      <i nz-icon nzType="link"></i>
+                    </div>
+                    <div
+                      [nzTooltipTitle]="
+                        item?.committeeConfidentiality | translate
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                      <i nz-icon nzType="lock"></i>
+                    </div>
+                    <div
+                      *ngIf="item.parentCommitee != null"
+                      [nzTooltipTitle]="
+                        ('ParentCommittee' | translate) +
+                        ' : ' +
+                        item?.parentCommitee?.name
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                      <svg width="26" height="26" viewBox="0 0 26 26">
+                        <defs>
+                          <style>
+                            .fatherA {
+                              fill: #e1f0fe;
+                              opacity: 0.499;
+                            }
+                          </style>
+                        </defs>
+                        <g transform="translate(-961 -728)">
+                          <rect
+                            class="fatherA"
+                            width="26"
+                            height="26"
+                            rx="13"
+                            transform="translate(961 728)"
+                          />
+                          <g transform="translate(914.524 734)">
+                            <path
+                              fill="#0075C9"
+                              d="M64.455,4.015,61.291.218a.648.648,0,0,0-.969,0l-3.164,3.8a.59.59,0,0,0-.089.672.6.6,0,0,0,.574.366h1.9v6.328H56.377a.3.3,0,0,0-.247.109l-1.582,1.9a.325.325,0,0,0-.04.346.287.287,0,0,0,.287.178h6.961a.3.3,0,0,0,.316-.316V5.053h1.9a.6.6,0,0,0,.574-.366A.571.571,0,0,0,64.455,4.015Z"
+                            />
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                    <div
+                      *ngIf="item.parentCommitee == null"
+                      [nzTooltipTitle]="
+                        ('ParentCommittee' | translate) +
+                        ' : ' +
+                        ('noData' | translate)
+                      "
+                      nzTooltipPlacement="bottom"
+                      nz-tooltip
+                    >
+                      <svg width="26" height="26" viewBox="0 0 26 26">
+                        <defs>
+                          <style>
+                            .fatherA {
+                              fill: #e1f0fe;
+                              opacity: 0.499;
+                            }
+                          </style>
+                        </defs>
+                        <g transform="translate(-961 -728)">
+                          <rect
+                            class="fatherA"
+                            width="26"
+                            height="26"
+                            rx="13"
+                            transform="translate(961 728)"
+                          />
+                          <g transform="translate(914.524 734)">
+                            <path
+                              fill="#0075C9"
+                              d="M64.455,4.015,61.291.218a.648.648,0,0,0-.969,0l-3.164,3.8a.59.59,0,0,0-.089.672.6.6,0,0,0,.574.366h1.9v6.328H56.377a.3.3,0,0,0-.247.109l-1.582,1.9a.325.325,0,0,0-.04.346.287.287,0,0,0,.287.178h6.961a.3.3,0,0,0,.316-.316V5.053h1.9a.6.6,0,0,0,.574-.366A.571.571,0,0,0,64.455,4.015Z"
+                            />
+                          </g>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hv-item-children">
+              <div class="hv-item-child" *ngFor="let child of item.items">
+                <ng-container
+                  *ngTemplateOutlet="Item; context: { $implicit: child }"
+                ></ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+    </div>
+  </div>
+</pan-zoom>
+

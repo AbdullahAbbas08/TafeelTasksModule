@@ -1,0 +1,124 @@
+<section class="announcements__wrapper" id="announcement">
+  <div class="announcements__wrapper__icon" (click)="toggleNotificationList()"  [ngStyle]="themeService.primaryTextColor">
+    <!-- <img
+      class="announcements__wrapper__icon--symbole"
+      src="assets/images/megaphone.svg"
+      alt="announcement icon"
+    /> -->
+    <i class="announcements__wrapper__icon--symbole" nz-icon nzType="bell"></i>
+    <span class="announcements__wrapper__count">{{ count }}</span>
+  </div>
+  <section
+    class="announcements__wrapper__list"
+    *ngIf="toggleNotificationlist"
+    [class.shown]="toggleNotificationlist"
+  
+  >
+    <div
+      class="
+        announcements__wrapper__list--container
+        d-flex
+        align-items-center
+        justify-content-start
+        flex-column
+      "
+    >
+      <div class="heading">
+        <h3>{{ "AllNotifications" | translate }}</h3>
+        <!-- <div >
+          <span class="fa fa-times head-icon" (click)="toggleNotificationList()"></span>
+        </div> -->
+      </div>
+
+      <div
+        class="items"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScrollToEnd()"
+        [infiniteScrollContainer]="'.ps'"
+      >
+        <perfect-scrollbar [autoPropagation]="true">
+          <div *ngIf="loading">
+            <nz-spin class="spinner" nzSimple></nz-spin>
+          </div>
+
+          <ng-container *ngIf="notifications?.length && !loading">
+            <ng-container *ngFor="let announcement of notifications">
+              <div class="item" [class.unreed]="true">
+                <img
+                  class="user-img"
+                  (click)="navigateTo(announcement)"
+                  [src]="
+                    announcement.createdByUser.profileImage
+                      ? 'data:image/png;base64,' +
+                        announcement.createdByUser.profileImage
+                      : 'assets/images/unknown.png'
+                  "
+                  [alt]=""
+                />
+                <div class="d-flex flex-column align-items-start">
+                  <h5 (click)="navigateTo(announcement)">
+                    {{
+                      currentLang === "ar"
+                        ? announcement?.createdByUser.fullNameAr
+                        : announcement.createdByUser.fullNameEn
+                    }}
+                  </h5>
+                  <p *ngIf="announcement?.commitee" (click)="navigateTo(announcement)">
+                    {{ "Committee" | translate }} :
+                    {{
+                      announcement?.commitee?.name
+                        ? announcement?.commitee?.name
+                        : ("NoName" | translate)
+                    }}
+                  </p>
+                  <p  ngbTooltip="{{announcement?.textAR}}" (click)="navigateTo(announcement)">
+                    {{
+                      currentLang === "ar"
+                        ? announcement?.textAR
+                        : announcement?.textEn
+                    }}
+                  </p>
+                  <p *ngIf="announcement?.meeting" (click)="navigateTo(announcement)">
+                    {{ "Meeting" | translate }} :
+                    {{
+                      announcement?.meeting?.title
+                        ? announcement?.meeting?.title
+                        : ("NoName" | translate)
+                    }}
+                  </p>
+                </div>
+                <span
+                 *ngIf="!announcement.isRead"
+                  class="delete-icon text-success fas fa-check-circle"
+                  appClickStopPropagation
+                  (click)="
+                    makeNotificationRead(
+                      announcement
+                    )
+                  "
+                  ngbTooltip="{{ 'MarkNotificationAsRead' | translate }}"
+                  [placement]="currentLang === 'ar' ? 'right' : 'left'"
+                ></span>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="!notifications?.length && !loading">
+            <div
+              class="
+                item
+                alert alert-warning
+                justify-content-center
+                text-dark
+                font-weight-bold
+              "
+            >
+              {{ "NoNotifications" | translate }}
+            </div>
+          </ng-container>
+        </perfect-scrollbar>
+      </div>
+    </div>
+  </section>
+</section>

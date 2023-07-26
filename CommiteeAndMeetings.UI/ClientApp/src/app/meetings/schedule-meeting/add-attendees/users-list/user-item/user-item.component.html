@@ -1,0 +1,196 @@
+<div
+  class="user-item-container"
+  (click)="getUserMeetings()"
+  [ngClass]="{ 'item-container-selcted': selected }"
+>
+  <div class="user-data">
+    <div class="img-wrapper">
+      <img *ngIf="userImage" [src]="'data:image/png;base64,' + userImage" />
+      <img *ngIf="!userImage" [src]="'assets/images/unknown.png'" />
+      <span class="active-state"></span>
+    </div>
+
+    <div class="user-name">
+      {{ userName ? userName : ("anonymous" | translate) }}
+    </div>
+
+    <!-- <div class="user-title">
+      {{ userTitle ? userTitle : ("anonymous" | translate) }}
+    </div> -->
+
+
+
+  <div
+      class="date"
+      [nzTooltipTitle]="
+        sendDate != null
+          ? translateService.currentLang == 'ar'
+            ? 'وقت الإرسال'
+            : 'Sending Date'
+          : null
+      "
+      nzTooltipPlacement="top"
+      nz-tooltip
+    >
+      {{ sendDate | date: "dd/MM/yyyy HH:mm:ss" }}
+    </div> 
+    <div nz-tooltip [nzTooltipTitle]="attendee.alternativeAttendee ? replaceAttendeName : false"  style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._2 && attendee.reasonForReplacing">
+      {{attendee.reasonForReplacing}}
+    </div>
+    <div nz-tooltip [nzTooltipTitle]="delegateAttende" style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._2 && attendee.userDelegate">
+      {{'delegate' | translate}}
+    </div>
+    <ng-template #delegateAttende>
+      <span>{{'DelegateFrom' | translate}} : {{this.translateService.currentLang === 'ar' ? attendee.userDelegate?.fullNameAr : attendee.userDelegate?.fullNameEn}}</span>
+    </ng-template>  
+    <ng-template #replaceAttendeName>
+      <span>{{'Iwasnominatedinstead' | translate}}{{this.translateService.currentLang === 'ar' ? attendee.alternativeAttendee?.fullNameAr : attendee.alternativeAttendee?.fullNameEn}}</span>
+    </ng-template>  
+    <div nz-tooltip [nzTooltipTitle]="coordinator.alternativeCoordinator ? replaceCordinateName : false"  style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._1 && coordinator.reasonForReplacing">
+      {{coordinator?.reasonForReplacing}}
+    </div>
+    <div nz-tooltip [nzTooltipTitle]="delegatorName" style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._1 && coordinator.userDelegate">
+      {{'delegate' | translate}}
+    </div>
+    <ng-template #replaceCordinateName>
+      <span>{{'Iwasnominatedinstead' | translate}}{{this.translateService.currentLang === 'ar' ? coordinator.alternativeCoordinator?.fullNameAr : coordinator.alternativeCoordinator?.fullNameEn}}</span>
+    </ng-template> 
+    <ng-template #delegatorName>
+      <span>{{'DelegateFrom' | translate}} : {{this.translateService.currentLang === 'ar' ? coordinator.userDelegate?.fullNameAr : coordinator.userDelegate?.fullNameEn}}</span>
+    </ng-template> 
+    <div
+      class="date"
+      [nzTooltipTitle]="
+        replyDate != null
+          ? translateService.currentLang == 'ar'
+            ? 'وقت الرد'
+            : 'Reply Date'
+          : null
+      "
+      nzTooltipPlacement="top"
+      nz-tooltip
+      style="color: #117a8b"
+    >
+      {{ replyDate | date: "dd/MM/yyyy HH:mm:ss" }}
+    </div>
+    <label
+      nz-checkbox
+      [(ngModel)]="isAttendee"
+      (ngModelChange)="changeIsAttendde()"
+      *ngIf="userType === meetingUserType._1"
+      [nzDisabled]="
+      singleMeeting.meeting?.isFinished ||
+      singleMeeting.meeting?.isCanceled ||
+      !(
+        singleMeeting.meeting?.isCreator ||
+        singleMeeting.meeting?.isCoordinator
+      ) 
+      "
+    >
+      {{ translateService.currentLang == "ar" ? "الحضور" : "Attendee" }}
+    </label>
+    <div [ngSwitch]="available">
+      <div class="container-available mx-2" *ngSwitchCase="true">
+        <span class="accept">{{ "Available" | translate }}</span>
+        <!-- <svg class="available-icon">
+          <use xlink:href="assets\images\sprite-2.svg#icon-user-check"></use>
+        </svg> -->
+      </div>
+      <div class="container-not-available mx-2" *ngSwitchCase="false">
+        <span class="reject">{{ "NotAvailable" | translate }}</span>
+        <!-- <svg class="available-icon">
+          <use xlink:href="assets\images\sprite-2.svg#icon-remove_circle"></use>
+        </svg> -->
+      </div>
+    </div>
+
+    <div class="external">
+      <div
+        [nzTooltipTitle]="'ExternalUser' | translate"
+        nzTooltipPlacement="top"
+        nz-tooltip
+        *ngIf="externalUser"
+      >
+        <svg class="external-icon">
+          <use
+            xlink:href="assets\images\sprite-2.svg#icon-external-link-square"
+          ></use>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div [ngSwitch]="state">
+    <button
+      class="btn-container"
+      (click)="sendInvitationRequest($event)"
+      [disabled]="
+        singleMeeting.meeting?.isFinished ||
+        singleMeeting.meeting?.isCanceled ||
+        !(
+          singleMeeting.meeting?.isCreator ||
+          singleMeeting.meeting?.isCoordinator
+        ) ||
+        first
+      "
+      *ngIf="state === stateType._1"
+    >
+      <div *ngSwitchCase="stateType._1" class="container-not-sent">
+        <span class="not-sent" *ngIf="userType === meetingUserType._1">{{
+          "SendRequest" | translate
+        }}</span>
+        <span class="not-sent" *ngIf="userType === meetingUserType._2">{{
+          "SendInvitation" | translate
+        }}</span>
+      </div>
+    </button>
+    <div *ngSwitchCase="stateType._2" class="container-pending">
+      <span class="pending">{{ "PendingConfirmation" | translate }}</span>
+    </div>
+    <div *ngSwitchCase="stateType._3" class="container-accept">
+      <span class="accept" *ngIf="userType === meetingUserType._1">{{
+        "Accepted" | translate
+      }}</span>
+      <span class="accept" *ngIf="userType === meetingUserType._2">{{
+        "ConfirmedAttendance" | translate
+      }}</span>
+    </div>
+    <div *ngSwitchCase="stateType._4" class="container-reject">
+      <span class="reject" *ngIf="userType === meetingUserType._1">{{
+        "NotAccepted" | translate
+      }}
+
+    </span>
+      <span class="reject" *ngIf="userType === meetingUserType._2">{{
+        "RejectedAttendance" | translate
+      }}
+    </span>
+    </div>
+  </div>
+
+  <i
+    class="control-icon"
+    nz-icon
+    nzType="ellipsis"
+    nz-popover
+    [nzPopoverContent]="controlTmp"
+    nzPopoverPlacement="left"
+    [(nzPopoverVisible)]="visible"
+    *ngIf="
+      !singleMeeting.meeting?.isFinished &&
+      !singleMeeting.meeting?.isCanceled &&
+      (singleMeeting.meeting?.isCreator || singleMeeting.meeting?.isCoordinator)
+    "
+  ></i>
+  <ng-template #controlTmp>
+    <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+      <li (click)="onDelete(); visible = false" *ngIf="!first">
+        {{
+          userType === meetingUserType._1
+            ? ("RemoveCoordinator" | translate)
+            : ("RemoveAttendee" | translate)
+        }}
+      </li>
+    </ul>
+  </ng-template>
+</div>

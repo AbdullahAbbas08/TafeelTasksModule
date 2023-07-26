@@ -1,0 +1,286 @@
+ <div class="transaction mt-3" *ngIf="routerPath === 'inbox'">
+ <div class="transaction-header">
+  <div class="d-flex align-items-center">
+    <div style="width: 24%;">
+      <h6 class="pt-2">{{'transactionnumber' | translate}}</h6>
+     </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+      </ng-template>
+   </nz-divider>
+   <div style="width: 25%;">
+    <h6 class="pt-2">{{'transactionSubject' | translate}}</h6>
+   </div>
+   <nz-divider [nzText]="text" nzType="vertical">
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+    </ng-template>
+   </nz-divider>
+   <div style="width: 20%;">
+    <h6 class="pt-2">{{"transactionFromName" | translate}}</h6>
+   </div>
+   <nz-divider [nzText]="text" nzType="vertical">
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+    </ng-template>
+   </nz-divider>
+   <div style="width: 20%;">
+    <h6 class="pt-2">{{'sent' | translate}}</h6>
+   </div>
+   <nz-divider [nzText]="text" nzType="vertical">
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+    </ng-template>
+   </nz-divider>
+   <div style="width: 20%;">
+    <h6 class="pt-2">{{'Referral' | translate}}</h6>
+   </div>
+   <nz-divider [nzText]="text" nzType="vertical">
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+    </ng-template>
+   </nz-divider>
+   <div style="width:10%">
+    <h6 class="pt-2">{{'transactionDate' | translate}}</h6>
+   </div>
+   <nz-divider [nzText]="text" nzType="vertical">
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+    </ng-template>
+   </nz-divider>
+   <div style="width:10%">
+    <h6 class="pt-2">{{'transactionReferral' | translate}}</h6>
+   </div>
+  </div>
+ </div>
+ <div class="transaction-details mt-3" *ngFor="let transaction of items; let x = index">
+   <div class="d-flex align-items-center">
+    <div style="width: 24%;">
+      <span class="mb-0">{{transaction?.transactionNumberFormatted}}</span>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+      </ng-template>
+   </nz-divider>
+   <div style="width: 25%;">
+    <div class="">
+     <p class="mb-0" nz-tooltip [nzTooltipTitle]="subjectName">{{this.translateService.currentLang === 'ar' ? (transaction?.subject | maxLenth:22) : (transaction?.subjectEn | maxLenth:22)}}
+       <ng-template #subjectName>
+           <span>{{this.translateService.currentLang === 'ar' ? transaction?.subject : transaction?.subjectEn}}</span>
+       </ng-template> 
+    </div>
+  </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+      </ng-template>
+     </nz-divider>
+     <div style="width: 20%;">
+     <p class="mb-0 mt-1" nz-tooltip [nzTooltipTitle]="outcomingName">{{transaction.incomingOrganizationName != ""
+      ? transaction.incomingOrganizationName
+      : ("internalInbox" | translate)
+      }}</p>
+     <ng-template #outcomingName>
+       <span>{{transaction.incomingOrganizationName != ""
+        ? transaction.incomingOrganizationName
+        : ("internalInbox" | translate)
+        }}</span>
+     </ng-template>   
+   </div>
+      <nz-divider [nzText]="text" nzType="vertical">
+        <ng-template #text>
+          <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+        </ng-template>
+       </nz-divider>
+       <div style="width: 20%;">
+        <div class="d-flex align-item-center pt-2">
+          <img *ngIf="transaction?.fromUserProfileImage"
+          nz-image
+          [nzSrc]="
+            'data:image/png;base64,' +
+            transaction?.fromUserProfileImage
+          "
+          [nzFallback]="fallback"
+        />
+        <p class="mb-0 mx-1" nz-tooltip [nzTooltipTitle]="incomingName">{{transaction?.directedFromName.split('-')[0]}}</p>
+       </div>
+        <!-- <p  class="mb-0 mr-2" nz-tooltip [nzTooltipTitle]="incomingName">{{transaction?.directedFromName | maxLenth: 18}}</p> -->
+        <ng-template #incomingName>
+          <span>{{transaction?.directedFromName}}</span>
+        </ng-template>    
+      </div>
+      <nz-divider [nzText]="text" nzType="vertical">
+        <ng-template #text>
+          <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+        </ng-template>
+       </nz-divider>
+       <div style="width: 20%;">
+        <p  class="mb-0 mr-2" nz-tooltip [nzTooltipTitle]="requiredActionName">{{transaction?.requiredActionName }}</p>
+        <ng-template #requiredActionName>
+          <span>{{transaction?.requiredActionName}}</span>
+        </ng-template>    
+      </div>
+      <nz-divider [nzText]="text" nzType="vertical">
+        <ng-template #text>
+          <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+        </ng-template>
+       </nz-divider>
+       <div style="width: 10%;">
+         <p class="mb-0">{{this.translateService.currentLang === 'ar' ? (transaction.createdOn | customDate) : transaction.createdOn | date:"MM/dd/yy" }}</p>
+       </div>
+       <nz-divider [nzText]="text" nzType="vertical">
+        <ng-template #text>
+          <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+        </ng-template>
+       </nz-divider>
+       <div style="width: 10%;">
+         <p class="mb-0">{{transaction?.transactionStatus }}</p>
+       </div>
+   </div>
+   <div class="d-flex align-items-center mt-2">
+    <div style="width: 12%;">
+    </div>
+    <div style="width: 12%;">
+    </div>
+    <div style="width: 25%;" class="mx-3">
+      <app-attachment-item-files [attachments] = "savedAttachemntsList[x]"></app-attachment-item-files>
+   </div>
+   <div class="w-50 d-flex justify-content-end">
+    <span nz-tooltip [nzTooltipTitle]="'FastDelegation'|translate" class="cursor-pointer " (click)="openFastDelegation(transaction)">
+      <i nz-icon nzType="swap"   style="color:#fdfffd;"></i>
+    </span>
+    </div>
+   </div>
+ </div>
+</div>
+<div class="transaction mt-3" *ngIf="routerPath === 'outbox'">
+  <div class="transaction-header">
+   <div class="d-flex align-items-center">
+    <div style="width: 24%;">
+      <h6 class="pt-2">{{'transactionnumber' | translate}}</h6>
+     </div>
+     <nz-divider [nzText]="text" nzType="vertical">
+       <ng-template #text>
+         <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+       </ng-template>
+    </nz-divider>
+    <div style="width: 25%;">
+      <h6 class="pt-2">{{'transactionSubject' | translate}}</h6>
+     </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+     <ng-template #text>
+       <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+     </ng-template>
+    </nz-divider>
+    <div style="width: 20%;">
+     <h6 class="pt-2">{{'transactionFrom' | translate}}</h6>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+     <ng-template #text>
+       <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+     </ng-template>
+    </nz-divider>
+    <div style="width: 20%;">
+     <h6 class="pt-2">{{'Referral' | translate}}</h6>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+     <ng-template #text>
+       <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+     </ng-template>
+    </nz-divider>
+    <div style="width:10%">
+     <h6 class="pt-2">{{'transactionDate' | translate}}</h6>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+      </ng-template>
+     </nz-divider>
+     <div style="width:10%">
+      <h6 class="pt-2">{{'transactionReferral' | translate}}</h6>
+     </div>
+   </div>
+  </div>
+  <div class="transaction-details mt-3" *ngFor="let transaction of items; let x = index">
+    <div class="d-flex align-items-center">
+      <div style="width: 24%;">
+        <span class="mb-0">{{transaction?.transactionNumberFormatted}}</span>
+      </div>
+     <nz-divider [nzText]="text" nzType="vertical">
+       <ng-template #text>
+         <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+       </ng-template>
+    </nz-divider>
+    <div style="width: 25%;">
+      <div class="">
+       <p class="mb-0" nz-tooltip [nzTooltipTitle]="subjectName">{{this.translateService.currentLang === 'ar' ? (transaction?.subject | maxLenth:22) : (transaction?.subjectEn | maxLenth:22)}}
+         <ng-template #subjectName>
+             <span>{{this.translateService.currentLang === 'ar' ? transaction?.subject : transaction?.subjectEn}}</span>
+         </ng-template> 
+      </div>
+   </div>
+     <nz-divider [nzText]="text" nzType="vertical">
+       <ng-template #text>
+         <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+       </ng-template>
+      </nz-divider>
+      <div style="width: 20%;">
+        <div class="d-flex align-item-center pt-2">
+           <img *ngIf="transaction?.fromUserProfileImage"
+           nz-image
+           [nzSrc]="
+             'data:image/png;base64,' +
+             transaction?.fromUserProfileImage
+           "
+           [nzFallback]="fallback"
+         />
+         <p class="mb-0 mx-1" nz-tooltip [nzTooltipTitle]="fromTransaction">{{transaction?.directedToName.split('-')[0]}}</p>
+        </div>
+       <p class="mb-0 mt-1" nz-tooltip [nzTooltipTitle]="fromTransaction">{{transaction?.directedToName.split('-')[1]}}</p>
+       <ng-template #fromTransaction>
+         <span>{{transaction?.directedToName}}</span>
+       </ng-template>   
+     </div>
+       <nz-divider [nzText]="text" nzType="vertical">
+         <ng-template #text>
+           <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+         </ng-template>
+        </nz-divider>
+        <div style="width: 20%;">
+          <p  class="mb-0 mr-2" nz-tooltip [nzTooltipTitle]="requiredActionName">{{transaction?.requiredActionName }}</p>
+          <ng-template #requiredActionName>
+            <span>{{transaction?.requiredActionName}}</span>
+          </ng-template>    
+        </div>
+       <nz-divider [nzText]="text" nzType="vertical">
+         <ng-template #text>
+           <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+         </ng-template>
+        </nz-divider>
+        <div style="width: 10%;">
+          <p class="mb-0">{{this.translateService.currentLang === 'ar' ? (transaction.createdOn | customDate) : transaction.createdOn | date:"MM/dd/yy" }}</p>
+        </div>
+       <nz-divider [nzText]="text" nzType="vertical">
+         <ng-template #text>
+           <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+         </ng-template>
+        </nz-divider>
+        <div style="width: 10%;">
+          <p class="mb-0">{{transaction?.transactionStatus }}</p>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+     <div style="width: 12%;">
+     </div>
+     <div style="width: 12%;">
+     </div>
+     <div style="width: 25%;" class="mx-3">
+       <app-attachment-item-files [attachments] = "savedAttachemntsList[x]"></app-attachment-item-files>
+    </div>
+    </div>
+  </div>
+ </div>
+ 
+<p class="text-center mt-3 no-data" *ngIf="!items.length">{{'noData' | translate}}</p>

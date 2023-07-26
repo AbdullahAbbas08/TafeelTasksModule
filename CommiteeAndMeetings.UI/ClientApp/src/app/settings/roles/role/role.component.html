@@ -1,0 +1,87 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{'RoleData' | translate}}</p>
+    <div class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'RoleNameAr' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="role.commiteeRolesNameAr">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'RoleNameEn' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="role.commiteeRolesNameEn">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <br />
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="isEmployeeRole" id="isEmployeeRole"
+                      [(ngModel)]="role.isMangerRole" />
+                    <label class="custom-control-label" for="isEmployeeRole">
+                      <span>{{'IsEmpRole' | translate}}</span>
+                      <span class="text-danger form-row" *ngIf="role?.isMangerRole"
+                        style="font-weight: 100;">{{empRoleMessage}}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <br />
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="isDelegatedEmployeeRole"
+                      id="isDelegatedEmployeeRole" [(ngModel)]="role.isDelegatedEmployeeRole"
+                      [disabled]="role?.isEmployeeRole" />
+                    <label class="custom-control-label" for="isDelegatedEmployeeRole">
+                      <span>{{'IsDelegatedEmpRole' | translate}}</span>
+                    </label>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- permissions -->
+      <div class="permissions-wrapper">
+        <div class="row">
+          <div class="d-flex justify-content-between align-items-center w-100" style="margin: 0 20px;">
+            <h5>{{'rolePermissions' | translate}}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <ng-container *ngFor="let permission of role.rolePermissions;let i = index;">
+            <!-- /* *ngIf="!permission.permission.isDeleted" */ -->
+            <div  class="col-lg-3 mb-3">
+              <div class="role-permission d-flex justify-content-sm-between align-items-center">
+                <div>
+                  <span class="name">{{permission?.permission?.commitePermissionNameAr}}</span>
+                </div>
+                <label nz-checkbox [(ngModel)]="role?.rolePermissions[i]?.permission.enabled"
+                  ></label>
+              </div>
+          </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="text-center m-3">
+        <button type="button" nz-button nzType="primary" *ngIf="!roleCreate" (click)="editRole()"
+          [disabled]="!role?.commiteeRolesNameAr || !role?.commiteeRolesNameEn">
+          {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" nz-button nzType="primary" *ngIf="roleCreate" (click)="insertRole()"
+          [disabled]="!role?.commiteeRolesNameAr || !role?.commiteeRolesNameEn">
+          {{'InsertRole' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

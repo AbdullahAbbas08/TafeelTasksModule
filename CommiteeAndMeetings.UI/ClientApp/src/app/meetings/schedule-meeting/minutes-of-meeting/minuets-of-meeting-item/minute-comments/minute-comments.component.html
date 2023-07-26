@@ -1,0 +1,27 @@
+<app-add-comment
+  class="px-2"
+  [id]="minute.id"
+  (commentAdded)="addComment($event)"
+  [count]="count"
+  *ngIf="!meetingClosed"
+></app-add-comment>
+<div class="comments">
+  <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+    <nz-timeline-item
+      [nzDot]="commentIcon"
+      *ngFor="let comment of minuteComments"
+    >
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="comment-item"
+      >
+        <app-comment-item [item]="comment"></app-comment-item>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>
+<ng-template #commentIcon>
+  <svg class="comment-icon">
+    <use xlink:href="assets\images\sprite-2.svg#icon-commenting-o"></use>
+  </svg>
+</ng-template>

@@ -1,0 +1,9 @@
+
+<ngb-datepicker 
+(select)="getDateWithHMSInHijri($event)" 
+#dp [(ngModel)]="model"
+[firstDayOfWeek]="7"
+[footerTemplate]="footerTemplate"
+(navigate)="navigate.emit($event)"
+[minDate]="minDate"
+></ngb-datepicker>

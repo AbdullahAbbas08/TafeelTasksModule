@@ -1,0 +1,11 @@
+<p>
+  {{
+    "Are you sure about archiving current period" | translate
+  }}
+</p>
+<button type="button" class="mx-2" (click)="close()" nz-button>
+  {{ "Close" | translate }}
+</button>
+<button type="submit" (click)="archivePeriod()" nz-button nzType="primary">
+  {{ "Confirm" | translate }}
+</button>

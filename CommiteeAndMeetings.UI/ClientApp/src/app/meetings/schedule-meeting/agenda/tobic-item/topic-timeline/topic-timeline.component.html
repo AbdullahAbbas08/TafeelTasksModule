@@ -1,0 +1,84 @@
+<app-add-comment
+  class="px-2"
+  [id]="topic.id"
+  (commentAdded)="addComment($event)"
+  [count]="commentCount"
+  [isMeetingCanceled]="isMeetingCanceled"
+  *ngIf="
+    topic.topicState !== topicState._3 && topic.topicState !== topicState._5
+  "
+  [ngStyle]="{
+    direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr'
+  }"
+></app-add-comment>
+<div
+  class="timeline"
+  [ngStyle]="{
+    direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr'
+  }"
+>
+  <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+    <nz-timeline-item
+      [nzDot]="
+        item?.surveyId
+          ? votingIcon
+          : item?.commentType === commentType._1
+          ? commentIcon
+          : recommendIcon
+      "
+      *ngFor="let item of topicTimelineItems"
+    >
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="comment-item"
+        *ngIf="item?.commentId"
+      >
+        <app-comment-item [item]="item"></app-comment-item>
+      </div>
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="voting-item"
+        *ngIf="item?.surveyId"
+      >
+        <app-voting-item-topic
+          [item]="item"
+          [topicId]="topic.id"
+          [isCoordinator]="isCoordinator"
+          [isCreator]="isCreator"
+          [isMeetingClosed]="isMeetingClosed"
+        ></app-voting-item-topic>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>
+<ng-template #commentIcon>
+  <svg
+    class="comment-icon"
+    nz-tooltip
+    [nzTooltipTitle]="
+      translateService.currentLang == 'ar' ? 'تعليق' : 'Comment'
+    "
+  >
+    <use xlink:href="assets\images\sprite-2.svg#icon-commenting-o"></use>
+  </svg>
+</ng-template>
+<ng-template #votingIcon>
+  <svg
+    class="voting-icon"
+    nz-tooltip
+    [nzTooltipTitle]="translateService.currentLang == 'ar' ? 'تصويت' : 'Voting'"
+  >
+    <use xlink:href="assets\images\sprite-2.svg#icon-like"></use>
+  </svg>
+</ng-template>
+<ng-template #recommendIcon>
+  <svg
+    class="recommend-icon"
+    nz-tooltip
+    [nzTooltipTitle]="
+      translateService.currentLang == 'ar' ? 'توصية' : 'recommendation'
+    "
+  >
+    <use xlink:href="assets\images\sprite-2.svg#icon-paste"></use>
+  </svg>
+</ng-template>

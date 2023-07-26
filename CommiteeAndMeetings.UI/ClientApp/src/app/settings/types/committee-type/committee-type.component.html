@@ -1,0 +1,44 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{'CommitteeTypeData' | translate}}</p>
+    <div class="quick-info">
+      <div class="user-image">
+        <img [src]="tempImageData ? tempImageData : (committeeType.image ? 'data:image/png;base64,'+committeeType.image:'../../../../assets/images/unknown.png')"/>
+        <span class="custom-upload-input">
+          {{'ChangePic' | translate}}
+          <input #imageFile (change)="readFile($event,imageFile.files)" type="file" accept=".jpg,.jpeg,.png,.gif">
+        </span>
+      </div>
+    </div>
+    <div class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'CommitteeTypeNameAr' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="committeeType.commiteeTypeNameAr">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'CommitteeTypeNameEn' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="committeeType.commiteeTypeNameEn">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <p class="text-right">
+        <button type="button" nz-button nzType="primary" *ngIf="!typeCreate" (click)="editCommitteeType()"
+          [disabled]="!committeeType.commiteeTypeNameEn || !committeeType.commiteeTypeNameAr">
+          {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" nz-button nzType="primary" *ngIf="typeCreate" (click)="insertCommitteeType()"
+          [disabled]="!committeeType.commiteeTypeNameEn || !committeeType.commiteeTypeNameAr">
+          {{'InsertCommitteeType' | translate}}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+@import "../../../../variables";
+.confirm-meetings {
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 16%);
+    padding: 10px;
+    background-color: #fff;
+    .search-results{
+        height: 327px;
+     }
+    .meetingBox-title{
+        border-bottom: 2px solid #EEEEEE;
+        h6,i {
+            color: $lochmara;
+        }
+        i{
+            font-size: 21px;
+        }
+        span{
+            color: #b3abab;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+    }
+    .confirmBox-details{
+        ul {
+            li {
+                list-style: none;
+                border-bottom: 2px dotted #EEEEEE;
+                .confirmBox-content{
+                    span{
+                        color: #b3abab;
+                        font-size: 14px;
+                    }
+                    p{
+                        font-size: 14px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
+.no-data {
+    p{
+        font-size: 16px;
+        font-weight: bold;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+}

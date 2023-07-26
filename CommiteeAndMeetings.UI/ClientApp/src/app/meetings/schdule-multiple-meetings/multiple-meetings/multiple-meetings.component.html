@@ -1,0 +1,28 @@
+<nz-tabset
+  [nzTabBarExtraContent]="!refId && extraTemplate"
+  [nzSize]="'large'"
+  nzType="card"
+>
+  <nz-tab [nzTitle]="'MeetingsInformation' | translate" *ngIf="!refId"
+    ><app-meeting-data [repeated]="true"></app-meeting-data>
+  </nz-tab>
+  <nz-tab *ngIf="refId" [nzTitle]="'MeetingsList' | translate"
+    ><app-meeting-list></app-meeting-list>
+  </nz-tab>
+</nz-tabset>
+<ng-template #extraTemplate>
+  <div class="buttons px-2">
+    <button
+      nz-button
+      nzType="primary"
+      nzShape="round"
+      [disabled]="!formValid"
+      (click)="saveForm()"
+    >
+      {{ "Save" | translate }}
+    </button>
+    <button class="mx-3" nz-button nzShape="round" [routerLink]="['/meetings']">
+      {{ "Cancel" | translate }}
+    </button>
+  </div>
+</ng-template>

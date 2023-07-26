@@ -1,0 +1,45 @@
+<div class="dashboard-header d-flex align-items-center">
+  <div class="dashboard-add-btn" *ngIf="permittedToAddTransaction">
+    <!---->
+    <button
+      nz-button
+      nzType="primary"
+      nzBlock
+      (click)="addNewTimeLineItem(actionTypes?.CreateTransaction)"
+    >
+      <i nz-icon nzType="plus" nzTheme="outline" style="color: #fff"></i>
+      <span class="mx-2"> {{ "AddNewTransAction" | translate }} </span>
+    </button>
+  </div>
+  <nz-divider
+    [nzText]="text"
+    nzType="vertical"
+    *ngIf="permittedToAddTransaction"
+  >
+    <ng-template #text>
+      <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+    </ng-template>
+  </nz-divider>
+   <div class="dashboard-search">
+        <nz-input-group [nzPrefix]="iconSearch">
+          <input nz-input type="search"   [(ngModel)]="searchword" (keydown.enter)="searchThis()" [placeholder]="'SearchInTransaction' | translate" />
+          <i nz-icon nzType="close" [hidden]="!searchword" (click)="cancelSearch()" class="clearIcon" nzTheme="outline"></i>
+        </nz-input-group>
+        <ng-template #iconSearch>
+          <i nz-icon nzType="search" class="mx-1" style="color: #c1c2c1 !important;"></i>
+        </ng-template>
+  </div>
+  <nz-divider
+  [nzText]="text"
+  nzType="vertical"
+  *ngIf="permittedToAddTransaction"
+>
+  <ng-template #text>
+    <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+  </ng-template>
+</nz-divider>
+  <div class="mx-2">
+    <a class="btn-reload" (click)="refresh()"
+      ><i class="fa fa-sync-alt"></i
+    ></a>
+  </div>

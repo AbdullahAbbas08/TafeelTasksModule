@@ -1,0 +1,24 @@
+<ng-container *ngIf="!isLoading && UserDetailsDTO.length > 0" >
+    
+      <div class="mt-3 d-flex justify-content-center align-items-center">
+        <span class="number mb-3">
+          {{UserDetailsDTO.length}}
+        </span>
+      </div>
+      
+      <div class="text-center">
+        {{'numberOfNoVoteMemebers'|translate}}
+      </div>
+      
+      <div class="mt-3">
+        <ol class="rounded-list" [class.ltr]="currentLang!=='ar'" >
+          <li *ngFor="let user of UserDetailsDTO"><span>{{currentLang==='ar' ?  user.fullNameAr:user.fullNameEn}}</span></li>					
+        </ol>
+      </div>
+   
+</ng-container>
+
+
+<div class="text-center mt-4" *ngIf="isLoading">
+  <nz-spin nzSimple [nzSize]="'large'" ></nz-spin>
+</div>

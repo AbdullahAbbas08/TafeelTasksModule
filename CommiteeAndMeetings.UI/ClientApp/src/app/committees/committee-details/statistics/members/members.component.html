@@ -1,0 +1,62 @@
+<div class="div-wrapper">
+    <h6>
+        <i nz-icon nzType="usergroup-add" nzTheme="outline"></i>
+        <span class="mx-2">{{'CommitteeMembers'|translate}}</span>
+        <span class="mx-2 users-number" >+{{count}}</span>
+    </h6>
+    <div class="committe-members mt-4 mb-3">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <div class="d-flex align-items-center">
+                    <img
+                    nz-image
+                    [nzSrc]="
+                    (committeDetails?.currenHeadUnit?.profileImage ? 'data:image/png;base64,'+committeDetails?.currenHeadUnit?.profileImage : '../../../assets/images/unknown.png')
+                    "
+                  />
+                    <div class="member-name mr-3">
+                       <h6 class="font-weight-bold mb-0">{{"currentHeadUnit" | translate}}</h6>
+                        <p class="mb-0 font-weight-bold" nz-tooltip [nzTooltipTitle]="headName">{{this.translate.currentLang === 'ar' ? (headUnit.fullNameAr | maxLenth:15) : (headUnit.fullNameEn | maxLenth:13)}}</p>
+                        <ng-template #headName>
+                            <span>{{this.translate.currentLang === 'ar' ? headUnit.fullNameAr : headUnit.fullNameEn}}</span>
+                          </ng-template>  
+                    </div>
+                </div>
+          
+            </div>
+             <div class="col-md-6 col-12" *ngIf="delegatedUser.length">
+                <div class="d-flex align-items-center">
+                    <div class="member-name mx-2">
+                        <h6 class="font-weight-bold mb-0">
+                            <span>{{"delegatefromhead" | translate}}</span>
+                            <span class="mx-2 users-number delegated-number" nz-tooltip [nzTooltipTitle]="delegatedUsers" >{{delegatedUser.length}}</span>
+                         </h6>
+                         <ng-template #delegatedUsers>
+                            <ng-container *ngFor="let delegated of delegatedUser">
+                                <p style="font-size: 11px;margin-bottom: 0px;">{{delegated?.name}}</p>
+                            </ng-container>
+                          </ng-template> 
+                        <ng-container *ngFor="let delegated of delegatedUser | slice:0:1">
+                            <p class="font-weight-bold mb-0" nz-tooltip [nzTooltipTitle]="userName">{{delegated?.name | maxLenth:15}}</p>
+                            <ng-template #userName>
+                                <ng-container>
+                                    <p class="mb-0">{{delegated?.name}}</p>
+                                </ng-container>
+                              </ng-template> 
+                        </ng-container>
+                        
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="all-members mt-1">
+        <p class="font-weight-bold">{{'CommitteeMembers'|translate}}</p>
+        <ng-container  *ngFor="let users of AllUsers">
+            <img  nz-tooltip [nzTooltipTitle]="userName" [src]="users.user?.profileImage ? 'data:image/png;base64,'+users.user?.profileImage:'../../../../../assets/images/unknown.png'" class="img-fluid ml-2 mb-2"/>
+            <ng-template #userName>
+                <span>{{this.translate.currentLang === 'ar' ? users.user?.fullNameAr : users.user?.fullNameEn}}</span>
+              </ng-template> 
+        </ng-container>
+    </div>
+</div>

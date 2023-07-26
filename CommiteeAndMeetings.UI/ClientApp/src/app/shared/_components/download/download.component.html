@@ -1,0 +1,20 @@
+<div class="backdrop">
+  <div class="file-box">
+    <img [src]="fileIcon" />
+    <h3 class="info">{{ "CanNotDisplay" | translate }}</h3>
+  </div>
+
+  <h3 class="title">{{ file?.attachmentName }}</h3>
+
+  <div class="action">
+    <a (click)="onClose()">&times;</a>
+  </div>
+
+  <div class="download-btn">
+    <p>
+      <a class="btn-st btn-st--bl btn-st--white" (click)="downloadFile()"
+        >{{ "Download" | translate }}
+      </a>
+    </p>
+  </div>
+</div>

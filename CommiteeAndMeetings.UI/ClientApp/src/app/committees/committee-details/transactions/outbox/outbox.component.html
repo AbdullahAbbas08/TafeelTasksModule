@@ -1,0 +1,14 @@
+<div class="transaction-snippets">
+
+  
+    <div class=""
+   *ngIf="!loadingData" infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()"
+   >
+       <div *ngIf="!loadingData">
+           <app-transaction-attachment-item [items]="outComingContainer"></app-transaction-attachment-item>
+       </div> 
+   </div>
+   </div>

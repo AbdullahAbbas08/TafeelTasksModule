@@ -1,0 +1,140 @@
+@import "../../../../../../../variables";
+
+.item-container {
+  background-color: $persianGreen-white;
+  border-radius: 0.6rem;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 20px;
+  margin-bottom: 20px;
+  overflow-x: scroll;
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+
+    .user-data {
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        img {
+          height: 2.2rem;
+          width: 2.2rem;
+          border-radius: 50%;
+          vertical-align: middle;
+          object-fit: cover;
+          margin: 0 0.3rem;
+        }
+        .active-state {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $persianGreen;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs14;
+          color: $persianBlue;
+        }
+      }
+    }
+
+    .item-control-options {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .item-content {
+    padding: 0.5rem 0;
+  }
+  .item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .item-button {
+      button {
+        border: 1px solid $persianBlue;
+        border-radius: 5px;
+        color: $persianBlue;
+        font-weight: bold;
+        z-index: 10;
+      }
+    }
+
+    .item-comment {
+      flex: 1;
+      margin: 0 10px;
+      .ant-input-affix-wrapper {
+        width: 98%;
+        background-color: $wildSand;
+        border-radius: 5px;
+        input {
+          background-color: $wildSand;
+        }
+      }
+      .user-comment-img {
+        width: 30px;
+        height: 30px;
+        margin: 0 5px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .comment-icon {
+      .anticon {
+        color: $mediumShaft;
+        padding: 0;
+        font-size: $fs20;
+      }
+    }
+  }
+
+  .voting-wrapper {
+    width: 95%;
+    margin-bottom: 0.5rem;
+  }
+  nz-radio-group {
+    width: 100%;
+  }
+
+  .option {
+    height: 32px;
+    background-image: linear-gradient(to right, #dcfafa, #cdf7f7);
+    margin: 3px 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    .vote-users {
+      margin: 0 0.5rem;
+    }
+  }
+
+  nz-checkbox-wrapper {
+    width: 100%;
+  }
+}
+
+.item-subject {
+  font-size: $fs14;
+  padding: 0.3rem 0.2rem;
+  color: $black;
+  font-weight: 700;
+}
+
+::ng-deep .ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,470 @@
+<section class="mb-5" *ngIf="user || userCreate">
+    <div class="settings-add-edit user-control">
+        <div class="box-shadow expanded bkg-gray">
+            <p class="box-title">{{'UserData' | translate}}</p>
+            <div class="quick-info">
+                <div class="user-image">
+                    <img [src]="tempImageData ? tempImageData : (user?.profileImage ? 'data:image/png;base64,'+user?.profileImage:'../../../../assets/images/unknown.png')"
+                        [alt]="user?.fullNameEn">
+                    <span class="custom-upload-input">
+                        {{'ChangePic' | translate}}
+                        <input #imageFile type="file"
+                            (change)="userCreate ? readFile($event, imageFile.files) : changeProfileImage(imageFile.files)"
+                            accept=".jpg,.jpeg,.png,.gif" />
+                    </span>
+                </div>
+                <div class="user-data">
+                    <p class="username">{{user?.fullNameEn}}</p>
+                </div>
+            </div>
+            <div class="custom-form">
+                <div class="form-box">
+                    <form (ngSubmit)="userForm.valid && isValidConfirmSignaturePassword ? submitForm() : invalidForm()"
+                        #userForm="ngForm">
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label [class.required]="!user?.userName">{{'UserName ' | translate}}</label>
+                                    <input type="text" class="form-control" name="username" [(ngModel)]="user.userName"
+                                        required maxlength="50" app-min-length="3" app-lang="en" #username="ngModel"
+                                        autocomplete="off">
+                                    <span class="text-danger mt-2">&nbsp;{{username?.errors?.message |
+                                        translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label [class.required]="!user?.email">{{'Email' | translate}}</label>
+                                    <input type="email" class="form-control" name="email" [(ngModel)]="user.email"
+                                        required maxlength="100" app-email app-min-length="6" #email="ngModel">
+                                    <span class="text-danger mt-2">&nbsp;{{email?.errors?.message | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label [class.required]="!user?.jobTitleId">{{'JobTitlee' | translate}}</label>
+                                <nz-select nzAllowClear required name="jobTitle" [(ngModel)]="user.jobTitleId"
+                                    [ngClass]="{ rtl: currentLang === 'ar' }" style="width:100%">
+                                    <ng-container *ngFor="let job of _jobTitles">
+                                        <nz-option [nzValue]="job?.id" [nzLabel]="job?.text"></nz-option>
+                                    </ng-container>
+                                </nz-select>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>{{'EmployeeNumber' | translate}}</label>
+                                    <input type="text" class="form-control" name="employeeNumber"
+                                        [(ngModel)]="user.employeeNumber" maxlength="50" app-number>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label [class.required]="!user?.fullNameAr">{{'FullNameAr' | translate}}</label>
+                                    <input type="text" class="form-control" name="fullNameAr"
+                                        [(ngModel)]="user.fullNameAr" app-lang="ar" required maxlength="100" app-min-length="3"
+                                        #fullNameAr="ngModel">
+                                    <span class="text-danger mt-2">&nbsp;{{fullNameAr?.errors?.message |
+                                        translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label [class.required]="!user?.fullNameEn">{{'FullNameEn' | translate}}</label>
+                                    <input type="text" class="form-control" name="fullNameEn"
+                                        [(ngModel)]="user.fullNameEn" app-lang="en" required maxlength="100" app-min-length="3"
+                                        #fullNameEn="ngModel">
+                                    <span class="text-danger mt-2">&nbsp;{{fullNameEn?.errors?.message |
+                                        translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>{{'FullNameFn' | translate}}</label>
+                                    <input type="text" class="form-control" name="fullNameFn"
+                                        [(ngModel)]="user.fullNameFn" app-lang="fn" maxlength="100" app-min-length="3"
+                                        #fullNameFn="ngModel">
+                                    <span class="text-danger mt-2">&nbsp;{{fullNameFn?.errors?.message |
+                                        translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label [class.required]="!user?.genderId">{{'gender' | translate}}</label>
+                                <nz-select nzAllowClear name="genderId" [(ngModel)]="user.genderId"
+                                    [ngClass]="{ rtl: currentLang === 'ar' }" style="width:100%" required>
+                                    <ng-container *ngFor="let gender of _genders">
+                                        <nz-option [nzValue]="gender?.id" [nzLabel]="gender?.text"></nz-option>
+                                    </ng-container>
+                                </nz-select>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label [class.required]="!user?.nationalityId">{{'Nationality' | translate}}</label>
+                                <nz-select nzAllowClear name="nationalityId" [(ngModel)]="user.nationalityId"
+                                    [ngClass]="{ rtl: currentLang === 'ar' }" style="width:100%" required>
+                                    <ng-container *ngFor="let nationality of _nationalities">
+                                        <nz-option [nzValue]="nationality?.id" [nzLabel]="nationality?.text">
+                                        </nz-option>
+                                    </ng-container>
+                                </nz-select>
+                            </div>
+                            <ng-container *ngIf="userCreate">
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label [class.required]="!user?.password">{{'Password' | translate}}</label>
+                                        <input type="password" PasswordCriteria class="form-control"
+                                            [(ngModel)]="password.newPassword" name="passwordd"
+                                            (PasswordFlag)="PasswordFlag($event)" required maxlength="50" minlength="8"
+                                            #npassword="ngModel"
+                                            pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$"
+                                            [disabled]="withoutPassword" autocomplete="off">
+                                    </div>
+                                    <span class="text-danger" *ngIf="npassword.touched && npassword.invalid">
+                                        <span *ngIf="npassword?.errors?.minlength">&nbsp;{{passwordValidationMessage |
+                                            translate}}</span>
+                                    </span>
+                                    <span class="text-danger"
+                                        *ngIf="!passwordMatch && npassword.touched && !npassword?.errors?.minlength && !npassword.errors?.pattern">&nbsp;{{'pleaseentervalidpassword'
+                                        | translate}}</span>
+                                    <span class="text-danger"
+                                        *ngIf="npassword.touched && npassword?.errors?.pattern && password.newPassword">&nbsp;{{'shouldIncludPassValid'
+                                        | translate}}</span>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <label [class.required]="!confirmPassword">{{'ConfirmPassword' |
+                                            translate}}</label>
+                                        <span class="text-danger"
+                                            *ngIf="npConfirmedPass?.touched && (password.newPassword !== password.confirmPassword)">&nbsp;{{'PasswordDoesNotMatch'
+                                            | translate}}</span>
+                                        <input type="password" class="form-control" name="confirmPassword"
+                                            [(ngModel)]="password.confirmPassword" #npConfirmedPass="ngModel" required
+                                            maxlength="50" minlength="8" [disabled]="withoutPassword"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <label nz-checkbox (change)="disablePassword(user.fromActiveDirectory)"
+                                        name="fromActiveDirectory" [(ngModel)]="user.fromActiveDirectory"
+                                        style="margin-top: 40px;">{{'withoutPassword' | translate}}</label>
+                                    <label></label>
+                                </div> 
+                                <div class="col-md-4 col-12 mt-4">
+                                    <div class="form-group">
+                                        <label [class.required]="!user?.signaturePassword">{{'SignaturePassword' |
+                                            translate}}</label>
+                                        <span class="text-danger">&nbsp;{{signaturePassword?.errors?.message |
+                                            translate}}</span>
+                                        <input type="password" class="form-control" [(ngModel)]="user.signaturePassword"
+                                            name="signaturePassword" (keyup)="checkConfirmPassword(2)" required
+                                            maxlength="50" app-min-length="6" #signaturePassword="ngModel"
+                                            [disabled]="preventEditUsersDetails" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-12 mt-4">
+                                    <div class="form-group">
+                                        <label [class.required]="!confirmPassword">{{'ConfirmSignaturePassword' |
+                                            translate}}</label>
+                                        <span class="text-danger">&nbsp;{{confirmSignaturePasswordError |
+                                            translate}}</span>
+                                        <input type="password" class="form-control" name="confirmSignaturePassword"
+                                            [(ngModel)]="confirmSignaturePassword" (keyup)="checkConfirmPassword(2)"
+                                            required maxlength="50" [disabled]="preventEditUsersDetails"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="col-md-4 col-12 mt-4">
+                                <div class="form-group">
+                                    <label>{{'SSN' | translate}}</label>
+                                    <input type="text" class="form-control" name="ssn" [(ngModel)]="user.ssn"
+                                        maxlength="50" app-min-length="5" app-number #ssn="ngModel">
+                                    <span class="text-danger">{{ssn?.errors?.message}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12 mt-4">
+                                <div class="form-group">
+                                    <label>{{'IqamaNumber' | translate}}</label>
+                                    <input type="text" class="form-control" name="iqamaNumber"
+                                        [(ngModel)]="user.iqamaNumber" maxlength="50" app-min-length="5" app-number
+                                        #iqamaNumber="ngModel">
+                                    <span class="text-danger">{{iqamaNumber?.errors?.message}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12 mt-4">
+                                <div class="form-group">
+                                    <label>{{'Mobile' | translate}}</label>
+                                    <input type="text" class="form-control" name="mobile" [(ngModel)]="user.mobile"
+                                        #mobile="ngModel">
+                                    <span class="text-danger">&nbsp;{{mobile?.errors?.message | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12 mt-4">
+                                <div class="form-group">
+                                    <label>{{'WorkPhone' | translate}}</label>
+                                    <input type="text" class="form-control" name="workPhoneNumber"
+                                        [(ngModel)]="user.workPhoneNumber" #workPhone="ngModel"
+                                        [disabled]="preventEditUsersDetails" autocomplete="off">
+                                    <span class="text-danger">&nbsp;{{workPhone?.errors?.message | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <label [class.required]="!user?.defaultOrganizationId">{{'defaultOrganizationAr' |
+                                    translate}}</label>
+                                <nz-select nzAllowClear [nzLoading]="isLoading" name="defaultOrganizationId"
+                                    [(ngModel)]="user.defaultOrganizationId" [ngClass]="{ rtl: currentLang === 'ar' }"
+                                    style="width:100%" (nzOnSearch)="onSearch(lookupTypes.SYSTEMORG, $event)"
+                                    nzShowSearch nzServerSearch required>
+                                    <ng-container *ngFor="let org of fromOrganizationLookup">
+                                        <nz-option *ngIf="!isLoading" [nzValue]="org?.id" [nzLabel]="org?.text">
+                                        </nz-option>
+                                    </ng-container>
+                                </nz-select>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label>{{'Address' | translate}}</label>
+                                    <span class="text-danger">{{address?.errors?.message}}</span>
+                                    <input type="text" class="form-control" name="address" [(ngModel)]="user.address"
+                                        app-min-length="5" #address="ngModel">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label>{{'faxUserId' | translate}}</label>
+                                    <span class="text-danger">{{faxUserId?.errors?.message}}</span>
+                                    <input type="text" class="form-control" name="faxUserId"
+                                        [(ngModel)]="user.faxUserId" app-min-length="3" #faxUserId="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row mt-4">
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isIndividual"
+                                    [(ngModel)]="user.isIndividual">{{'OwnerOfTransaction' | translate}}</label>
+                            </div> 
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isCorrespondent"
+                                    [(ngModel)]="user.isCorrespondent">{{'IsCorrespondent' | translate}}</label>
+                            </div> 
+                           <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isCorrespondentForAllOrganizations"
+                                    [(ngModel)]="user.isCorrespondentForAllOrganizations">{{'CorrespondentForAllOrganizations'
+                                    | translate}}</label>
+                            </div> 
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="notificationBySMS"
+                                    [(ngModel)]="user.notificationBySMS">{{'MobileAlerts' | translate}}</label>
+                            </div>
+                        </div> -->
+                        <div class="row mt-3">
+                            <!-- <div class="col-md-3 col-12">
+                                <label nz-checkbox name="notificationByMail"
+                                    [(ngModel)]="user.notificationByMail">{{'EmailAlerts' | translate}}</label>
+                            </div> -->
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="enabled" [(ngModel)]="user.enabled">{{'IsActive' |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isLocked" [(ngModel)]="user.isLocked">{{'isLocked' |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="externalUser" [(ngModel)]="user.externalUser">{{'externalUser'
+                                    |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="hasFactorAuth"
+                                    [(ngModel)]="user.hasFactorAuth">{{'hasFactorAuth' |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="auditUser" [(ngModel)]="user.auditUser">{{'hasAccessToAudit' |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isMobileUser"
+                                    [(ngModel)]="user.isMobileUser">{{'hasAccessToMobile'
+                                    | translate}}</label>
+                            </div>
+                            <!-- <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isAdmin" [(ngModel)]="user.isAdmin">{{'isAdmin' |
+                                    translate}}</label>
+                            </div> -->
+                            <!-- <div class="col-md-3 col-12">
+                                <label nz-checkbox name="isGeneral"
+                                    [(ngModel)]="user.isGeneral">{{'CanDelegateToAnyOrgsOrUsers' | translate}}</label>
+                            </div> -->
+                        </div>
+                        <!-- <div class="row mt-3">
+   
+                             <div class="col-md-3 col-12">
+                                <label nz-checkbox name="hasFactorAuth"
+                                    [(ngModel)]="user.hasFactorAuth">{{'hasFactorAuth' |
+                                    translate}}</label>
+                            </div> 
+                             <div class="col-md-3 col-12">
+                                <label nz-checkbox name="hasSignatureFactorAuth"
+                                    [(ngModel)]="user.hasSignatureFactorAuth">{{'HasSignatureFactorAuth'
+                                    |translate}}</label>
+                            </div> 
+        
+                        </div> -->
+                        <!-- <div class="row mt-3 mb-3">
+                             <div class="col-md-3 col-12">
+                                <label nz-checkbox name="auditUser" [(ngModel)]="user.auditUser">{{'hasAccessToAudit' |
+                                    translate}}</label>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label nz-checkbox name="mailFromHangFire"
+                                    [(ngModel)]="user.mailFromHangFire">{{'receiveEmailByHangfire' |translate}}</label>
+                            </div> 
+                        </div> -->
+                        <button
+                            [disabled]="userForm.invalid || !isValidConfirmSignaturePassword || (!passwordMatch && !withoutPassword) || ((password.newPassword !== password.confirmPassword) && !withoutPassword)"
+                            class="create-new mt-3" nz-button>{{userCreate
+                            ? ('InsertUser' | translate) : ('SaveChanges' | translate)}}</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="userDetails" *ngIf="!userCreate">
+        <div class="userDetails-head d-flex align-items-center justify-content-between"
+            (click)="isCollapsed = !isCollapsed;getUserRoles()" [attr.aria-expanded]="!isCollapsed"
+            aria-controls="collapseExample">
+            <p class="mb-0 mr-2 font-weight-bold">
+                {{'RolesAndPermissions' | translate}}
+            </p>
+            <i nz-icon nzType="caret-up" *ngIf="isCollapsed" nzTheme="outline"></i>
+            <i nz-icon nzType="caret-down" *ngIf="!isCollapsed" nzTheme="outline"></i>
+        </div>
+        <div class="" [(ngbCollapse)]="!isCollapsed">
+            <div class="rolesAndpermissions mt-4">
+                <nz-tabset [(nzSelectedIndex)]="selectedIndex">
+                    <nz-tab nzTitle="{{'Roles' | translate}}">
+                        <div class="all-roles">
+                            <div class="row" *ngIf="userRoles?.userRoles.length">
+                                <div class="col-lg-6 col-12" *ngFor="let role of userRoles.userRoles; let i = index">
+                                    <div class="all-roles-container" [ngClass]="{'pointer-events-none' : !role.activeUserRoleDate && !role.isActive, 'clr-ccc' : !role.activeUserRoleDate && !role.isActive}" >
+                                        <div class="roles-container-head text-center" (click)="loadRoles(role)">
+                                            <h6 class="font-weight-bold mb-2">{{role.roleName}}</h6>
+                                            <p class="mb-2">{{role.organizationName}}</p>
+                                            <p class="mb-2">{{'createdBy' | translate}} : {{role.createdByUser}}</p>
+                                            <i class="fa fa-chevron-down" style="margin-top:5px" *ngIf="role.collapse==false"
+                                            [hidden]="role['load']"></i>
+                                          <i class="fa fa-chevron-up" style="margin-top:5px" *ngIf="role.collapse==true"></i>
+                                          <i class="fa fa-spinner fa-spin" style="font-size:24px" *ngIf="role['load']"></i>
+                                        </div>
+                                            <div class="roles-permissions-container" *ngIf="role.collapse">
+                                               <perfect-scrollbar>
+                                                <div class="permission-categories">
+                                                    <div class="permission-category mt-2 mb-1"
+                                                    *ngFor="let permissionCategory of role.permissionCategories">
+                                                        <div class="permission-category-head">
+                                                            <span
+                                                                class="permission-category-name">{{permissionCategory?.permissionCategoryName}}</span>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-12 mb-2 mt-1"
+                                                                *ngFor="let permission of permissionCategory.userRolePermissions">
+                                                                 <div class="d-flex justify-content-between">
+                                                                    <span>{{permission?.permissionName}}</span>
+                                                                    <div class="custom-toggle"
+                                                                    [class.normal]="permission.cases.default_case==2 &&permission.cases.new_case==null"
+                                                                    [class.semi]="(permission.cases.default_case==1&&permission.cases.new_case==null) ||(permission.cases.default_case==2 &&permission.cases.new_case==null)"
+                                                                    [class.checked]="permission.cases.new_case==3 ||(permission.cases.default_case==1 &&permission.cases.new_case==null)"
+                                                                    [class.unchecked]="permission.cases.new_case==4"
+                                                                    (click)="check(role,permission)">
+                                                                  </div>
+                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                               </perfect-scrollbar>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="!userRoles?.userRoles.length">
+                                <p style="font-size: 25px;">{{'noData' | translate}}</p>
+                            </div>
+                        </div>
+                    </nz-tab>
+                    <nz-tab nzTitle="{{'AssignRole' | translate}}" (nzClick)="getAllUserRoles()">
+                        <div class="mt-3">
+                            <form #AssignRoleForm="ngForm">
+                                <div class="row">
+                                    <div class="col-lg-3 col-12">
+                                        <label>{{'organization' | translate}}</label>
+                                        <nz-select nzAllowClear [nzLoading]="isLoading" name="defaultOrganizationId"
+                                            [(ngModel)]="OrganizationId" [ngClass]="{ rtl: currentLang === 'ar' }"
+                                            style="width:100%" (nzOnSearch)="onSearch(lookupTypes.SYSTEMORG, $event)"
+                                            nzShowSearch nzServerSearch required>
+                                            <ng-container *ngFor="let org of fromOrganizationLookup">
+                                                <nz-option *ngIf="!isLoading" [nzValue]="org?.id" [nzLabel]="org?.text">
+                                                </nz-option>
+                                            </ng-container>
+                                        </nz-select>
+                                    </div>
+                                    <div class="col-lg-3 col-12">
+                                        <label>{{'Role' | translate}}</label>
+                                        <nz-select nzAllowClear required [(ngModel)]="RoleId" name="roles"
+                                            [ngClass]="{ rtl: currentLang === 'ar' }" style="width:100%">
+                                            <ng-container *ngFor="let role of _roles">
+                                                <nz-option *ngIf="!isLoading" [nzValue]="role?.id"
+                                                    [nzLabel]="role?.text"></nz-option>
+                                            </ng-container>
+                                        </nz-select>
+                                    </div>
+                                    <div class="col-lg-3 date-input">
+                                        <hijri-gregorian-datepicker [ngClass]="{ rtl: currentLang === 'ar' }"
+                                            [label]="'selectedDateFrom' | translate" [minHijri]="minHijri"
+                                       
+                                            [placeHolder]="'From' | translate"
+                                            [GregLabel]="'Greg' | translate"
+                                            [hijriLabel]="'Hijri' | translate" [selectedDateType]="selectedDateType"
+                                            #datePicker (select)="dateFromSelected($event)"
+                                            (selectedDateChange)="dateFromSelected($event)" [readonly]="true"   [placeHolder]="">
+                                        </hijri-gregorian-datepicker>
+                                    </div>
+                                    <div class="col-lg-3 date-input">
+                                        <hijri-gregorian-datepicker [ngClass]="{ rtl: currentLang === 'ar' }"
+                                        [placeHolder]="'To' | translate"
+                                            [label]="'selectDateTo' | translate" [GregLabel]="'Greg' | translate"
+                                            [hijriLabel]="'Hijri' | translate" [selectedDateType]="selectedDateType"
+                                            #datePicker (select)="dateSelected($event)"
+                                            (selectedDateChange)="dateSelected($event)" [readonly]="true">
+                                        </hijri-gregorian-datepicker>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>{{'Notes' | translate}}</label>
+                                            <input class="form-control" [(ngModel)]="notes" name="notes">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <label style="font-size: 14px; margin-top:45px" nz-checkbox
+                                            name="roleOverridesUserPermissions"
+                                            [(ngModel)]="roleOverridesUserPermissions">{{'roleOverridesUserPermissions'
+                                            | translate}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <button class="create-new create-new-role" (click)="assignNewRole()" nz-button
+                                            [disabled]="AssignRoleForm.invalid">{{'AssignRole' | translate}}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </nz-tab>
+                </nz-tabset>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="mt-5" style="visibility: hidden;">
+    <p> for test</p>
+</div>

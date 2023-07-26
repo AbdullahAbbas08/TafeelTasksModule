@@ -1,0 +1,15 @@
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div *ngIf="!loadingData">
+    <div *ngFor="let document of documents">
+      <app-attachment-item
+        [item]="document"
+        [periodState]="validityPeriod.periodState"
+      ></app-attachment-item>
+    </div>
+  </div>
+</div>

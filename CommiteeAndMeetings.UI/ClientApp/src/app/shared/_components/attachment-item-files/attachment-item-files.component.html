@@ -1,0 +1,61 @@
+<div class="item-content">
+  <div *ngFor="let attachment of attachments; let j = index">
+    <ng-container>
+      <div class="saved-Attachment">
+        <div class="att-icon">
+          <i nz-icon nzType="paper-clip"></i>
+          <nz-tag [nzColor]="'#117a8b'" style="font-size: medium">{{
+            attachment?.attachmentName | maxLenth:20
+          }}</nz-tag>
+        </div>
+
+        <div class="scrollmenu" *ngIf="attachment?.pagesCount > 0">
+          <ul
+            class="
+              thumb-list
+              list-unstyled
+              m-0
+              p-0
+              mt-1
+              d-flex
+              align-items-center
+            "
+          >
+                <ng-container *ngFor="let item of imagesListList[j]; let i = index">
+                  <a (click)="openImageGallery(j, i)"
+                    ><li class="attachment-thumb">
+                      <img [src]="item.thumbUrl" /></li
+                  ></a>
+                </ng-container>
+                <ng-container *ngFor="let item of imagesListList[imagesListList.length]; let i = index">
+                  <a (click)="openImageGallery(j, i)"
+                    ><li class="attachment-thumb">
+                      <img [src]="item.thumbUrl" /></li
+                  ></a>
+                </ng-container>
+          </ul>
+        </div>
+        <div
+          class="download-thumb"
+          *ngIf="!attachment?.pagesCount || attachment?.pagesCount < 1"
+        >
+          <a (click)="openDownloadFile(j)"> <img [src]="iconLogos[j]" /></a>
+        </div>
+      </div>
+    </ng-container>
+    <app-dynamic-images
+      *ngIf="showGallery[j]"
+      [images]="imagesListList[j]"
+      [file]="attachment"
+      (close)="showGallery[j] = false"
+      [targetIndex]="targetIndex"
+    ></app-dynamic-images>
+
+    <app-download
+      *ngIf="showDownload[j]"
+      [file]="attachment"
+      (close)="showDownload[j] = false"
+      [fileIcon]="iconLogos[j]"
+    ></app-download>
+  </div>
+</div>

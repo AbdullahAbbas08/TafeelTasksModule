@@ -1,0 +1,134 @@
+@import "../../../../../variables";
+
+.item-container {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 25px;
+  margin-bottom: 20px;
+  transition: all 0.5s;
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+
+    .user-data {
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        img {
+          height: 2.2rem;
+          width: 2.2rem;
+          border-radius: 50%;
+          vertical-align: middle;
+          object-fit: cover;
+          margin: 0 0.3rem;
+        }
+        .active-state {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $persianGreen;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs14;
+          color: $dodgerBlue;
+        }
+        h6 {
+          color: $black;
+          font-size: $fs14;
+        }
+      }
+    }
+
+    .item-control-options {
+      display: flex;
+      align-items: center;
+      .att-date {
+        font-size: $fs14;
+        color: $dodgerBlue;
+      }
+    }
+  }
+
+  .item-content {
+    padding: 0.5rem 0;
+  }
+
+  .item-footer {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .item-button {
+      button {
+        border: 1px solid $dodgerBlue;
+        border-radius: 5px;
+        color: $dodgerBlue;
+        font-weight: bold;
+      }
+    }
+
+    .item-comment {
+      flex: 1;
+      margin: 0 10px;
+      .ant-input-affix-wrapper {
+        width: 98%;
+        background-color: $wildSand;
+        border-radius: 5px;
+        input {
+          background-color: $wildSand;
+        }
+      }
+      .user-comment-img {
+        width: 30px;
+        height: 30px;
+        margin: 0 5px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .comment-icon {
+      .anticon {
+        color: $mediumShaft;
+        padding: 0;
+        font-size: $fs20;
+      }
+    }
+  }
+
+  .file-data {
+    display: flex;
+    align-items: center;
+    margin: 0.4rem 0.4rem 0;
+    &__icon {
+      font-size: 2rem;
+      font-weight: 700;
+
+      display: inline-block;
+      background-image: linear-gradient(to right, $dodgerBlue, $doveGray);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+  .file-desc {
+    h5 {
+
+      font-size: $fs14;
+      color: $black;
+      font-weight: 700;
+    }
+  }
+}

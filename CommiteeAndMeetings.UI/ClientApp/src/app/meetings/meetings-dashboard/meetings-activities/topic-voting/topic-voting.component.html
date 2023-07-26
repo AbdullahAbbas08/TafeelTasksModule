@@ -1,0 +1,8 @@
+
+ <div *ngIf="topicVoting$ | async as topicVoting">
+    <!-- <div *ngIf="isMeetingClosed && checkmeetingClosed" class="meeting-state__closed d-flex justify-content-center mb-2">
+       <span> {{ "meetingClosed" | translate }}</span>
+      </div> -->
+    <app-voting-item-topic [item]="topicVoting"  [isCoordinator]="isCoordinator"
+    [isCreator]="isCreator" [isMeetingClosed]="isMeetingClosed" [byPassStartForActivities]="byPassStartForActivities"></app-voting-item-topic>
+</div> 

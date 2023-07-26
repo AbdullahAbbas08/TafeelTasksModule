@@ -1,0 +1,15 @@
+@import "./../../../../../variables";
+.current-date {
+  display: flex;
+  justify-content: space-between;
+  .box {
+    font-size: $fs14;
+    padding: 0.4rem 1.3rem;
+    width: 100%;
+  }
+
+  .date {
+    padding: 0.2rem 1.3rem;
+    font-size: $fs17;
+  }
+}

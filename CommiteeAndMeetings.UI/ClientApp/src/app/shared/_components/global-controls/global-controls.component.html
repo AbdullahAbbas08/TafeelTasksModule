@@ -1,0 +1,628 @@
+<div
+  class="dashboard-header d-flex align-items-center"
+  [ngClass]="showGlobalSearch && printIconFlag ? 'w-margin' : 'out-margin'"
+  [ngStyle]="themeService.primaryBackground"
+>
+  <ng-container *ngIf="!isForGeneralTasks">
+    <div *ngIf="permittedToAddAttachment">
+      <button
+        [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+        nz-button
+        nzBlock
+        nzType="text"
+        class="btn dashboard-btn"
+        (click)="addNewTimeLineItem(actionTypes?.CreateAttachment)"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+        <strong class="mx-1"> {{ "AddAttachment" | translate }} </strong>
+      </button>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical" *ngIf="permittedToAddTask">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <div *ngIf="permittedToAddTask">
+      <button
+        [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+        nz-button
+        nzBlock
+        nzType="text"
+        class="btn dashboard-btn"
+        (click)="addNewTimeLineItem(actionTypes?.CreateTask)"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <i nz-icon nzType="solution" nzTheme="outline"></i>
+        <strong class="mx-1"> {{ "CreateTask" | translate }} </strong>
+      </button>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical" *ngIf="permittedToAddVote">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <div *ngIf="permittedToAddVote">
+      <button
+        [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+        nz-button
+        nzBlock
+        nzType="text"
+        class="btn dashboard-btn"
+        (click)="addNewTimeLineItem(actionTypes?.CreateVote)"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <svg class="meet-icon">
+          <use xlink:href="assets\images\sprite-4.svg#icon-how_to_vote"></use>
+        </svg>
+        <strong class="mx-1"> {{ "CreateVoting" | translate }} </strong>
+      </button>
+    </div>
+    <!--permittedToAddTransaction && -->
+    <nz-divider
+      [nzText]="text"
+      nzType="vertical"
+      *ngIf="permittedToAddTransaction && enableTransaction"
+    >
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <!--permittedToAddTransaction && -->
+    <ng-container *ngIf="permittedToAddTransaction">
+      <div *ngIf="enableTransaction && permittedToNotHeadAndMember">
+        <button
+          [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+          nz-button
+          nzBlock
+          nzType="text"
+          class="btn dashboard-btn"
+          (click)="createTplModal(tplTitle, tplContent)"
+          [ngStyle]="themeService.primaryBackground"
+        >
+          <svg class="meet-icon">
+            <use xlink:href="assets\images\sprite-4.svg#icon-news-paper"></use>
+          </svg>
+          <strong class="mx-1"> {{ "CreateTransaction" | translate }} </strong>
+        </button>
+      </div>
+    </ng-container>
+    <nz-divider *ngIf="permittedToAddMeeting" [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <!-- Add Meeting -->
+    <div *ngIf="permittedToAddMeeting">
+      <button
+        [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+        nz-button
+        nzBlock
+        nzType="text"
+        class="btn dashboard-btn"
+        (click)="addNewMeeting()"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <svg class="meet-icon">
+          <use xlink:href="assets\images\sprite-3.svg#icon-calendar"></use>
+        </svg>
+
+        <strong class="mx-1">
+          {{ translate.currentLang == "ar" ? "إجتماع" : "Meeting" }}
+        </strong>
+      </button>
+    </div>
+    <nz-divider
+      *ngIf="permittedToCommitteMinutes"
+      [nzText]="text"
+      nzType="vertical"
+    >
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <div *ngIf="permittedToCommitteMinutes">
+      <button
+        [disabled]="validityPeriod?.periodState === 2 || !committeeActive"
+        nz-button
+        nzBlock
+        nzType="text"
+        class="btn dashboard-btn"
+        (click)="showCommitteMinutes()"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <span nz-icon nzType="printer" nzTheme="outline"></span>
+        <strong class="mx-1"> {{ "CommitteMinutes" | translate }} </strong>
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isForGeneralTasks">
+    <ng-container *appHasAuthUserViewPermission="['CreateGeneralTask']">
+      <!-- <div class="dashboard-btn" [ngStyle]="themeService.primaryBackground">
+        <strong class="mx-2"> {{ "CreateNew" | translate }} </strong>
+      </div>
+      <nz-divider [nzText]="text" nzType="vertical" *ngIf="permittedToAddTask">
+        <ng-template #text>
+          <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+        </ng-template>
+      </nz-divider> -->
+      <div>
+        <button
+          nz-button
+          nzBlock
+          nzType="text"
+          class="btn dashboard-btn"
+          (click)="addNewTimeLineItem(actionTypes?.CreateTask)"
+          [ngStyle]="themeService.primaryTextColor"
+        >
+          <!-- [ngStyle]="themeService.primaryBackground" -->
+          <i nz-icon nzType="solution" nzTheme="outline"></i>
+          <strong class="mx-1"> {{ "CreateTask" | translate }} </strong>
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
+  <div class="dashboard-controls">
+    <div class="mx-1 mt-1">
+      <!-- [ngStyle]="themeService.primaryBackground" -->
+      <a
+        class="btn-reload"
+        (click)="refresh()"
+        [ngStyle]="themeService.primaryTextColor"
+        ><i class="fa fa-sync-alt"></i
+      ></a>
+    </div>
+    <div class="" *ngIf="printIconFlag">
+      <a
+        class="icon-print"
+        (click)="print()"
+        nz-tooltip
+        [nzTooltipTitle]="
+          this.translate.currentLang === 'ar' ? 'طباعة' : 'print'
+        "
+        [ngStyle]="themeService.primaryTextColor"
+      >
+        <!-- [ngStyle]="themeService.primaryBackground" -->
+        <i class="fa fa-print"></i>
+      </a>
+    </div>
+    <div class="mx-1">
+      <a
+        ><i
+          nz-icon
+          nzType="search"
+          (click)="
+            showGlobalSearch = !showGlobalSearch; filterWithCommitteAndMeeting()
+          "
+          [ngStyle]="themeService.primaryTextColor"
+        ></i
+      ></a>
+    </div>
+    <ng-container>
+      <div
+        class="mx-1"
+        *ngIf="
+          !isForGeneralTasks &&
+          validityPeriod?.periodState !== 2 &&
+          committeeActive &&
+          (permittedToArchive || permittedToExtendCommittee)
+        "
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <i
+          class="control-icon"
+          nz-icon
+          nzType="ellipsis"
+          nz-popover
+          [nzPopoverContent]="controlTmp"
+          nzPopoverPlacement="bottom"
+          [(nzPopoverVisible)]="visible"
+          [ngStyle]="themeService.primaryBackground"
+        ></i>
+        <ng-template #controlTmp>
+          <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+            <li
+              (click)="onArchivePeriod(); visible = false"
+              *ngIf="permittedToArchive"
+            >
+              {{ "ArchivePeriod" | translate }}
+            </li>
+            <li
+              (click)="onExtendCommittee()"
+              *ngIf="
+                permittedToExtendCommittee &&
+                validityPeriod?.validityPeriodTo?.getFullYear() > 1900
+              "
+            >
+              {{ "ExtendCommitte" | translate }}
+            </li>
+          </ul>
+        </ng-template>
+      </div>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="showGlobalSearch">
+    <ng-container *ngTemplateOutlet="globalSearchTpl"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #globalSearchTpl>
+  <div class="global-search">
+    <div class="search-bar">
+      <div class="row">
+        <div class="col-9">
+          <div class="row">
+            <div
+              class="col-4 w-h"
+              [ngClass]="printIconFlag ? 'col-3' : 'col-9'"
+            >
+              <nz-input-group [nzPrefix]="iconSearch">
+                <!--(keydown.enter)="searchThis()"-->
+                <input
+                  nz-input
+                  type="text"
+                  [formControl]="dashboardSearch"
+                  [(ngModel)]="searchword"
+                  [placeholder]="'Search' | translate"
+                />
+              </nz-input-group>
+            </div>
+            <div class="col-4 w-h" *ngIf="printIconFlag">
+              <nz-form-item *ngIf="committeeId">
+                <nz-form-control>
+                  <nz-select
+                    nzAllowClear
+                    [(ngModel)]="selectedType"
+                    [nzPlaceHolder]="'searchbytype' | translate"
+                  >
+                    <nz-option
+                      *ngIf="permittedToAllTasks"
+                      [nzValue]="1"
+                      nzLabel="{{ 'all' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *ngIf="permittedToLateTasks"
+                      [nzValue]="2"
+                      nzLabel="{{ 'late' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *ngIf="permittedToClosedTasks"
+                      [nzValue]="3"
+                      nzLabel="{{ 'closedlate' | translate }}"
+                    >
+                    </nz-option>
+                    <nz-option
+                      *ngIf="permittedToAllTasks"
+                      [nzValue]="4"
+                      nzLabel="{{ 'sendlate' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *ngIf="permittedToAllTasks"
+                      [nzValue]="5"
+                      nzLabel="{{ 'sent' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *ngIf="permittedToClosedTasks"
+                      [nzValue]="6"
+                      nzLabel="{{ 'closed' | translate }}"
+                    >
+                    </nz-option>
+                    <nz-option
+                      [nzValue]="7"
+                      nzLabel="{{ 'Underprocedure' | translate }}"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item *ngIf="!committeeId">
+                <nz-form-control>
+                  <nz-select
+                    nzAllowClear
+                    [(ngModel)]="selectedType"
+                    [nzPlaceHolder]="'searchbytype' | translate"
+                  >
+                    <nz-option
+                      *appHasAuthUserViewPermission="['allTasks']"
+                      [nzValue]="1"
+                      nzLabel="{{ 'all' | translate }}"
+                    >
+                    </nz-option>
+                    <nz-option
+                      *appHasAuthUserViewPermission="['lateTasks']"
+                      [nzValue]="2"
+                      nzLabel="{{ 'late' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *appHasAuthUserViewPermission="['closedTasks']"
+                      [nzValue]="3"
+                      nzLabel="{{ 'closedlate' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *appHasAuthUserViewPermission="['allTasks']"
+                      [nzValue]="4"
+                      nzLabel="{{ 'sendlate' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *appHasAuthUserViewPermission="['allTasks']"
+                      [nzValue]="5"
+                      nzLabel="{{ 'sent' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      *appHasAuthUserViewPermission="['closedTasks']"
+                      [nzValue]="6"
+                      nzLabel="{{ 'closed' | translate }}"
+                    ></nz-option>
+                    <nz-option
+                      [nzValue]="7"
+                      nzLabel="{{ 'Underprocedure' | translate }}"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-4 w-h" *ngIf="printIconFlag">
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-select
+                    nzAllowClear
+                    [nzPlaceHolder]="'searchByclass' | translate"
+                    [(ngModel)]="selectedClassification"
+                  >
+                    <ng-container *ngFor="let cat of tasksCategory">
+                      <nz-option
+                        *ngIf="!isLoading"
+                        nzValue="{{ cat.comiteeTaskCategoryId }}"
+                        nzLabel="{{ cat.categoryNameAr }}"
+                      ></nz-option>
+                    </ng-container>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 w-h" *ngIf="printIconFlag">
+              <nz-form-item>
+                <nz-form-control [nzErrorTip]="">
+                  <nz-select
+                    [ngClass]="{ rtl: currentLang === 'ar' }"
+                    nzPlaceHolder="{{ 'TaskMainUser' | translate }}"
+                    nzAllowClear
+                    nzShowSearch
+                    nzServerSearch
+                    [(ngModel)]="selectedMainUser"
+                    (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+                  >
+                    <ng-container *ngFor="let opt of users">
+                      <nz-option
+                        *ngIf="!isLoading"
+                        [nzValue]="committeeId ? opt?.userId : opt?.id"
+                        [nzLabel]="
+                          committeeId
+                            ? currentLang === 'ar'
+                              ? opt?.user?.fullNameAr
+                              : opt?.user?.fullNameEn
+                            : opt?.name
+                        "
+                      ></nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon nzType="loading" class="loading-icon"></i>
+                      {{ "LoadingData" | translate }}
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 w-h" *ngIf="printIconFlag">
+              <nz-form-item>
+                <nz-form-control [nzErrorTip]="">
+                  <nz-select
+                    [ngClass]="{ rtl: currentLang === 'ar' }"
+                    [(ngModel)]="selectedAssistantUser"
+                    nzPlaceHolder="{{ 'AssistantUsers' | translate }}"
+                    nzAllowClear
+                    nzShowSearch
+                    nzServerSearch
+                    (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+                  >
+                    <ng-container *ngFor="let opt of users">
+                      <nz-option
+                        *ngIf="!isLoading"
+                        [nzValue]="committeeId ? opt?.userId : opt?.id"
+                        [nzLabel]="
+                          committeeId
+                            ? currentLang === 'ar'
+                              ? opt?.user?.fullNameAr
+                              : opt?.user?.fullNameEn
+                            : opt?.name
+                        "
+                      ></nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon nzType="loading" class="loading-icon"></i>
+                      {{ "LoadingData" | translate }}
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 w-h" *ngIf="printIconFlag && !committeeId">
+              <nz-form-item>
+                <nz-form-control [nzErrorTip]="">
+                  <nz-select
+                    [ngClass]="{ rtl: currentLang === 'ar' }"
+                    [(ngModel)]="selectedCommitte"
+                    nzPlaceHolder="{{ 'Committees' | translate }}"
+                    nzAllowClear
+                    nzShowSearch
+                    nzServerSearch
+                    (nzOnSearch)="onSearch(lookupTypes.COMMITTEE, $event)"
+                  >
+                    <ng-container *ngFor="let opt of allCommittees">
+                      <nz-option
+                        *ngIf="!isLoading"
+                        [nzValue]="opt?.commiteeId"
+                        [nzLabel]="opt?.name"
+                      ></nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon nzType="loading" class="loading-icon"></i>
+                      {{ "LoadingData" | translate }}
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 w-h" *ngIf="printIconFlag && !committeeId">
+              <nz-form-item>
+                <nz-form-control [nzErrorTip]="">
+                  <nz-select
+                    [ngClass]="{ rtl: currentLang === 'ar' }"
+                    nzPlaceHolder="{{ 'Meetings' | translate }}"
+                    nzAllowClear
+                    nzShowSearch
+                    nzServerSearch
+                    [(ngModel)]="selectedMeeting"
+                    (nzOnSearch)="onSearch(lookupTypes.MeetingsList, $event)"
+                  >
+                    <ng-container *ngFor="let opt of allMeetings">
+                      <nz-option
+                        *ngIf="!isLoading"
+                        [nzValue]="opt.id"
+                        [nzLabel]="opt.title"
+                      ></nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon nzType="loading" class="loading-icon"></i>
+                      {{ "LoadingData" | translate }}
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-6 date-input" *ngIf="printIconFlag">
+              <hijri-gregorian-datepicker
+                [ngClass]="{ rtl: currentLang === 'ar' }"
+                [placeHolder]="'FromEndDate' | translate"
+                [isRequired]="true"
+                [GregLabel]="'Greg' | translate"
+                [hijriLabel]="'Hijri' | translate"
+                [selectedDateType]="selectedDateType"
+                #datePicker
+                (select)="dateFromSelected($event)"
+                (selectedDateChange)="dateFromSelected($event)"
+                [readonly]="true"
+              >
+              </hijri-gregorian-datepicker>
+            </div>
+            <div class="col-6 date-input" *ngIf="printIconFlag">
+              <hijri-gregorian-datepicker
+                [ngClass]="{ rtl: currentLang === 'ar' }"
+                [placeHolder]="'ToEndDate' | translate"
+                [isRequired]="true"
+                [GregLabel]="'Greg' | translate"
+                [hijriLabel]="'Hijri' | translate"
+                [selectedDateType]="selectedDateType"
+                #datePicker
+                (select)="dateSelected($event)"
+                (selectedDateChange)="dateSelected($event)"
+                [readonly]="true"
+              >
+              </hijri-gregorian-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div
+            [ngClass]="committeeId ? 'wo-m' : 'w-m'"
+            *ngIf="printIconFlag"
+          ></div>
+          <div class="d-flex justify-content-around action-btn">
+            <button
+              class="btn"
+              [ngClass]="printIconFlag ? 'h-50' : 'h-100'"
+              (click)="searchThis()"
+            >
+              {{ "Search" | translate }}
+            </button>
+            <button
+              class="btn"
+              [ngClass]="printIconFlag ? 'h-50' : 'h-100'"
+              (click)="closeSearch()"
+            >
+              {{ "Close" | translate }}
+            </button>
+            <div class="" *ngIf="printIconFlag">
+              <a
+                class="icon-print-search"
+                (click)="print()"
+                nz-tooltip
+                [nzTooltipTitle]="
+                  this.translate.currentLang === 'ar' ? 'طباعة' : 'print'
+                "
+              >
+                <i class="fa fa-print"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #iconSearch>
+      <i class="global-search-icon" nz-icon nzType="search"></i>
+    </ng-template>
+  </div>
+</ng-template>
+
+<!-- Modal for selecting Where to perform Transaction -->
+
+<ng-template #tplTitle>
+  <span>{{ "CreateTransaction" | translate }}</span>
+</ng-template>
+<ng-template #tplContent let-ref="modalRef">
+  <a
+    nz-button
+    class="item-button"
+    nzBlock
+    (click)="addNewTimeLineItem(actionTypes?.CreateTransaction); ref.destroy()"
+  >
+    {{ "CreateTransaction" | translate }}
+  </a>
+  <a
+    [href]="urlLink + '/registrations/transaction-registration'"
+    target="_blank"
+    nz-button
+    class="item-button"
+    nzBlock
+    (click)="ref.destroy()"
+  >
+    {{
+      translate.currentLang == "ar"
+        ? "إنشاء معاملة من مسار"
+        : "Create Transaction from MASAR"
+    }}
+  </a>
+  <a
+    [href]="urlLink + '/registrations/decision-registration'"
+    target="_blank"
+    nz-button
+    class="item-button"
+    nzBlock
+    (click)="ref.destroy()"
+  >
+    {{
+      translate.currentLang == "ar"
+        ? "إنشاء قرار من مسار"
+        : "Create Decision from MASAR"
+    }}
+  </a>
+</ng-template>
+<div style="height: 0; overflow: hidden" id="main-print-section-id">
+  <app-print-task [tasksSummary]="tasksSummary"></app-print-task>
+</div>
+<div style="height: 0; overflow: hidden" id="main-committe-minutes-id">
+  <app-committes-minutes
+    [committeDetails]="committeDetails"
+    [commiteeMinutsCount]="commiteeMinutsCount"
+    [AllUsers]="AllUsers"
+  ></app-committes-minutes>
+</div>

@@ -1,0 +1,128 @@
+@import "../../../../../variables";
+:host {
+  .item-content {
+    margin: 0.5rem 0;
+    padding: .6rem 0;
+    height: 0;
+    transition: all 0.5s;
+    backface-visibility: none;
+    .item-title {
+      font-size: $fs14;
+    }
+    .saved-Attachment {
+      background-color: $solitude;
+      padding: 0.5rem;
+      margin: 0.8rem 0.3rem 0;
+      border-radius: 0.5rem;
+      height: 2.5rem;
+      opacity: 0.7;
+      transition: all 0.5s;
+    }
+  }
+
+  &:hover .item-content {
+    height: 5.8rem;
+
+    .saved-Attachment {
+      height: 6.5rem;
+      opacity: 1;
+    }
+    .thumb-list {
+      height: 4rem;
+      opacity: 1;
+    }
+
+    .download-thumb {
+      opacity: 1;
+      height: 4rem;
+    }
+  }
+
+  .att-icon {
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .item-footer {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .item-button {
+      button {
+        border: 1px solid $dodgerBlue;
+        border-radius: 5px;
+        color: $dodgerBlue;
+        font-weight: bold;
+      }
+    }
+
+    .item-comment {
+      flex: 1;
+      margin: 0 10px;
+      .ant-input-affix-wrapper {
+        width: 98%;
+        background-color: $wildSand;
+        border-radius: 5px;
+        input {
+          background-color: $wildSand;
+        }
+      }
+      .user-comment-img {
+        width: 30px;
+        height: 30px;
+        margin: 0 5px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .comment-icon {
+      .anticon {
+        color: $mediumShaft;
+        padding: 0;
+        font-size: $fs20;
+      }
+    }
+  }
+
+  .thumb-list {
+    opacity: 0;
+    height: 0;
+    transition: all 0.5s ease-out;
+    margin-bottom: 0.5rem;
+
+    .attachment-thumb {
+      width: 45px;
+      height: 54px;
+      margin: 0.2rem 0.2rem;
+      border-radius: 5px;
+      border: none;
+      box-shadow: 0 0.2rem 0.6rem rgba($black, 0.5);
+      transition: transform 0.5s ease-out;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      &:hover {
+        transform: translateY(-0.2rem) scale(1.03);
+      }
+    }
+  }
+
+  .download-thumb {
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0.5rem;
+    width: 45px;
+    height: 57px;
+    transition: transform 0.2s;
+    transition: all 0.5s ease-out;
+    img {
+      height: 100%;
+    }
+  }
+}

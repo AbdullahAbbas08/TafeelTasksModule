@@ -1,0 +1,136 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File</title>    
+    <script src="../scripts/crypto-js.min.js"></script>
+    <script src="./static-download.js"></script>
+    <link rel="stylesheet" href="../css/print-referral.css"></link>
+</head>
+
+<body class="rtl">
+
+    <div class="print-container" style="direction: rtl; padding: 14px;">
+        <!-- <header *ngIf="summary?.meetingHeaderAndFooters">
+            <ng-container *ngFor="let header of summary?.meetingHeaderAndFooters">
+                <div  *ngIf="header.headerAndFooter.headerAndFooterType === 1" [innerHTML]="header.headerAndFooter?.html | sanitizeHtml">
+                </div>
+            </ng-container>
+        </header> -->
+        <h4>محضر الأجتماع</h4>
+        <!--Start Meeting details-->
+        <div class="meeting-details">
+            <div >
+                <span >التاريخ : </span>
+                <div class="date">
+                    <span id="meetingDate"></span>
+                     <span id="fromDate"> </span>
+                    <span id="toDate"> </span>
+                  </div>
+            </div>
+            <div>
+                <span>المكان</span>
+                <p id="physicalLocation"></p>
+            </div>
+            <div>
+                <span>الموضوع :</span>
+                <p id="meetingTitle"></p>
+            </div>
+        </div>
+                <!--Start Meeting schedule-->
+                <div class="meeting-schedule">
+                    <h5>نقاط جدول الأعمال :</h5>
+                    <table id="meetingTopics">
+                        <!-- <thead>
+                            <th class="number">الرقم</th>
+                            <th class="topic-head">الموضوع</th>
+                            <th class="result-head">النتائج و المناقشات</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sum of summary?.momSummaries; let i = index">
+                                <td class="number-body">{{i + 1}}</td>
+                                <td class="meeting-schedule-content"><p>{{sum?.title}}</p></td>
+                                <td class="meeting-schedule-content"><p [innerHtml]="sum?.description"></p></td>
+                            </tr>
+                        </tbody> -->
+                    </table>
+                </div>
+        <!--Start Meeting schedule-->
+        <div class="meeting-schedule">
+            <h5>الوقائع : </h5>
+            <table id="meetingSchedule">
+                <!-- <thead>
+                    <th class="number">الرقم</th>
+                    <th class="topic-head">الموضوع</th>
+                    <th class="result-head">النتائج و المناقشات</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sum of summary?.momSummaries; let i = index">
+                        <td class="number-body">{{i + 1}}</td>
+                        <td class="meeting-schedule-content"><p>{{sum?.title}}</p></td>
+                        <td class="meeting-schedule-content"><p [innerHtml]="sum?.description"></p></td>
+                    </tr>
+                </tbody> -->
+            </table>
+        </div>
+        <!--Start meeting-recommendations-->
+         <div class="meeting-recommendations">
+            <h5>التوصيات : </h5>
+            <table id="meetingRecommendations">
+                <!-- <thead>
+                    <th style="width: 5%;">الرقم</th>
+                    <th style="width: 95%;">{{'Recommendations' | translate}}</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let comments of summary?.momComment; let i = index">
+                        <td class="recomm-number"><p>{{i + 1}}</p></td>
+                        <td ><p>{{comments.comment?.text}}</p></td>
+                    </tr>
+                </tbody> -->
+            </table>
+            <!-- <p class="text-center no-recommendations" *ngIf="!summary?.momComment.length">لايوجد توصيات</p> -->
+        </div>
+                <!--Start Meeting attendes-->
+                <div class="meeting-attendes" >
+                    <h5>الحاضرين : </h5>
+                    <table id="meetingAttendes">
+                        <!-- <thead>
+                            <th class="attende-Name">{{'Name' | translate}}</th>
+                            <th class="attende-joptitle">{{'title' | translate}}</th>
+                            <th class="attende-phone">{{'phone' | translate}}</th>
+                            <th class="attende-email">{{'Email' | translate}}</th>
+                        </thead>
+                        <tbody>
+                         <ng-container>
+                            <tr *ngFor="let participants of summary?.meetingCoordinators">
+                                <td><p>{{this.translateService.currentLang === 'ar' ? participants.coordinator?.fullNameAr : participants.coordinator?.fullNameEn}}</p></td>
+                                <td><p>{{participants.coordinator?.jobTitleName}}</p></td>
+                                <td><p>{{participants.coordinator?.mobile}}</p></td>
+                                <td><p>{{participants.coordinator?.email}}</p></td>
+                            </tr>
+                            <tr *ngFor="let participants of summary?.meetingAttendees">
+                                <td><p>{{this.translateService.currentLang === 'ar' ? participants.attendee?.fullNameAr : participants.attendee?.fullNameEn}}</p></td>
+                                <td><p>{{participants.attendee?.jobTitleName}}</p></td>
+                                <td><p>{{participants.attendee?.mobile}}</p></td>
+                                <td><p>{{participants.attendee?.email}}</p></td>
+                            </tr>
+                         </ng-container>
+                    
+                        </tbody> -->
+                    </table>
+                </div>
+        <!-- <footer *ngIf="summary?.meetingHeaderAndFooters">
+            <ng-container *ngFor="let header of summary?.meetingHeaderAndFooters">
+                <div class="header" *ngIf="header.headerAndFooter.headerAndFooterType === 2" [innerHTML]="header.headerAndFooter?.html | sanitizeHtml">
+                </div>
+            </ng-container>
+        </footer> -->
+    </div>
+    
+    
+
+</body>
+
+</html>

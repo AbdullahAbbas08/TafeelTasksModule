@@ -1,0 +1,1828 @@
+@import "../icons/masar-icons-styles.css";
+@import "../fonts/fontawesome/fontawesome.css";
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Tajawal"), local("Tajawal-Regular"), url("/assets/fonts/Tajawal-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Tajawal Medium"), local("Tajawal-Medium"), url("/assets/fonts/Tajawal-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Tajawal Bold"), local("Tajawal-Bold"), url("/assets/fonts/Tajawal-Bold.ttf") format("truetype");
+}
+/*$show-more-btn-bg: #559FDA;*/
+:root {
+  --main-color: #457093;
+  --secondary-color: #7ec5ff;
+  --table-head-color: #D1EAFF;
+  --table-head-bg-color: #7EC5FF;
+  --side-menu-hover-color: #2f5473;
+}
+
+/*$nav-bar-bg-2: #00c2bc;*/
+/*$table-head-3: #aff6f8;*/
+/*$transaction-table-header-bg-3: #20d7d3;*/
+/*$side-menu-hover-2: #09a09b;*/
+.green-theme {
+  --main-color: #00524c;
+  --secondary-color: #00afaa;
+  --table-head-color: #e4e4e4;
+  --table-head-bg-color: #00afaa;
+  --side-menu-hover-color: #009d99;
+}
+
+.darkgreen-theme {
+  --main-color: #1c5732;
+  --secondary-color: #1A9A4A;
+  --table-head-color: #c3e5d4;
+  --table-head-bg-color: #00afaa;
+  --side-menu-hover-color: #1a9a4a;
+}
+
+.ummAlqura-theme {
+  --main-color: #00656f;
+  --secondary-color: #86754d;
+  --table-head-color: #fff4d9;
+  --table-head-bg-color: #f2e3bc;
+  --side-menu-hover-color: #86754d;
+}
+
+.rcci-theme {
+  --main-color: #233E51;
+  --secondary-color: #6A8FA3;
+  --table-head-color: #fff4d9;
+  --table-head-bg-color: #f2e3bc;
+  --side-menu-hover-color: #6A8FA3;
+}
+
+.brown-theme {
+  --main-color: #c9a082;
+  --secondary-color: #7f594c;
+  --table-head-color: #7f594c;
+  --table-head-bg-color: #f2e3bc;
+  --side-menu-hover-color: #7f594c;
+}
+
+.security-theme {
+  --main-color: #01718c;
+  --secondary-color: #04728d;
+  --table-head-color: #04728d;
+  --table-head-bg-color: #f2e3bc;
+  --side-menu-hover-color: #04728d;
+}
+
+.gaca-theme {
+  --main-color: #0d3165;
+  --secondary-color: #2981c4;
+  --table-head-color: #d4eaff;
+  --table-head-bg-color: #2b7ec2;
+  --side-menu-hover-color: #c2a16a;
+}
+
+.Lgreen-theme {
+  --main-color: #50946A;
+  --secondary-color: #CEDD84; /*#6CC38E;*/
+  --table-head-color: #5EA279;/*#266841;*/
+  --table-head-bg-color: #CEDD84; /*#164327;*/
+  --side-menu-hover-color: #fff;
+}
+
+.gray-theme {
+  --main-color: #435050;
+  --secondary-color: #707C7C;
+  --table-head-color: #fff4d9;
+  --table-head-bg-color: #f2e3bc;
+  --side-menu-hover-color: #707C7C;
+}
+
+/*
+Any styles here will shown in app and CKEditor also will be available in print
+*/
+/* Barcode Styles Start Here */
+* {
+  box-sizing: border-box;
+}
+
+/* Barcode Styles Start Here */
+.rtl .barcode {
+  /*direction: ltr;*/
+}
+
+.preview .annotation:not(.saved-barcode.electronic-qr) {
+  z-index: 99;
+}
+
+.saved-barcode.electronic-qr {
+  z-index: 10;
+}
+
+.barcode.electronic-qr {
+  margin: 0 auto;
+  padding: 3px 5px;
+  border-radius: 5px;
+  background-color: #38644d;
+  font-size: 0.6rem;
+  width: 6cm;
+  height: 4cm;
+  word-break: break-word;
+}
+.barcode.electronic-qr .squareBarcode.barcode-content-replacer {
+  width: 25px;
+  /*margin: 9px;*/
+}
+
+.barcode.electronic-qr .horizontalBarcode {
+  width: 80px;
+}
+.barcode.electronic-qr .horizontalBarcode img {
+  height: 25px;
+  width: 100%;
+}
+.barcode.electronic-qr .data span {
+  margin: 0;
+}
+.barcode img {
+  max-width: 100%;
+}
+.squareBarcode img {
+  max-width: 100%;
+}
+.barcode .en {
+  font-family: Arial, sans-serif;
+}
+.barcode .header, .barcode .footer {
+  color: #ffffff;
+  padding: 0 5px;
+}
+.barcode .header {
+  margin-bottom: 2px;
+  position: relative;
+}
+.barcode .header .title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.barcode .header .title .ar {
+  font-size: 10px;
+}
+.barcode .header .title .en {
+  font-size: 5.65px;
+}
+.barcode .header .icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 6px;
+  left: 15px;
+  z-index: 1;
+  background-color: #38644d;
+  border: 1px solid #ffffff;
+}
+.barcode .header .icon image {
+  width: 16px;
+}
+.barcode .body {
+  width: 100%;
+  padding: 7px 4px 0px 4px;
+  color: #000000;
+  position: relative;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  background-color: #ffffff;
+}
+.barcode .body .data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.barcode .body .data .details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.barcode .body .data .details .number span, .barcode .body .data .details .date span {
+  margin-right: 5px;
+  unicode-bidi: bidi-override;
+  direction: ltr;
+}
+.barcode .body .data .details .date {
+  margin: 2px 0;
+}
+.barcode .body .data .details .attach {
+  height: 28px;
+}
+.barcode .body .data .codes {
+  width: 90%;
+  /*margin-top: 4px;*/
+  display: flex;
+  justify-content: space-between;
+}
+.barcode .body .data .codes img.qr-code {
+  width: 20px;
+}
+.barcode .body .data .codes img.bar-code {
+  width: 95px;
+}
+.barcode .footer {
+  color: #ffffff;
+  font-size: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+/* Letter Styles Start Here */
+section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+body > section.noBorderClass  {
+  border: none !important;
+}
+body > section.noBorderClass::after  {
+  background: none !important;
+}
+section header, section .body, section footer {
+  width: 100%;
+}
+section header {
+  width: 100%;
+  font-weight: bold;
+  direction: rtl;
+}
+section header .wrapper::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+section header .col {
+  width: 33%;
+  float: right;
+  display: block;
+}
+section header .col.mci {
+  margin-bottom: 20px;
+}
+section header .col.mci img {
+  width: 65%;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+section header .col.mci-fund img {
+  width: 65%;
+  margin: 0 auto;
+  display: inline-block;
+}
+section header .logo {
+  text-align: center;
+}
+section header .data {
+  text-align: left;
+}
+section header .data.correspondent {
+  margin-top: 16px;
+  text-align: center;
+}
+section header .border {
+  margin-top: 5px;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+}
+section header p {
+  margin: 0;
+  font-weight: bold;
+}
+section header .title p:last-child {
+  margin-top: 10px;
+}
+section header .title.correspondent {
+  margin-top: 11px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+section .body {
+  padding: 25px 0;
+  text-align: right;
+}
+section footer {
+  width: calc(100% - 2cm);
+  position: absolute;
+  bottom: 20px;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid #000000;
+}
+section footer.mci {
+  border-top: none;
+}
+section footer p {
+  margin: 0;
+  font-size: 14px;
+}
+section footer p span {
+  margin-right: 8px;
+}
+section footer p.en {
+  margin: 5px 0;
+  font-size: 11px;
+}
+
+body > section.gaddaUni:before {
+  background-image: url("../images/gadda-university-watermark.png") !important;
+  transform: rotate(-40deg) scale(1.3);
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  display: block;
+  content: '';
+  width: 400px;
+  height: 200px;
+  position: absolute;
+  left: 60%;
+  top: 75.5%;
+}
+
+.attachmentIndexHeader {
+  text-align: left;
+}
+
+.indexing {
+  direction: ltr;
+  text-align: left;
+}
+.indexing .index-row strong {
+  min-width: 130px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.preview {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  page-break-after: always;
+}
+.preview.thumb {
+  margin: 0;
+  padding: 0;
+}
+.preview .image {
+  position: relative;
+  zoom: 0.98;
+}
+.preview .ng-draggable:not(.ng-draggable-handle) {
+  cursor: move;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  z-index: 1;
+  border: 1px solid #00ACC1;
+}
+.preview .ng-draggable:not(.ng-draggable-handle).no-border {
+  border: none;
+}
+.preview .ng-draggable:not(.ng-draggable-handle) img {
+  width: 100%;
+}
+.preview .ng-draggable:not(.ng-draggable-handle).highlight {
+  width: 250px;
+  height: 50px;
+}
+.preview .ng-draggable:not(.ng-draggable-handle).reduction {
+  width: 250px;
+  height: 50px;
+}
+.preview .ng-draggable .ng-draggable-handle {
+  position: absolute;
+  left: 0;
+  padding: 5px;
+}
+.preview .ng-draggable .ng-draggable-handle.text-handle {
+  top: -35px;
+  height: 35px;
+}
+.preview .ng-draggable .ng-draggable-handle.note-handle {
+  top: 0;
+  background: yellow;
+}
+.preview .ng-draggable .cke_editable_inline {
+  min-width: 100px;
+}
+.preview .ng-draggable .cke_editable_inline:focus {
+  outline: none;
+}
+.preview .annotation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  z-index: 99;
+}
+.preview .annotation.watermark {
+    z-index: 0;
+}
+.preview .sticky-note {
+  background: yellow;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+.preview .sticky-note.active {
+  background: #00BCD4;
+}
+.preview .sticky-note-body {
+  margin-left: 70px;
+  padding: 10px;
+  background: yellow;
+}
+.preview .sticky-note-body.read-only {
+  max-width: 250px;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+.preview .sticky-note-body:before {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  border: solid transparent;
+  border-right-color: yellow;
+  border-width: 0 30px 20px 30px;
+  left: 10px;
+  top: 0;
+}
+.preview img.attachment-image {
+  max-width: 100%;
+}
+.preview .highlight {
+  width: 250px;
+  height: 50px;
+  background: yellow;
+  opacity: 0.5;
+}
+.preview .reduction {
+  width: 250px;
+  height: 50px;
+  background: black;
+  opacity: 0.5;
+}
+.preview canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  z-index: 1;
+}
+
+.without-annotations .annotation:not(.watermark) {
+  display: none;
+}
+
+.rtl .indexing {
+  direction: rtl;
+  text-align: right;
+}
+.rtl .indexing .index-row strong {
+  min-width: 110px;
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+body {
+  font-family: "Tajawal", sans-serif;
+}
+body:not([class^=cke]) {
+  margin: 0;
+}
+body.rtl {
+  direction: rtl;
+}
+
+
+
+body section header table {
+  direction: ltr !important;
+  table-layout: fixed;
+}
+
+body.rtl section header table {
+  direction: rtl !important;
+  table-layout: fixed;
+}
+
+body.barcode_print,
+body.not_barcode_print {
+  margin: auto;
+}
+body.not_barcode_print {
+  width: 21cm;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 21cm;
+  margin: 0 auto;
+  padding: 0.75in 0.5in;
+}
+
+img:not(.annotation img) {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+p {
+  font-size: 14px;
+}
+.textAnnotation p {
+  font-size: 16px;
+  margin-bottom: 1rem;
+}
+/* Table Styles Start Here */
+.table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+/* .horizental-view .table {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;    
+}
+.horizental-view .table tbody tr th {
+  width: 7cm !important;
+}
+.horizental-view .table tbody tr td {
+  width: 14cm !important;
+} */
+.table th, .table td {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid black;
+  /* Border Styles Start Here */
+}
+.table th.b-0, .table td.b-0 {
+  border: none;
+}
+.table th.bt-0, .table td.bt-0 {
+  border-top: none;
+}
+.table th.br-0, .table td.br-0 {
+  border-right: none;
+}
+.table th.bb-0, .table td.bb-0 {
+  border-bottom: none;
+}
+.table th.bl-0, .table td.bl-0 {
+  border-left: none;
+}
+.table th.select, .table td.select {
+  padding: 10px;
+}
+.table th.select > span, .table td.select > span {
+  display: flex;
+  justify-content: space-between;
+}
+.table th.select > span span, .table td.select > span span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+.table th.text-right, .table td.text-right {
+  text-align: right;
+}
+.table .nested {
+  padding: 0;
+  vertical-align: text-top;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand img {
+  width: 70px;
+}
+
+.main-title {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.main-title .title {
+  padding: 5px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.main-title .bordered-title {
+  margin-bottom: 0;
+  padding: 5px 10px;
+  font-size: 21px;
+  border: 1px solid black;
+}
+.main-title .types {
+  display: flex;
+}
+.main-title .types .type .label {
+  position: relative;
+  padding-right: 22px;
+  margin-right: 15px;
+}
+.main-title .types .type .label::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  border: 1px solid black;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.data.fe {
+  align-items: flex-end;
+}
+.data span {
+  margin: 5px 0;
+}
+.data.small span {
+  margin: 2px 0;
+}
+.data .equivalent span {
+  margin-right: 10px;
+}
+
+.receipt {
+  position: relative;
+  padding: 5px 5px 90px 5px;
+}
+.receipt .type {
+  width: 70%;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.receipt .recipient {
+  font-size: 18px;
+  text-align: right;
+  font-weight: bold;
+  margin: 20px 40px 10px 0;
+}
+.receipt .instructions {
+  position: absolute;
+  right: 3px;
+  bottom: 4px;
+  width: 80%;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+}
+.receipt .instructions span {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.receipt .instructions span img {
+  width: 15px;
+}
+
+.postman .sup-title {
+  width: 90px;
+  margin: 0 auto;
+  font-size: 10px;
+  display: inline-block;
+}
+.postman .main-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0 10px;
+}
+
+.postman, .receipt {
+  display: flex;
+  flex-direction: column;
+}
+.postman .data, .receipt .data {
+  width: 85%;
+  margin: 0 auto;
+  font-size: 12px;
+}
+.postman .data .braces, .receipt .data .braces {
+  margin: 0 40px;
+}
+.postman .data .signature, .receipt .data .signature {
+  width: 100%;
+  text-align: right;
+  position: relative;
+}
+.postman .data .signature .dashed-border, .receipt .data .signature .dashed-border {
+  width: 86%;
+  display: inline-block;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  border-bottom: 1px dashed black;
+}
+.postman .stamp, .receipt .stamp {
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 60px;
+}
+
+/* Thired Report Styles Start Here */
+.tn {
+  text-align: center;
+}
+.tn img {
+  width: 60px;
+  margin: 0 auto 5px;
+}
+
+/* Extra styles */
+/* Page break */
+.page-break::before, .page-break::after {
+  content: "";
+  display: block;
+}
+.page-break::after {
+  page-break-before: always;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.table.cell-padding-2 > thead th, .table.cell-padding-2 > tbody td {
+  padding: 2px;
+}
+.table.cell-padding-0x2 > thead th, .table.cell-padding-0x2 > tbody td {
+  padding: 0 2px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.barcode-content-replacer {
+  width: 100px;
+}
+
+/*# sourceMappingURL=print-styles.css.map */
+
+
+/* template1 - damasy - 25/04/2019 */
+.qr-rtl {
+  direction: rtl !important;
+}
+.qr-ltr {
+  direction: ltr !important;
+}
+.barcodeTemplate1 {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-size: 10px;
+  width: 250px;
+  margin: 0 auto;
+  font-weight: bold;
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.barcodeTemplate1 .d-flex {
+  display: flex;
+}
+
+.barcodeTemplate1 .min-w-80 {
+    min-width: 60px;
+}
+
+.barcodeTemplate1 .organizationName {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.barcodeTemplate1 .barCodeSection .squareBarcode,
+.codes .squareBarcode{
+    width: 30px;
+    margin-top: 5px;
+    /*margin: 8px 10px;*/
+}
+.codes .squareBarcode {
+  margin-top: 0px;
+  margin-left: 10px;
+}
+/*------- Custom --------------*/
+.codes .SgsCustom {
+  margin-top: 35px;
+}
+.cmt-60 {
+  margin-top: 60px !important;
+}
+.cmr-15 {
+  margin-right: 15px;
+}
+.cmr-10 {
+  margin-right: 10px;
+}
+.ctext-c {
+    text-align: center;
+}
+.cw-40 {
+  width: 40px !important;
+}
+.template1.template2.p-0.barcode.electronic-qr.JccBodyCustom {
+  box-shadow: none;
+}
+.d-flex.justify-content-center.align-items-center.p-2.JccBodyCustom, .body.d-flex.justify-content-center.align-items-start.EcaBodyCustom {
+  width: 100%;
+  min-height: 100%;
+}
+.d-flex.justify-content-center.align-items-center.flex-column.logo-env-agri.EcaBodyCustom {
+  width: 40% !important;
+}
+.details.jccDetails {
+  padding: 0.5rem;
+  margin-top: 65px;
+}
+.details .Jcc {
+  display: block;
+}
+.details .EcaData {
+  text-align: center;
+  margin-bottom: 6px !important
+}
+.codes .JccBar {
+  width: 60% !important;
+  padding: 0.25rem;
+}
+.codes .EcaBar {
+  width: 35px !important;
+  margin-top: 60px;
+  margin-left: 0;
+}
+.codes .JccBar .JccBarCustom {
+  width: 75px !important;
+}
+.barcode.electronic-qr.template4 {
+  background-color: #fff !important;
+  border: 2px solid transparent;
+  padding: 0px;
+  border-radius: 0;
+}
+/*-----------------------*/
+.barcode_haj {
+  width: 40px !important;
+  margin: 0 25px;
+  margin-top: 10px !important;
+}
+.haj_sub_data {
+  font-weight: bold;
+}
+.body_haj {
+  width: 100%;
+  min-height: 100%;
+  border: 1.5px solid transparent;
+  outline: none;
+}
+.p-1 {
+  padding: 0.25rem !important;
+}
+.p-01 {
+  padding: 0 0.25rem !important;
+}
+.haj_data {
+  margin-top: 15px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.haj_number {
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+.w-25 {
+  width: 25%;
+}
+.w-33 {
+    width:33%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-40 {
+  width: 40% !important;
+}
+.w-60 {
+  width: 60% !important;
+}
+.barcode.electronic-qr.template5 {
+  background-color: #fff !important;
+  padding: 0px;
+  border-radius: 0;
+}
+/*--------------------*/
+
+/*------- Custom --------------*/
+.barcodeTemplate1 .barCodeSection .horizontalBarcode {
+  width: 150px;
+  margin-left: -20px;
+}
+.barcodeTemplate1 .barCodeSection .horizontalBarcode .barcode {
+  background: transparent !important;
+}
+.barcodeTemplate1 .barCodeSection .horizontalBarcode .barcode > img {
+  height: 35px;
+  width: 100%;
+}
+
+.barcodeTemplate1 p {
+    font-size: 13px !important;
+}
+
+
+.barcodeTemplate1 .transactionData {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4px;
+}
+
+.barcodeTemplate1 .barCodeSection {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5%;
+}
+.barcodeTemplate1 .attachments {
+  height: 30px;
+}
+.barcodeTemplate1 .attachments p {
+  height: 30px;
+}
+
+/* Funding template */
+
+
+section footer .right-footer {
+  margin: -1px 0 ;
+  font-size: 11px ;
+  color: #628D96 ;
+  margin-left: auto ;
+  font-weight: bold ;
+}
+section footer .right-footer p {
+font-size: 12px ;
+}
+
+section footer .left-footer {
+  margin: 29px 0 ;
+  font-size: 11px ;
+  color: #628D96 ;
+  margin-right: auto ;
+  margin-top: -38px;
+}
+section footer .left-footer p {
+  font-size: 12px ;
+  margin-top: 5px;
+}
+
+
+/* business trip claims */
+
+
+.funding-title p{
+  margin-left:0in;
+  margin-right:0in;
+  text-align:center;
+  margin-bottom: -3px;
+}
+
+.funding-table {
+  width: 650px;
+}
+
+.funding-table tbody tr p {
+  text-align: center;
+}
+
+.funding-table tbody tr td {
+  /* text-align: center;
+  height: 19pt; */
+}
+
+.funding-table tbody tr td span{
+  font-size: 14px;
+}
+
+.funding-table tbody tr p span{
+  font-size: 14px;
+}
+.table-first-one {
+  margin-top:-5px;
+   width:650px;
+}
+.table-second-one{
+  font-size:28px;
+
+}
+
+.table-two{
+  font-size:0px !important;
+  width: 650px !important;
+
+}
+
+.table-two tbody tr td {
+    text-align: center;
+}
+
+.table-two tbody tr td p strong {
+  font-size: 14px !important;
+}
+
+.funding-image {
+  width: 650px;
+  margin-right: 34px;
+}
+
+.funding-txt{
+  width: 650px;
+}
+
+
+/* START :: VIP reports */
+.subject-width th:last-child {
+  width: 65%;
+}
+/* END :: VIP Reports */
+
+ /*fax delivery template for ministery Of Investment*/
+.ministeryOfInvestment {
+  font-weight: bold;
+  color: #004b24;
+  width: 95%;
+  border: 2px solid #004b24;
+  border-radius: 10px;
+  margin: 1rem;
+  padding-top: 1rem;
+}
+
+.faxDeliveryHeader {
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding: 0 1rem;
+  width: 100%
+}
+
+.faxDeliveryOrgName {
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  width: 75%
+}
+
+.faxDeliveryTitle {
+  background: #004b24;
+  color: #fff;
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ministeryOfInvestment > table {
+  width: 95%;
+}
+
+.ministeryOfInvestment td,
+.ministeryOfInvestment th {
+  border: none;
+  padding: 0;
+}
+
+.ministeryOfInvestment .tableContent {
+  display: flex;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid #004b24;
+  border-radius: 10px;
+}
+
+.ministeryOfInvestment .table1 {
+    margin-bottom: 10px;
+}
+
+.ministeryOfInvestment .message1 td {
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 100%;
+    background: #ccc;
+    line-height: 35px
+}
+
+.ministeryOfInvestment .table3 {
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.ministeryOfInvestment .table3 > div {
+  height: 30px;
+}
+
+.ministeryOfInvestment .table4 {
+  flex-direction: column;
+  margin-top: 10px;
+  line-height: 35px;
+}
+
+.ministeryOfInvestment .table5 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  line-height: 35px;
+  flex-direction: column;
+  text-align: initial;
+}
+.ministeryOfInvestment .table5 p {
+  font-size: 16px;
+  font-weight: 900
+}
+
+
+/* Receipt-form */
+
+.Receipt-form {
+  border: 1;
+  border-collapse:collapse;
+  border:0.5pt solid windowtext;
+  width:500pt;
+}
+.Receipt-form .tbody .tr .td {
+  height:24.95pt;
+  text-align:center;
+  vertical-align:bottom;
+  white-space:nowrap;
+  width:80pt
+}
+
+td.space,
+td.b-0 {
+  padding: 5px !important;
+}
+
+
+
+
+
+
+
+
+.barcode.electronic-qr {
+  margin: 0 auto;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 0.6rem;
+  width: 6cm;
+  height: 4cm;
+  word-break: break-word;
+}
+
+  .barcode.electronic-qr.template1 {
+    background-color: #38644d;
+  }
+
+    .barcode.electronic-qr.template1 img {
+      max-width: 100%;
+    }
+
+    .barcode.electronic-qr.template1 .en {
+      font-family: Arial, sans-serif;
+    }
+
+    .barcode.electronic-qr.template1 .header, .barcode.electronic-qr.template1 .footer {
+      color: #fff;
+      padding: 0 5px;
+    }
+
+    .barcode.electronic-qr.template1 .header {
+      margin-bottom: 2px;
+      position: relative;
+    }
+
+      .barcode.electronic-qr.template1 .header .title {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+      }
+
+        .barcode.electronic-qr.template1 .header .title .ar {
+          font-size: 10px;
+        }
+
+        .barcode.electronic-qr.template1 .header .title .en {
+          font-size: 5.65px;
+        }
+
+      .barcode.electronic-qr.template1 .header .icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 6px;
+        left: 15px;
+        z-index: 1;
+        background-color: #38644d;
+        border: 1px solid #fff;
+      }
+
+        .barcode.electronic-qr.template1 .header .icon image {
+          width: 16px;
+        }
+
+    .barcode.electronic-qr.template1 .body {
+      width: 100%;
+      padding: 7px 4px;
+      color: #000;
+      position: relative;
+      border-radius: 4px;
+      margin-bottom: 2px;
+      background-color: #fff;
+    }
+
+      .barcode.electronic-qr.template1 .body .data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+        .barcode.electronic-qr.template1 .body .data .details {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+          .barcode.electronic-qr.template1 .body .data .details span {
+            width: 100%;
+          }
+
+          .barcode.electronic-qr.template1 .body .data .details .number span, .barcode.electronic-qr.template1 .body .data .details .date span {
+            margin-right: 5px;
+          }
+
+          .barcode.electronic-qr.template1 .body .data .details .date {
+            margin: 2px 0;
+          }
+
+          .barcode.electronic-qr.template1 .body .data .details .attach {
+            height: 28px;
+          }
+
+        .barcode.electronic-qr.template1 .body .data .codes {
+          width: 90%;
+          /*margin-top: 4px;*/
+          display: flex;
+          justify-content: space-between;
+        }
+
+          .barcode.electronic-qr.template1 .body .data .codes .squareBarcode.barcode-content-replacer {
+            width: 25px;
+            /*margin: 9px;*/
+          }
+
+          .barcode.electronic-qr.template1 .body .data .codes .horizontalBarcode {
+            width: 80px;
+          }
+
+            .barcode.electronic-qr.template1 .body .data .codes .horizontalBarcode img {
+              height: 25px;
+              width: 100%;
+            }
+
+          .barcode.electronic-qr.template1 .body .data .codes img.qr-code {
+            width: 20px;
+          }
+
+          .barcode.electronic-qr.template1 .body .data .codes img.bar-code {
+            width: 95px;
+          }
+
+    .barcode.electronic-qr.template1 .footer {
+      color: #fff;
+      font-size: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+  .barcode.electronic-qr.template2 {
+    background-color: #fff;
+    box-shadow: 0 0 5px 1px rgba(50, 50, 50, 0.2);
+  }
+
+    .barcode.electronic-qr.template2 img {
+      max-width: 100%;
+    }
+
+    .barcode.electronic-qr.template2 .en {
+      font-family: Arial, sans-serif;
+    }
+
+    .barcode.electronic-qr.template2 .header, .barcode.electronic-qr.template2 .footer {
+      color: #fff;
+      padding: 0 5px;
+    }
+
+    .barcode.electronic-qr.template2 .header {
+      margin-bottom: 2px;
+      position: relative;
+    }
+
+      .barcode.electronic-qr.template2 .header .title {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        background-color: #38644d;
+        width: 70%;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+
+        .barcode.electronic-qr.template2 .header .title .ar {
+          font-size: 9px;
+          font-weight: bold;
+        }
+
+        .barcode.electronic-qr.template2 .header .title .en {
+          font-size: 8px;
+          font-weight: bold;
+        }
+
+      .barcode.electronic-qr.template2 .header .icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 2px;
+        left: 20px;
+        z-index: 1;
+        background: #fff;
+      }
+
+        .barcode.electronic-qr.template2 .header .icon image {
+          width: 16px;
+        }
+
+    .barcode.electronic-qr.template2 .body {
+      width: 100%;
+      padding: 0.6rem;
+      color: #000;
+      position: relative;
+      border-radius: 25px;
+      margin-bottom: 2px;
+      background-color: #fff;
+      border: 2px solid #000;
+    }
+
+      .barcode.electronic-qr.template2 .body .data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+        .barcode.electronic-qr.template2 .body .data .details {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+          .barcode.electronic-qr.template2 .body .data .details span {
+            width: 100%;
+          }
+
+          .barcode.electronic-qr.template2 .body .data .details .number span, .barcode.electronic-qr.template2 .body .data .details .date span {
+            margin-right: 5px;
+          }
+
+          .barcode.electronic-qr.template2 .body .data .details .date {
+            margin: 2px 0;
+          }
+
+          .barcode.electronic-qr.template2 .body .data .details .attach {
+            height: 28px;
+          }
+
+        .barcode.electronic-qr.template2 .body .data .codes {
+          width: 90%;
+          /*margin-top: 4px;*/
+          display: flex;
+          justify-content: space-between;
+        }
+
+          .barcode.electronic-qr.template2 .body .data .codes .squareBarcode.barcode-content-replacer {
+            width: 25px;
+            /*margin: 9px;*/
+          }
+
+          .barcode.electronic-qr.template2 .body .data .codes .horizontalBarcode {
+            width: 70%;
+          }
+
+            .barcode.electronic-qr.template2 .body .data .codes .horizontalBarcode img {
+              height: 25px;
+              width: 100%;
+            }
+
+          .barcode.electronic-qr.template2 .body .data .codes img.qr-code {
+            width: 20px;
+          }
+
+          .barcode.electronic-qr.template2 .body .data .codes img.bar-code {
+            width: 95px;
+          }
+
+    .barcode.electronic-qr.template2 .footer {
+      color: #000;
+      font-size: 8px;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+    }
+
+    .barcode.electronic-qr.template3 {
+      background-color: #fff;
+      border: 2px solid #ddd;
+      padding: 0px;
+      border-radius: 0;
+    }
+    .barcode.electronic-qr.template3 .body {
+      border-radius: 0;
+      padding: 4px;
+      padding-top: 20px;
+    }
+    .barcode.electronic-qr.template3 .body .data .details span {
+      margin-bottom: 6px !important;
+      font-weight: 600;
+    }
+
+
+    /* fix margin issue with A4 */
+    .new-attach_preveiw__container .preview {
+      padding: 0rem !important;
+    }
+
+    /* empty header and footer */
+
+    .noBorder {
+      border-top-color: #ffffff;
+    }
+
+.d-flex {
+  display: flex
+}
+.d-block {
+  display: block;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-black {
+  color: #000;
+}
+
+.align-items-center {
+  align-items: center
+}
+
+.special-span-float {
+  float: left;
+}
+
+.wrappr-border {
+  border: 1px solid black;
+}
+
+.wrappr-border-L {
+  border-left: 1px solid black;
+    border-left-width: thin;
+    height: 121px;
+}
+.wrappr-border-R {
+  border-right: 1px solid black;
+    border-right-width: thin;
+    height: 121px;
+}
+
+.national-bg {
+  background-image: url("../images/national-letter-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.floatLeft {
+  float: left
+}
+
+.floatRight {
+  float: right;
+}
+
+.specificHight {
+  height: 208.87px;
+}
+
+.specificFHight {
+  height: 75.5px
+}
+
+.forceIEWidth {
+  width: 150px !important;
+}
+.forceIEWidth .barcode img {
+  width: 150px !important;
+}
+.forceIEWidth30 {
+  width: 250px;
+}
+.forceIEWidth30 .barcode img {
+  width: 150px !important;
+}
+
+
+/*bootstrap styles*/
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-around {
+  justify-content: space-around !important;
+}
+.align-items-center {
+  align-items: center !important
+}
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.flex-column {
+  flex-direction: column !important;
+}
+.w-50 {
+  width: 50% !important
+}
+.text-center {
+  text-align: center !important;
+}
+.text-black {
+  color: #000 !important;
+}
+.m-auto{
+  margin: auto !important;
+}
+.p-l0{
+  padding-left: 0 !important;
+}
+.rot-90 {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.dis-flx {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.flx-spc-btn{
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+.flx-center{
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.rounded {
+  border-radius: 50%;
+    width: 40px;
+    border: 1px solid black;
+    height: 40px;
+    margin: auto;
+}
+
+.rotate-text {
+  transform: rotate(-90deg);
+}
+
+.vertical-line{
+  border-left:3px solid lightblue;
+  float:right;
+  height:45px;
+  left:41%;
+  position:absolute;
+  width:2%
+}
+
+.vertical-line-right {
+  border-left:3px solid #b3abab;
+  float:right;
+  height:45px;
+  left:35%;
+  position:absolute;
+  width:2%
+}
+
+.vertical-line-left {
+  border-left:3px solid #b3abab;
+  float:right;
+  height:45px;
+  left:67%;
+  position:absolute;
+  width:2%
+}
+
+/* .fixed-row-cell tr:nth-child(2) td:nth-child(1){ */
+.fixed-row-cell tr td p {
+  text-align: center;
+  overflow: hidden;
+  width: 125px;
+  min-width: 100px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-height: 2;
+  max-height: 30px;
+   /* margin: auto; */
+  /* overflow: hidden;
+  width: 280px;
+  text-align: left;
+  valign: top;
+  whitespace: nowrap; */
+}
+
+/* .oneWaterMark {
+  font-size: 0.45rem !important;
+}
+
+.waterMarksParent .row {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.waterMarksParent .row .oneWaterMark {
+  font-size: 0.45rem !important;
+}
+
+.waterMarksParent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+} */
+
+.details .number span {
+  unicode-bidi: bidi-override;
+  direction: ltr;
+}
+.details .number span.font-s-13 {
+  font-size: 13px !important;
+}
+.ECZA_QR{
+	font-size: .8rem !important;
+  font-weight: bold !important;
+}
+.QR_Body{
+	font-size: .8rem !important;
+  font-weight: bold !important;
+}
+.logo-env-agri{
+	width: 40% !important;
+}
+
+.w-50p {
+  width: 50px !important;
+}
+.w-70 {
+  width: 70% !important;
+}
+.w-30 {
+  width: 30% !important;
+}
+.mt-25p {
+  margin-top: -25px !important;
+}
+.m-035p {
+  margin: 0 35px;
+}
+.h-100 {
+  height: 100% !important;
+}
+.fs-13p {
+  font-size: 13px !important;
+}
+.show-part{
+  background: black;
+  opacity: 0.5;
+}
+.hide-part{
+  background: black;
+  opacity: 1 !important;
+}
+/*** Makka Development BarCode ***/
+.makka-development .details span{
+	color: #50753f;
+}
+.makka-development .details span .transactionNumber,
+.makka-development .details span .Transaction_DateValue,
+.makka-development .details span .Physical_Attachments{
+	color: #000 !important;
+}
+.makka-development .top-Attachemet{
+	display: block;
+    font-size: 12px;
+    margin: 15px 15px 0;
+}
+ .makka-development .body{
+	padding-top: 3px !important;
+ }
+ .makka-development .top-Attachemet span{
+    width: 62%;
+    border: 2px solid #b6b6b6;
+    display: inline-block;
+    height: 15px;
+    vertical-align: bottom;
+ }
+ 
+ .rtl .barcode.electronic-qr.template1 .body .data .details .number span{
+	/* direction: inherit;*/
+ }
+  .barcode.electronic-qr.template1 .body .data .details .number span{
+	 /*direction: rtl !important;*/
+ }
+ .UJ_QR .squareBarcode {
+margin-top: 0px;
+margin-left: 0px !important;
+width: 37px !important;
+}
+.UJ_LOGO
+{
+width:65%
+}
+ 

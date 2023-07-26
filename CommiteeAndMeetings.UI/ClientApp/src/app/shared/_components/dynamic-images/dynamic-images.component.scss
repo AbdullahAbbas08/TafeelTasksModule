@@ -1,0 +1,139 @@
+@import "../../../../variables";
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba($black, 0.8);
+  z-index: 50;
+  transition: all 0.3s;
+
+  @supports (-webkit-backdrop-filter: blur(10px)) or
+    (backdrop-filter: blur(10px)) {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba($black, 0.5);
+  }
+}
+
+.image-box {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 89vh;
+  max-width: 60vw;
+  z-index: 100;
+  background: cover;
+  box-shadow: 0 2px 8px rbga(0, 0, 0, 0.26);
+}
+
+.action {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 0rem;
+  left: 2rem;
+  font-size: 3rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  line-height: 2;
+  backface-visibility: hidden;
+  &:hover {
+    color: $red;
+  }
+}
+
+.btn {
+  color: white;
+  cursor: pointer;
+  font-size: 1.6rem;
+  position: absolute;
+  top: 1.6rem;
+  left: 4rem;
+  &:hover {
+    color: $dodgerBlue;
+  }
+}
+
+.title {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 1.2rem;
+  right: 2rem;
+  font-size: 2.5rem;
+}
+
+.right {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  right: 3rem;
+  transform: translateY(-50%);
+}
+
+.left {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 3rem;
+  transform: translateY(-50%);
+}
+
+.icon {
+  font-size: 3rem;
+  color: $wildSand;
+  transition: all 0.2s;
+  backface-visibility: hidden;
+  &:hover {
+    color: $dodgerBlue;
+  }
+}
+
+.thumb-list {
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 95%;
+  scrollbar-width: thin;
+  .attachment-thumb {
+    width: 37px;
+    height: 47px;
+    margin: 0.3rem 0.3rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0.2rem 0.6rem rgba($black, 0.5);
+
+    transition: transform 0.2s;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &:hover {
+      transform: translateY(-0.1rem) scale(1.02);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(0.25turn, #aacfdf, #eef3f3, #aacfdf);
+    border-radius: 20px;
+    border: transparent;
+  }
+}

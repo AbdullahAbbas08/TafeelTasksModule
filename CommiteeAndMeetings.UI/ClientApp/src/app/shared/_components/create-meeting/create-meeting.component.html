@@ -1,0 +1,46 @@
+<div class="create-meeting text-center">
+  <h6 class="font-weight-bold">
+    {{ translate.currentLang == "ar" ? "اجتماع جديد" : "New Meeting" }}
+  </h6>
+  <p>
+    {{
+      translate.currentLang == "ar"
+        ? "اختر نوع الإجتماع"
+        : "Select Meeting Type"
+    }}
+  </p>
+  <button
+    [routerLink]="
+      committeeId
+        ? ['/meetings/schedule-meeting/committee', committeeId]
+        : ['/meetings/schedule-meeting']
+    "
+    class="single-meeting"
+    nzBlock
+    nz-button
+    nzType="primary"
+    (click)="close()"
+  >
+    <span class="mx-2">
+      {{ translate.currentLang == "ar" ? "اجتماع واحد" : "Single Meeting" }}
+    </span>
+  </button>
+  <button
+    [routerLink]="
+      committeeId
+        ? ['/meetings/multiple-meeting/committee', committeeId]
+        : ['/meetings/multiple-meeting']
+    "
+    class="mt-2 multiple-meetings"
+    nzBlock
+    nz-button
+    nzType="primary"
+    (click)="close()"
+  >
+    <span class="mx-2">
+      {{
+        translate.currentLang == "ar" ? "مجموعة اجتماعات" : "Multiple Meetings"
+      }}
+    </span>
+  </button>
+</div>

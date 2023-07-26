@@ -1,0 +1,124 @@
+@import "../../../variables";
+
+.login-container {
+  background-image: url("../../../assets/images/grey_background.png");
+  width: 100%;
+  height: 100%;
+  padding: 50px 0px;
+  background-size: cover;
+  object-fit: cover;
+
+  .login-content {
+    margin: 0px auto;
+    width: 70%;
+    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+    border-radius: 25px;
+
+    .login-details {
+      background-color: #fff;
+      height: 100%;
+      padding: 50px;
+
+      // img {
+      //   margin: auto;
+      //   width: 165px;
+      //   height: 60px;
+      //   display: block;
+      //   object-fit: cover;
+      // }
+
+      .login-input {
+        h3 {
+          font-weight: 900;
+          color: #144672;
+        }
+
+        .align-form {
+          margin-top: 15px;
+          padding: 40px;
+          padding-top:15px;
+
+          input {
+            border: 0px;
+            border-bottom: 2px solid #e1e1e1;
+          }
+
+          .submit {
+            margin-top: 30px;
+
+            button {
+              text-align: center;
+              width: 100%;
+              color: #fff;
+              background-color: #144672;
+              border-radius: 9px;
+              padding: 9px;
+              font-size: 18px;
+            }
+          }
+        }
+
+        .change-lang {
+          color: #144672;
+          font-size: 18px;
+
+          img {
+            width: 20px;
+            height: 15px;
+          }
+        }
+      }
+    }
+
+    .login-bg {
+      background-color: #50c1d3;
+      height: 100%;
+      background-image: url('../../../assets/images/login.png');
+      background-size: contain;
+      object-fit: cover;
+      background-repeat: no-repeat;
+
+      .login-content-text {
+        position: absolute;
+        text-align: center;
+        bottom: 13px;
+        width: 100%;
+        color: #fff;
+        font-size: 22px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.invalid-input {
+  margin-bottom: 5px !important;
+  color: red !important;
+}
+
+.btn.disabled,
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.btn-verify {
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  background-color: #144672;
+  border-radius: 9px;
+  padding: 9px;
+  font-size: 18px;
+}
+.verify-links {
+  a {
+    color: #144672;
+    font-size: 18px;
+  }
+}
+
+.main-header-item{
+  margin-top: 50px;
+}

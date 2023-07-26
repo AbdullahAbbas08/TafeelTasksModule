@@ -1,0 +1,112 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File</title>    
+    <script src="../scripts/crypto-js.min.js"></script>
+    <script src="./committeMinutes.js"></script>
+    <link rel="stylesheet" href="../css/committe-print.css"></link>
+</head>
+<body class="rtl" style="padding:14px">
+    <div class="print-container" style="direction: rtl;">
+        <h4>محضر اللجنة</h4>
+        <!--Start Meeting details-->
+        <div class="meeting-schedule">
+            <h5>بيانات اللجنة </h5>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><span class="font-weight-bold">أسم اللجنة</span></td>
+                        <td><p id="committeName"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">عنوان اللجنة</span></td>
+                        <td><p id="committeTile"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">تصنيف اللجنة</span></td>
+                        <td><p id="committeCategory"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">نوع اللجنة</span></td>
+                        <td><p id="committeType"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">رئيس اللجنة</span></td>
+                        <td><p id="committeHeadUnit"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">الحالة</span></td>
+                        <td><p id="committeStatus"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">الرابط</span></td>
+                        <td><p id="departmentUnit"></p></td>
+                    </tr>
+                    <tr>
+                        <td><span class="font-weight-bold">الوصف</span></td>
+                        <td><p id="committeDesc"></p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="meeting-schedule">
+            <h5>إحصائيات اللجنة : </h5>
+            <table id="committeAttachStats">
+               <tr>
+                <td>عدد المرفقات</td>
+                <td><p id="attachNum"></p></td>
+               </tr>
+               <tr>
+                <td>عدد التصويتات</td>
+                <td id="voteNum"></td>
+               </tr>
+               <tr>
+                <td> عدد المهام</td>
+                <td id="taskNum"></td>
+               </tr>
+               <tr>
+                <td>  عدد الأجتماعات</td>
+                <td id="meetingsNum"></td>
+               </tr>
+               <tr>
+                <td>  المعاملات الواردة </td>
+                <td id="incomingTrans"></td>
+               </tr>
+               <tr>
+                <td>   المعاملات الصادرة </td>
+                <td id="outcomingTrans"></td>
+               </tr>
+            </table>
+        </div>
+        <!--Start Meeting attendes-->
+        <div class="committe-attendes" >
+            <h5>أعضاء اللجنة: </h5>
+            <table id="committeMembers">
+            </table>
+        </div> 
+        <!-- <div class="committe-attendes" *ngIf="tasksStats.length > 0">
+            <h5>{{'tasksperUser' | translate}} : </h5>
+            <table>
+                <thead>
+                    <th>{{'Name' | translate}}</th>
+                    <th>{{'AllTasks' | translate}}</th>
+                    <th>{{'finishedTasks' | translate}}</th>
+                </thead>
+                <tbody>
+                 <ng-container>
+                    <tr *ngFor="let stats of tasksStats">
+                        <td class="text-center"><p>{{this.translateService.currentLang === 'ar' ? stats.user?.fullNameAr : stats.user?.fullNameEn}}</p></td>
+                        <td class="text-center"><p>{{stats.totalTaskCount}}</p></td>
+                        <td class="text-center"><p>{{stats.finishedTaskCount}}</p></td>
+                    </tr>
+                 </ng-container>
+            
+                </tbody>
+            </table>
+        </div>  -->
+    </div>
+</body>

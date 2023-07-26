@@ -1,0 +1,13 @@
+
+.search-container {
+    display: flex;
+    margin: 0.3rem 0 0.7rem;
+    .item {
+      flex: 1;
+    }
+    .slider {
+      flex: 0 10.5rem;
+      margin-top: -0.5rem;
+      padding: 0 1.5rem;
+    }
+  }

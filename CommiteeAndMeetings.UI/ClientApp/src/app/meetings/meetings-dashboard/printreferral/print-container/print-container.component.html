@@ -1,0 +1,123 @@
+<div class="print-container">
+    <header *ngIf="summary?.meetingHeaderAndFooters">
+        <ng-container *ngFor="let header of summary?.meetingHeaderAndFooters">
+            <div  *ngIf="header.headerAndFooter.headerAndFooterType === 1" [innerHTML]="header.headerAndFooter?.html | sanitizeHtml">
+            </div>
+        </ng-container>
+    </header>
+    <h4>{{'MinuetsOfMeeting' | translate}}</h4>
+    <!--Start Meeting details-->
+    <div class="meeting-details">
+        <div >
+            <span >{{'Date' | translate}} : </span>
+            <div class="date">
+              <span>{{summary?.date | date:'MMM d, y'}} </span>
+              <span>من : {{summary?.meetingFromTime | date:'h:mm a':"+0000"}} </span>
+              <span>إلي : {{summary?.meetingToTime | date:'h:mm a':"+0000"}} </span>
+            </div>
+        </div>
+        <div>
+            <span>{{'Location' | translate}} : </span>
+            <p>{{summary?.physicalLocation}}</p>
+        </div>
+        <div>
+            <span>{{'OBJECTIVE' | translate}} :</span>
+            <p id="title">{{summary?.title}}</p>
+        </div>
+    </div>
+    <!--Start Meeting schedule-->
+    <div class="meeting-schedule">
+        <h5>{{ 'topicPoints' | translate}} : </h5>
+        <table>
+            <thead>
+                <th class="number">الرقم</th>
+                <th class="topic-head">{{'topics' | translate}}</th>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let sum of allmeetingTopics; let i = index">
+                    <tr >
+                        <td class="number-body">{{i + 1}}</td>
+                        <td class="meeting-schedule-content"><p>{{sum?.topicTitle}}</p></td>
+                    </tr>
+                </ng-container>
+
+            </tbody>
+        </table>
+    </div>
+ <!--Start Meeting attendes-->
+    <div class="meeting-schedule">
+        <h5>{{ 'AddMOM' | translate}} : </h5>
+        <table>
+            <thead>
+                <th class="number">الرقم</th>
+                <th class="topic-head">{{'topics' | translate}}</th>
+                <th class="result-head">{{'Results and Arguments' | translate}}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sum of summary?.momSummaries; let i = index">
+                    <td class="number-body">{{i + 1}}</td>
+                    <td class="meeting-schedule-content"><p>{{sum?.title}}</p></td>
+                    <td class="meeting-schedule-content"><p [innerHtml]="sum?.description"></p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--Start meeting-recommendations-->
+     <div class="meeting-recommendations">
+        <h5>{{'AllRecommendations' | translate}} : </h5>
+        <table *ngIf="summary?.meetingCommentsPercentage.length">
+            <thead>
+                <th style="width: 5%;">الرقم</th>
+                <th style="width: 45%;">{{'Recommendations' | translate}}</th>
+                <th style="width: 16.66%;">{{'AgreePercentage' | translate}}</th>
+                <th style="width: 16.66%;">{{'RejectPercentage' | translate}}</th>
+                <th style="width: 16.66%;">{{'reservationsPercent' | translate}}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let comment of summary?.meetingCommentsPercentage; let i = index">
+                    <td class="recomm-number"><p>{{i + 1}}</p></td>
+                    <td ><p>{{comment.commentTitle}}</p></td>
+                    <td ><p ><span dir="ltr">{{comment.percentAccept}} %</span> </p></td>
+                    <td ><p ><span dir="ltr">{{comment.percentReject}} %</span> </p></td>
+                    <td ><p ><span dir="ltr">{{comment.percentReserved}} %</span> </p></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-center no-recommendations" *ngIf="!summary?.momComment.length">لايوجد توصيات</p>
+    </div>
+        <!--Start Meeting Topics-->
+        <div class="meeting-attendes" >
+            <h5>{{'attendees' | translate}} : </h5>
+            <table>
+                <thead>
+                    <th class="attende-Name">{{'Name' | translate}}</th>
+                    <th class="attende-joptitle">{{'title' | translate}}</th>
+                    <th class="attende-phone">{{'phone' | translate}}</th>
+                    <th class="attende-email">{{'Email' | translate}}</th>
+                </thead>
+                <tbody>
+                 <ng-container>
+                    <tr *ngFor="let participants of summary?.meetingCoordinators">
+                        <td><p>{{this.translateService.currentLang === 'ar' ? participants.coordinator?.fullNameAr : participants.coordinator?.fullNameEn}}</p></td>
+                        <td><p>{{participants.coordinator?.jobTitleName}}</p></td>
+                        <td><p>{{participants.coordinator?.mobile}}</p></td>
+                        <td><p>{{participants.coordinator?.email}}</p></td>
+                    </tr>
+                    <tr *ngFor="let participants of summary?.meetingAttendees">
+                        <td><p>{{this.translateService.currentLang === 'ar' ? participants.attendee?.fullNameAr : participants.attendee?.fullNameEn}}</p></td>
+                        <td><p>{{participants.attendee?.jobTitleName}}</p></td>
+                        <td><p>{{participants.attendee?.mobile}}</p></td>
+                        <td><p>{{participants.attendee?.email}}</p></td>
+                    </tr>
+                 </ng-container>
+            
+                </tbody>
+            </table>
+        </div>
+    <footer *ngIf="summary?.meetingHeaderAndFooters">
+        <ng-container *ngFor="let header of summary?.meetingHeaderAndFooters">
+            <div class="header" *ngIf="header.headerAndFooter.headerAndFooterType === 2" [innerHTML]="header.headerAndFooter?.html | sanitizeHtml">
+            </div>
+        </ng-container>
+    </footer>
+</div>

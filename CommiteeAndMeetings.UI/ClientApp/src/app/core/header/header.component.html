@@ -1,0 +1,244 @@
+<header>
+  <div class="container-fluid">
+    <div class="header" [ngStyle]="themeService.primaryBackground">
+      <div class="header-name">
+        <div class="user-img">
+          <ng-container *ngIf="user?.userImage; else avatarTmp">
+            <nz-avatar
+              nzIcon="user"
+              nzSize="large"
+              [nzSrc]="'data:image/png;base64,' + user?.userImage"
+            ></nz-avatar>
+          </ng-container>
+          <ng-template #avatarTmp>
+            <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
+          </ng-template>
+        </div>
+        <!-- [ngStyle]="themeService.primaryBackground" -->
+        <a
+          class="user-name"
+          [routerLink]="['auth/profile']"
+          [ngStyle]="themeService.primaryTextColor"
+        >
+          <span>{{ "Welcome" | translate }} : </span>
+          <span>{{
+            currentLang === "ar" ? user?.fullNameAr : user?.fullNameEn
+          }}</span>
+        </a>
+      </div>
+      <div class="header-logo">
+        <div class="logo-img logo-container" (click)="mainNav()">
+          <img src="assets/images/systemlogowithoutbackgorund.png" />
+        </div>
+      </div>
+      <div class="header-actions">
+        <ul class="p-0 m-0 list-unstyled d-flex align-items-center">
+          <!-- <li
+            class="user-img"
+            nzTooltipPlacement="bottom"
+            [nzTooltipTitle]="'ChangeTheme' | translate"
+            nz-tooltip
+          >
+            <button
+              nz-button
+              [ngStyle]="themeService.accentBackground"
+              nzShape="circle"
+              (click)="themeService.changeTheme()"
+              class="logout-btn"
+            >
+              <svg class="logout-icon">
+                <use xlink:href="assets\images\sprite-2.svg#icon-file-text2"></use>
+              </svg>
+            </button>
+          </li> -->
+          <!-- Notifications menu  -->
+          <li>
+            <app-notifications [count]="count"></app-notifications>
+          </li>
+          <!-- Link to masar app ...  -->
+          <li
+            [nzTooltipTitle]="'MasarApp' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            *ngIf="hideMasarIcon"
+          >
+            <a [href]="urlLink" target="_blank" rel="noopener">
+              <svg width="25" height="25" viewBox="0 0 33.194 24.598">
+                <defs>
+                  <style>
+                    .logo-path-a {
+                      fill: #f37f20;
+                    }
+
+                    .logo-path-b {
+                      fill: #f05c24;
+                    }
+                  </style>
+                </defs>
+                <g transform="translate(-55 -457.402)">
+                  <path
+                    class="logo-path-a"
+                    d="M147.517,87.221h14.352L143.737,99.879l-6.99-5.039Z"
+                    transform="translate(-73.675 370.181)"
+                  />
+                  <path
+                    class="logo-path-a"
+                    d="M80.114,148.572l6.956,5.023-6.244,4.56-7.118-5.167Z"
+                    transform="translate(-18.708 318.105)"
+                  />
+                  <path
+                    class="logo-path-b"
+                    d="M135.322,195.509l5.773,4.243h12.361L141.321,191.1Z"
+                    transform="translate(-71.333 282.248)"
+                  />
+                  <path
+                    class="logo-path-a"
+                    d="M194.687,150.909l6.819,4.837,7.07-5.23-7.07-4.4Z"
+                    transform="translate(-122.902 320.814)"
+                  />
+                </g>
+              </svg>
+            </a>
+          </li>
+          <!-- Change language flags  -->
+          <ng-container *ngIf="hideIcon">
+            <li
+              [nzTooltipTitle]="'MeetingsApp' | translate"
+              nzTooltipPlacement="bottom"
+              nz-tooltip
+              class="meeting-icon"
+              (click)="navigateBtn()"
+              *ngIf="!routingFlag"
+              style="
+                background-color: #fff;
+                border-radius: 50%;
+                padding: 0.6rem;
+              "
+            >
+              <img src="assets/images/Committee-meeting-icon.png" />
+            </li>
+            <li
+              [nzTooltipTitle]="'committesApp' | translate"
+              nzTooltipPlacement="bottom"
+              nz-tooltip
+              class="meeting-icon"
+              (click)="navigateBtn()"
+              *ngIf="routingFlag"
+            >
+              <i class="fa fa-users" aria-hidden="true"></i>
+            </li>
+          </ng-container>
+          <li
+            *ngIf="hideReportModule"
+            [nzTooltipTitle]="'reports' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            class="task-icon"
+          >
+            <a
+              [href]="reportLink + '/login/' + getUserRoleId()"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="assets/images/Group_146431.png"
+                style="width: 29px; height: 25px; object-fit: cover"
+              />
+            </a>
+          </li>
+          <li
+            [nzTooltipTitle]="'Tasks' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            class="task-icon"
+            [routerLink]="['./tasks']"
+          >
+            <img
+              src="assets/images/tasks-icon.png"
+              style="width: 29px; height: 29px; object-fit: cover"
+            />
+          </li>
+          <li
+            *appHasAuthUserViewPermission="['tasksGroupPage']"
+            [nzTooltipTitle]="'groups' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            class="task-icon"
+            [routerLink]="['./tasks/taskgroup']"
+            [ngStyle]="themeService.primaryTextColor"
+          >
+            <img
+              src="assets/images/icons8-group-64.png"
+              style="width: 29px; height: 29px; object-fit: cover"
+            />
+          </li>
+          <li
+            (click)="changeLanguage()"
+            [nzTooltipTitle]="
+              currentLang === 'en' ? 'change Lang' : 'تغير اللغة'
+            "
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            [ngStyle]="themeService.primaryTextColor"
+          >
+            <!-- <img
+              [src]="
+                currentLang === 'en'
+                  ? 'assets/images/langAr.png'
+                  : 'assets/images/langEn.png'
+              "
+            /> -->
+            <span
+              nz-icon
+              nzType="global"
+              nzTheme="outline"
+              style="font-size: 21px"
+            ></span>
+          </li>
+          <!-- Settings routing icon  -->
+          <li
+          [ngStyle]="themeService.primaryTextColor"
+            [routerLink]="['./settings']"
+            [nzTooltipTitle]="'Settings' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            *appHasAuthUserViewPermission="[
+              'CommitteLocalization',
+              'CommittePermission',
+              'CommitteRoles',
+              'CommitteTypes',
+              'CommitteStatus',
+              'CommitteCategory',
+              'CommitteUsers',
+              'CommitteProjects',
+              'CommitteMOMLetter',
+              'ComiteeTaskCategory',
+              'SystemSettings',
+              'Escalation'
+            ]"
+          >
+            <i nz-icon nzType="setting" nzTheme="outline"></i>
+          </li>
+          <li
+            class="user-img"
+            [nzTooltipTitle]="'Logout' | translate"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+          >
+            <button
+              nz-button
+              nzType="danger"
+              nzShape="circle"
+              (click)="onLogout()"
+              class="logout-btn"
+            >
+              <svg class="logout-icon">
+                <use xlink:href="assets\images\sprite-2.svg#icon-switch"></use>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

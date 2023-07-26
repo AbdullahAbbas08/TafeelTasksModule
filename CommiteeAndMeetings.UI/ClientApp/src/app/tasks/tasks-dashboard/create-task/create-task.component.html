@@ -1,0 +1,543 @@
+<form nz-form nzLayout="vertical" [formGroup]="taskForm" class="popup-form">
+  <div class="row">
+    <div class="col-12">
+      <nz-form-item>
+        <nz-form-label nzRequired>{{ "TaskTitle" | translate }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="">
+          <input
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nz-input
+            formControlName="title"
+            placeholder=""
+            autocomplete="off"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-12">
+      <nz-form-item>
+        <nz-form-label nzRequired>{{
+          "TaskDetails" | translate
+        }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="">
+          <textarea
+            rows="3"
+            nz-input
+            placeholder=""
+            formControlName="details"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-lg-12 col-12" *ngIf="!meetingId">
+      <nz-form-item>
+        <nz-form-label nzRequired>{{
+          "TaskMainUser" | translate
+        }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="mainAssinedUserId"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="committeeId ? opt?.userId : opt?.id"
+                [nzLabel]="
+                  committeeId
+                    ? currentLang === 'ar'
+                      ? opt?.user?.fullNameAr
+                      : opt?.user?.fullNameEn
+                    : opt?.name
+                "
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-lg-12 col-12" *ngIf="meetingId">
+      <nz-form-item>
+        <nz-form-label nzRequired>{{
+          "TaskMainUser" | translate
+        }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="">
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            formControlName="mainAssinedUserId"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="opt?.name"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- <div class="col-md-6 col-12">
+      <nz-form-item *ngIf="committeeId">
+        <nz-form-label>{{ "AssistantUsers" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="assistantUsers"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.userId"
+                [nzLabel]="
+                currentLang === 'ar'
+                      ? opt?.user?.fullNameAr
+                      : opt?.user?.fullNameEn
+                "
+                [nzHide]="!isNotAssistantUserSelected(opt?.id)"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="!committeeId">
+        <nz-form-label>{{ "AssistantUsers" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="assistantUsers"
+            (nzOnSearch)="onSearch(lookupTypes.ASSISTANTUSERS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of assistantUsers">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.id"
+                [nzLabel]="
+                  committeeId
+                    ? currentLang === 'ar'
+                      ? opt?.user?.fullNameAr
+                      : opt?.user?.fullNameEn
+                    : opt?.name
+                "
+                [nzHide]="!isNotAssistantUserSelected(opt?.id)"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+    <div class="col-md-6 col-12 date-input">
+      <div class="marg mb-2">
+        <nz-form-label nzRequired>{{
+          "TaskStartDate" | translate
+        }}</nz-form-label>
+        <hijri-gregorian-datepicker
+          [ngClass]="{ rtl: currentLang === 'ar' }"
+          [placeHolder]="'dd/mm/yyyy' | translate"
+          [isRequired]="true"
+          [GregLabel]="'Greg' | translate"
+          [hijriLabel]="'Hijri' | translate"
+          [selectedDateType]="selectedDateType"
+          #datePicker
+          (select)="dateStartSelected($event)"
+          (selectedDateChange)="dateStartSelected($event)"
+          [readonly]="true"
+          [minHijri]="minHijri"
+          [minGreg]="minGreg"
+          [selectedDate]="selectedStartDate"
+        >
+        </hijri-gregorian-datepicker>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 date-input">
+      <div class="marg">
+        <nz-form-label nzRequired>{{
+          "TaskEndDate" | translate
+        }}</nz-form-label>
+        <hijri-gregorian-datepicker
+          [ngClass]="{ rtl: currentLang === 'ar' }"
+          [placeHolder]="'dd/mm/yyyy' | translate"
+          [isRequired]="true"
+          [GregLabel]="'Greg' | translate"
+          [hijriLabel]="'Hijri' | translate"
+          [selectedDateType]="selectedDateType"
+          #datePicker
+          (select)="dateSelected($event)"
+          (selectedDateChange)="dateSelected($event)"
+          [readonly]="true"
+          [minHijri]="minEndHijri"
+          [minGreg]="minEndGreg"
+          [(selectedDate)]="selectedDate"
+        >
+        </hijri-gregorian-datepicker>
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <nz-form-item>
+        <nz-form-label class="mb-1" nzRequired>{{
+          "EndTime" | translate
+        }}</nz-form-label>
+        <nz-form-control>
+          <nz-time-picker
+            formControlName="endTime"
+            [nzAllowEmpty]="false"
+            [nzUse12Hours]="true"
+            nzFormat="HH:mm"
+          ></nz-time-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-6 col-12" *ngIf="!committeeId">
+      <nz-form-item>
+        <nz-form-label class="mb-1">{{ "Groups" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="groups"
+            (nzOnSearch)="onSearch(lookupTypes.GROUPS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of groupList">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.groupId"
+                [nzLabel]="
+                  currentLang === 'ar' ? opt?.groupNameAr : opt?.groupNameEn
+                "
+                [nzHide]="!isNotGroupSelected(opt?.groupId)"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="col-md-6 col-12">
+      <div formArrayName="multiTasks" class="sub-task mb-1">
+        <div
+          *ngFor="let optionCtrl of multiTasksControls; let i = index"
+          [formGroupName]="i"
+        >
+          <nz-form-control>
+            <nz-form-item class="mb-0">
+              <div class="d-flex justify-content-between">
+                <nz-form-label class="font-weight-bold"
+                  >{{ "subtask" | translate }} {{ i + 1 }}</nz-form-label
+                >
+                <a
+                  class="delete-btn"
+                  [nzTooltipTitle]="'Delete' | translate"
+                  nzTooltipPlacement="bottom"
+                  nz-tooltip
+                  (click)="onDeleteOption(i)"
+                >
+                  X
+                </a>
+              </div>
+              <nz-form-control [nzErrorTip]="">
+                <input
+                  [ngClass]="{ rtl: currentLang === 'ar' }"
+                  nz-input
+                  formControlName="name"
+                  placeholder="{{ 'Subject' | translate }}"
+                  autocomplete="off"
+                />
+              </nz-form-control>
+            </nz-form-item>
+            <hijri-gregorian-datepicker
+              [ngClass]="{ rtl: currentLang === 'ar' }"
+              [placeHolder]="'subTaskEndDate' | translate"
+              [GregLabel]="'Greg' | translate"
+              [hijriLabel]="'Hijri' | translate"
+              [selectedDateType]="selectedDateType"
+              #datePicker
+              (select)="subTaskDateSelected($event, i)"
+              (selectedDateChange)="subTaskDateSelected($event, i)"
+              [readonly]="true"
+              [minHijri]="MinSubTaskEndHijri"
+              [minGreg]="MinSubTaskEndGreg"
+              [maxHijri]="MaxSubTaskEndHijri"
+              [maxGreg]="MaxSubTaskEndGreg"
+              [(selectedDate)]="subTaskSelectedDate[i]"
+            >
+            </hijri-gregorian-datepicker>
+            <nz-form-item *ngIf="committeeId && !meetingId">
+              <nz-form-label>{{ "AssistantUsers" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select
+                  [ngClass]="{ rtl: currentLang === 'ar' }"
+                  nzPlaceHolder=""
+                  nzAllowClear
+                  nzShowSearch
+                  nzServerSearch
+                  formControlName="subTaskAssistantUsers"
+                  (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+                  nzMode="multiple"
+                >
+                  <ng-container *ngFor="let opt of users">
+                    <nz-option
+                      *ngIf="!isLoading"
+                      [nzValue]="opt?.userId"
+                      [nzLabel]="
+                        currentLang === 'ar'
+                          ? opt?.user?.fullNameAr
+                          : opt?.user?.fullNameEn
+                      "
+                    ></nz-option>
+                  </ng-container>
+                  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon nzType="loading" class="loading-icon"></i>
+                    {{ "LoadingData" | translate }}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="mt-4" *ngIf="!committeeId && !meetingId">
+              <nz-form-control>
+                <nz-select
+                  [ngClass]="{ rtl: currentLang === 'ar' }"
+                  nzPlaceHolder="{{ 'AssistantUsers' | translate }}"
+                  nzAllowClear
+                  nzShowSearch
+                  nzServerSearch
+                  formControlName="subTaskAssistantUsers"
+                  (nzOnSearch)="onSearch(lookupTypes.ASSISTANTUSERS, $event)"
+                  nzMode="multiple"
+                >
+                  <ng-container *ngFor="let opt of assistantUsers">
+                    <nz-option
+                      *ngIf="!isLoading"
+                      [nzValue]="opt?.id"
+                      [nzLabel]="
+                        committeeId
+                          ? currentLang === 'ar'
+                            ? opt?.user?.fullNameAr
+                            : opt?.user?.fullNameEn
+                          : opt?.name
+                      "
+                      [nzHide]="!isNotAssisstantSelected(opt?.id, i)"
+                    ></nz-option>
+                  </ng-container>
+                  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon nzType="loading" class="loading-icon"></i>
+                    {{ "LoadingData" | translate }}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item class="mt-4" *ngIf="!committeeId && meetingId">
+              <nz-form-control>
+                <nz-select
+                  [ngClass]="{ rtl: currentLang === 'ar' }"
+                  nzPlaceHolder="{{ 'AssistantUsers' | translate }}"
+                  nzAllowClear
+                  nzShowSearch
+                  nzServerSearch
+                  formControlName="subTaskAssistantUsers"
+                  nzMode="multiple"
+                >
+                  <ng-container *ngFor="let opt of users">
+                    <nz-option
+                      *ngIf="!isLoading"
+                      [nzValue]="opt?.id"
+                      [nzLabel]="opt?.name"
+                      [nzHide]="!isNotAssisstantSelected(opt?.id, i)"
+                    ></nz-option>
+                  </ng-container>
+                  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon nzType="loading" class="loading-icon"></i>
+                    {{ "LoadingData" | translate }}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-form-control>
+        </div>
+        <nz-form-control *ngIf="!task">
+          <a
+            nz-button
+            nzType="dashed"
+            class="add-button mt-2"
+            (click)="onAddOption()"
+          >
+            <i nz-icon nzType="plus"></i>
+            <span>{{ "AddsubTask" | translate }}</span>
+          </a>
+        </nz-form-control>
+        <nz-form-control *ngIf="task">
+          <a
+            nz-button
+            nzType="dashed"
+            class="add-button mt-2"
+            (click)="task && hideSaveButton ? onAddOption() : onAddSubTask()"
+          >
+            <i nz-icon nzType="plus"></i>
+            <span>{{
+              task && hideSaveButton
+                ? ("AddsubTask" | translate)
+                : ("saveNewTask" | translate)
+            }}</span>
+          </a>
+        </nz-form-control>
+      </div>
+    </div>
+    <div class="col-md-6 col-12">
+      <nz-form-item>
+        <nz-form-label nzRequired>{{
+          "Classification" | translate
+        }}</nz-form-label>
+        <nz-radio-group formControlName="category">
+          <div class="row">
+            <div class="col-4" *ngFor="let category of taskCategories">
+              <div class="option">
+                <label nz-radio [nzValue]="category?.comiteeTaskCategoryId"
+                  >{{
+                    translateService.currentLang === "ar"
+                      ? category?.categoryNameAr
+                      : category?.categoryNameEn
+                  }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </nz-radio-group>
+      </nz-form-item>
+      <div class="mt-3" *ngIf="!task">
+        <nz-form-item class="mb-0">
+          <nz-form-label>{{ "Notification" | translate }}</nz-form-label>
+          <nz-form-control>
+            <label
+              class="d-block mb-2"
+              nz-checkbox
+              formControlName="emailNotify"
+              >{{ "Email" | translate }}</label
+            >
+            <label
+              class="d-block mb-2"
+              nz-checkbox
+              formControlName="appNotify"
+              >{{ "AppNotification" | translate }}</label
+            >
+            <label
+              class="d-block mb-2"
+              nz-checkbox
+              formControlName="smsNotify"
+              >{{ "SMS" | translate }}</label
+            >
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- File Upload -->
+      <div class="pt-3 pb-1">
+        <ng-container *ngIf="existingAttachments.length > 0">
+          <div *ngFor="let item of existingAttachments; let i = index">
+            <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+              {{ item.attachment?.attachmentName }}
+              <i
+                class="delete-file"
+                nz-icon
+                nzType="close"
+                (click)="removeExistingFile(i)"
+              ></i>
+            </p>
+          </div>
+        </ng-container>
+        <div *ngFor="let file of files; let i = index">
+          <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+            {{ file.name }}
+            <i
+              class="delete-file"
+              nz-icon
+              nzType="close"
+              (click)="removeSelectedFile(i)"
+            ></i>
+          </p>
+        </div>
+      </div>
+
+      <p class="mt-1">
+        <a nz-button (click)="fileInput.click()" class="d-block"
+          ><i nz-icon nzType="upload"> </i> {{ "AddAttachment" | translate }}</a
+        >
+        <input
+          hidden
+          type="file"
+          #fileInput
+          (change)="onSelectFile($event)"
+          multiple
+        />
+      </p>
+      <app-scanner
+        *appHasAuthUserViewPermission="['Disablethescannerfeature']"
+        (fileScanned)="addScannedFile($event)"
+      ></app-scanner>
+    </div>
+  </div>
+  <div class="task-actions mt-3">
+    <div *ngIf="committeeId">
+      <nz-switch formControlName="isShared"></nz-switch>
+      <span class="mx-2">{{ "SharedTask" | translate }}</span>
+    </div>
+
+    <div class="spacer"></div>
+    <button type="button" class="mx-2" nz-button (click)="close()">
+      {{ "Cancel" | translate }}
+    </button>
+    <button
+      type="submit"
+      nz-button
+      nzType="primary"
+      [disabled]="
+        task
+          ? !taskForm.valid || !hideSaveButton || !selectedDate
+          : !taskForm.valid || !selectedDate
+      "
+      [nzLoading]="saving"
+      [ngClass]="{ rtl: currentLang === 'ar' }"
+      (click)="submitTaskData()"
+    >
+      {{ !task ? ("CreateTaskSubmit" | translate) : ("SaveEdit" | translate) }}
+    </button>
+  </div>
+</form>

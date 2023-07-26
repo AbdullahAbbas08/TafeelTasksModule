@@ -1,0 +1,60 @@
+<div class="add-recommendation" [@AddEditTrigger]="editMode">
+  <div class="add-recommendation__header">
+    <svg class="add-recommendation__icon">
+      <use xlink:href="assets\images\sprite-2.svg#icon-file-text2"></use>
+    </svg>
+    &nbsp;{{
+      editMode == "add"
+        ? ("WriteARecommendation" | translate)
+        : translate.currentLang == "ar"
+        ? "تعديل توصية"
+        : "Edit Recommendation"
+    }}
+  </div>
+  <div class="add-recommendation__content">
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group>
+          <textarea
+            [(ngModel)]="recommendationText"
+            nz-input
+            rows="3"
+            placeholder="{{
+              editMode == 'add'
+                ? ('WriteARecommendation' | translate)
+                : translate.currentLang == 'ar'
+                ? 'تعديل توصية'
+                : 'Edit Recommendation'
+            }}"
+            [nzAutosize]="{ minRows: 5, maxRows: 5 }"
+            [disabled]="meetingClosed"
+          ></textarea>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div class="add-recommendation__footer">
+    <button
+      nz-button
+      class="add-recommendation__btn"
+      (click)="onSubmitRecommendation()"
+      [disabled]="!recommendationText"
+    >
+      {{
+        editMode == "add"
+          ? ("AddRecommendation" | translate)
+          : translate.currentLang == "ar"
+          ? "حفظ التعديل"
+          : "Save Edit"
+      }}
+    </button>
+    <button nz-button class="add-recommendation__btn-cancel" (click)="clearBox()">
+      {{ translate.currentLang == "ar" ? "إلغاء" : "Cancel" }}
+    </button>
+    <!-- <a (click)="clearBox()">
+      <svg class="add-recommendation__trash-icon">
+        <use xlink:href="assets\images\sprite-2.svg#icon-trash"></use>
+      </svg>
+    </a> -->
+  </div>
+</div>

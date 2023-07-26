@@ -1,0 +1,60 @@
+<div class="item-container">
+  <header
+    class="item-header"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapse"
+  >
+    <div class="user-data">
+      <div class="img-wrapper">
+        <img
+          *ngIf="createdUserImage"
+          [src]="'data:image/png;base64,' + createdUserImage"
+        />
+        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
+        <span class="active-state"></span>
+      </div>
+      <div class="user-name">
+        <h5 class="m-0">
+          {{ createdUserName ? createdUserName : ("NoName" | translate) }}
+        </h5>
+        <h6 class="m-0">
+          {{ "EventDirector" | translate }}
+        </h6>
+      </div>
+    </div>
+    <div>
+      <i
+        nz-icon
+        [nzType]="isCollapsed ? 'caret-down' : 'caret-up'"
+        nzTheme="outline"
+      ></i>
+    </div>
+  </header>
+  <div id="collapse" [ngbCollapse]="isCollapsed">
+    <div class="card mt-2">
+      <div class="data-item">
+        {{ "Name" | translate }} :
+        <b>{{ createdUserName ? createdUserName : ("NoName" | translate) }}</b>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="data-item">
+        {{ "Email" | translate }} :
+        <b>{{
+          createdUserEmail ? createdUserEmail : ("noData" | translate)
+        }}</b>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="data-item">
+        {{ "Mobile" | translate }} :
+        <b>
+          {{
+            createdUserMobile ? createdUserMobile : ("noData" | translate)
+          }}</b
+        >
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="meetings-controls" [ngStyle]="themeService.primaryBackground">
+  <div class="dashboard-add-btn">
+    <ng-container *appHasAuthUserViewPermission="['AddMeeting']">
+      <button
+        *ngIf="!hideControlsBtn"
+        class="d-flex align-item-center"
+        (click)="addNewMeeting()"
+        nz-button
+        nzType="primary"
+        [ngStyle]="themeService.accentBackground"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline" style="color: #fff"></i>
+        <span class="mx-2"> {{ "AddNewMeeting" | translate }} </span>
+      </button>
+    </ng-container>
+    <i
+      *ngIf="hideControlsBtn"
+      class="backlocation"
+      (click)="backClicked()"
+      nz-icon
+      nzType="right"
+      nzTheme="outline"
+    ></i>
+  </div>
+</div>

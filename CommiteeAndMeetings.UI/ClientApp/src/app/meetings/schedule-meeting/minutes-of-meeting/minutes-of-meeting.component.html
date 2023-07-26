@@ -1,0 +1,189 @@
+<div class="spinner" *ngIf="loading">
+  <ng-template #indicatorTemplate
+    ><i class="spinner-icon" nz-icon nzType="loading"></i
+  ></ng-template>
+  <nz-spin nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+</div>
+
+<div
+  class="main-container row"
+  *ngIf="!loading"
+  [ngStyle]="{
+    direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr'
+  }"
+>
+  <div class="col-md-12 col-xl-9">
+    <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+      <nz-timeline-item [nzDot]="plusIcon">
+        <div
+          class="head-timeline"
+          [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        >
+          <button
+            nz-button
+            class="add-btn"
+            (click)="addMinOfMeeting = true"
+            [disabled]="meetingClosed || !(isCoordinator || isCreator)"
+          >
+            {{ "AddMOM" | translate }}
+          </button>
+          <button nz-button class="start-btn" (click)="print()">
+            <span>{{ "DisplayDocumentBeforeSending" | translate }}</span>
+          </button>
+          <button
+          nz-button
+          class="add-btn"
+          (click)="addNewTimeLineItem()"
+          [disabled]="meetingClosed || !(isCoordinator || isCreator)"
+        >
+          {{ "newTask" | translate }}
+        </button>
+     <!-- //minutesOfMeeting.length > 0 && !checkMomInvitation-->
+          <button
+            nz-button
+            class="start-btn"
+            *ngIf="
+              (isCoordinator || isCreator) &&
+              meetingFinished && !checkMomInvitation &&  minutesOfMeeting.length > 0
+     
+            "
+            (click)="onSendMinuetsOfMeeting()"
+            [disabled]="meetingClosed"
+          >
+            <span>{{ "SendMOMForApproval" | translate }}</span>
+          </button>
+          <button
+          nz-button
+          class="add-btn"
+          *ngIf="
+            (isCoordinator || isCreator) &&
+            meetingFinished
+          "
+          (click)="printRecommendations()"
+        >
+          <span>{{ "recommendations" | translate }}</span>
+        </button>
+          <div class="refresh">
+            <a class="btn-reload" (click)="refresh()"
+              ><i class="fa fa-sync-alt"></i
+            ></a>
+          </div>
+        </div>
+      </nz-timeline-item>
+
+      <nz-timeline-item *ngIf="addMinOfMeeting" [nzDot]="dateIcon">
+        <div
+          class="timeline-add-component"
+          [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        >
+          <app-add-mom-item
+            (close)="addMinOfMeeting = false"
+            (addMOM)="addToMinutesOfMeeting($event)"
+          ></app-add-mom-item>
+        </div>
+      </nz-timeline-item>
+
+      <nz-timeline-item
+        [nzDot]="momNumber"
+        *ngFor="let minute of minutesOfMeeting; let i = index"
+      >
+        <div
+          class="timeline-item-component"
+          [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        >
+          <app-minuets-of-meeting-item
+            [minute]="minute"
+            [meetingClosed]="meetingClosed"
+            (deleted)="removeMOM(i)"
+          ></app-minuets-of-meeting-item>
+        </div>
+        <ng-template #momNumber>
+          <div class="momNumber">
+            <div class="momNumber__text">{{ i + 1 }}</div>
+          </div>
+        </ng-template>
+      </nz-timeline-item>
+    </nz-timeline>
+    <ng-template #plusIcon>
+      <svg class="add-icon">
+        <use xlink:href="assets\images\sprite-2.svg#icon-add-solid"></use>
+      </svg>
+    </ng-template>
+    <ng-template #dateIcon>
+      <div class="meeting-date">
+        <div class="meeting-date__month-year">
+          {{ meetingMonth }} {{ meetingYear }}
+        </div>
+        <div class="meeting-date__day">{{ meetingDay }}</div>
+        <div class="meeting-date__time">
+          {{ meetingDate | date: "shortTime" }}
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="col-md-12 col-xl-3 actions-column">
+    <div
+      class="meeting-actions"
+      *ngIf="
+        (isCoordinator || isCreator) &&
+        meetingFinished &&
+        minutesOfMeeting.length > 0
+      "
+    >
+      <button
+        nz-button
+        class="add-btn"
+        (click)="addMeetingVoting()"
+        *ngIf="displayMom"
+        [disabled]="voting || meetingClosed"
+      >
+        {{ "VotingForMinuetsOfMeeting" | translate }}
+      </button>
+      <button
+        nz-button
+        class="add-btn"
+        (click)="onCloseMeeting()"
+        [disabled]="meetingClosed"
+      >
+        {{ "CloseMeeting" | translate }}
+      </button>
+    </div>
+    <div class="meeting-voting" *ngIf="voting">
+      <app-voting-item-topic
+        [item]="voting"
+        [isMeetingClosed]="meetingClosed"
+        [byPassStartForActivities]="true"
+        [meetingId]="meetingId"
+      ></app-voting-item-topic>
+    </div>
+    <div class="meeting-recommendation">
+      <h5 class="mb-2" style="color: rgb(82, 81, 81); font-weight: 500">
+        {{ "meetingConclusion" | translate }}
+      </h5>
+      <app-add-recommendation
+        [meetingId]="meetingId"
+        (addRecommendation)="insertRecommendation($event)"
+        *ngIf="isCoordinator || isCreator"
+        [meetingClosed]="meetingClosed"
+        [recommendation]="editedRecommendation"
+      ></app-add-recommendation>
+    </div>
+    <div *ngFor="let recommendation of recommendations; let i = index">
+      <app-recommendation-item
+        [recommendation]="recommendation"
+        (editRecommendation)="editRecommendation($event)"
+        (deleteRecommendation)="deleteRecommendation($event, i)"
+        [isCoordinator]="isCoordinator"
+        [isCreator]="isCreator"
+        [byPassStartForActivities]="true"
+        [meetingClosed]="meetingClosed"
+      ></app-recommendation-item>
+    </div>
+  </div>
+</div>
+<div style="height: 0; overflow: hidden" id="main-print-section-id">
+  <app-print-container [summary]="meetingSummary" [allmeetingTopics]="allmeetingTopics"></app-print-container>
+</div>
+<div style="height: 0; overflow: hidden" id="main-print-recommendation-id">
+  <app-print-recommendations [recommendations]="recommendations"></app-print-recommendations>
+</div>

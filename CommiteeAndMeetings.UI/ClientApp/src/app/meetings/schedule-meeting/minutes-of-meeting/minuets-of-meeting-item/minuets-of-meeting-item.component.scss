@@ -1,0 +1,27 @@
+@import "./../../../../../variables";
+
+.MoM-content {
+  color: $persianBlue;
+  margin: 1rem 0;
+  padding: 1rem 0.8rem;
+  border: 1px solid lightgray;
+  border-radius: 0.4rem;
+}
+
+.related-topics {
+  padding: 0.8rem;
+  color: $persianBlue;
+  border: 1px solid lightgray;
+  margin-top: -1px;
+  font-size: 0.9rem;
+}
+
+.text-head {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  background: lightgray;
+  padding: 0.5rem;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+}

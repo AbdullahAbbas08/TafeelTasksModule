@@ -1,0 +1,74 @@
+
+  <div class="item-comment">
+     <div class="input-container">
+      <nz-input-group [nzPrefix]="userImgTpl" class="comment-input">
+        <input
+          nz-input
+          type="text"
+          [placeholder]="recommendation? ('WriteARecommendation' | translate) : ('WriteAComment' | translate)"
+          [(ngModel)]="commentText"
+          (keydown.enter)="addComment()"
+          [disabled]="isMeetingCanceled"
+        />
+        <i
+          *ngIf="commentText.length > 0"
+          class="cancel-search"
+          nz-icon
+          nzType="close"
+          (click)="commentText = ''"
+        ></i>
+      </nz-input-group>
+      <div class="row files-container">
+        <div *ngFor="let file of files; let i = index" class="col-3 files">
+          <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+            {{ file.name }}
+            <i
+              class="delete-file"
+              nz-icon
+              nzType="close"
+              (click)="removeSelectedFile(i)"
+            ></i>
+          </p>
+        </div>
+      </div>
+     </div>
+    <ng-template #userImgTpl>
+      <div class="img-wrapper">
+        <img
+          *ngIf="userImage"
+          [src]="'data:image/png;base64,' + userImage"
+          [alt]=""
+        />
+        <img *ngIf="!userImage" [src]="'assets/images/unknown.png'" />
+        <!-- <span class="active-state"></span> -->
+      </div>
+    </ng-template>
+    <div class="comment-icon comment-attachment mx-1" *ngIf="checkAttachmentIcon">
+      <i nz-icon nzType="link" (click)="fileInput.click()" nzTooltipTitle="{{'CreateAttachment' | translate}}" nzTooltipPlacement="bottom"  nz-tooltip class="mx-1" nzTheme="outline"></i>
+      <input
+      hidden
+      type="file"
+      #fileInput
+      (change)="onSelectFile($event)"
+      multiple
+    />
+    </div>
+    <div class="comment-icon mx-1"  (click)="addComment()">
+      <nz-badge [nzCount]="count">
+        <i nz-icon nzType="comment"></i>
+      </nz-badge>
+    </div>
+  </div>
+<!-- <div class="row">
+  <div *ngFor="let file of files; let i = index" class="col-3 files">
+    <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+      {{ file.name }}
+      <i
+        class="delete-file"
+        nz-icon
+        nzType="close"
+        (click)="removeSelectedFile(i)"
+      ></i>
+    </p>
+  </div>
+</div> -->

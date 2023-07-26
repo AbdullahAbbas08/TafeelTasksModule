@@ -1,0 +1,72 @@
+<div class="topic">
+  <nz-collapse [nzBordered]="false">
+    <nz-collapse-panel [nzHeader]="headerTemp" [nzShowArrow]="false">
+      <div class="MoM-content" *ngIf="minute?.description" #points></div>
+      <div *ngIf="minute?.topics && minute?.topics.length">
+        <span class="text-head">{{ "RelatedTopics" | translate }}</span>
+        <div class="related-topics" *ngFor="let topic of this.minute.topics">
+          {{ topic?.meetingTopic?.title }}
+        </div>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+  <div class="topic__timeline">
+    <perfect-scrollbar [autoPropagation]="true">
+      <app-minute-comments
+        [minute]="minute"
+        [meetingClosed]="meetingClosed"
+      ></app-minute-comments>
+    </perfect-scrollbar>
+  </div>
+</div>
+
+<ng-template #headerTemp>
+  <div class="topic__header">
+    <div>
+      {{ minute.title }}
+    </div>
+    <i
+      class="control-icon"
+      nz-icon
+      nzType="ellipsis"
+      nz-popover
+      [nzPopoverContent]="controlTmp"
+      nzPopoverPlacement="left"
+      [(nzPopoverVisible)]="visible"
+      *ngIf="
+      !singleMeeting.meeting?.isFinished &&
+      !singleMeeting.meeting?.isCanceled  &&
+      (singleMeeting.meeting?.isCreator ||
+        singleMeeting.meeting?.isCoordinator)
+    "
+    ></i>
+    <ng-template #controlTmp>
+      <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+        <li
+          (click)="onDelete()"
+        >
+          {{ "delete" | translate }}
+        </li>
+      </ul>
+    </ng-template>
+    <!-- <div class="mx-1 topic__actions">
+      <i
+        class="control-icon"
+        nz-icon
+        nzType="ellipsis"
+        nz-popover
+        [nzPopoverContent]="controlTmp"
+        nzPopoverPlacement="bottom"
+        [(nzPopoverVisible)]="visible"
+      ></i>
+      <ng-template #controlTmp>
+        <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+          <li visible = false">
+
+          </li>
+        </ul>
+      </ng-template>
+    </div> -->
+  </div>
+</ng-template>

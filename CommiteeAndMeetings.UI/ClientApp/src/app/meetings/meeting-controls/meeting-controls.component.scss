@@ -1,0 +1,14 @@
+.meetings-controls {
+    padding: 15px 20px;
+    box-shadow: 0px 2px 6px rgb(0 0 0 / 16%);
+    background-color: #ffffff;
+    border-top: 2px solid #EEEEEE;
+    .dashboard-add-btn {
+        .backlocation {
+            padding: 8px;
+            background-color: #E1F0FE;
+            color: #40A9FF !important;
+            cursor: pointer;
+        }
+    }
+}

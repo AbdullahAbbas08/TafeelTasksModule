@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Tajawal-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Tajawal'), local('Tajawal-Regular'), url('/assets/fonts/Tajawal-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Tajawal-Medium';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Tajawal Medium'), local('Tajawal-Medium'), url('/assets/fonts/Tajawal-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Tajawal-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Tajawal Bold'), local('Tajawal-Bold'), url('/assets/fonts/Tajawal-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('/assets/icons/icomoon.eot?7ubxlk');
+  src:  url('/assets/icons/icomoon.eot?7ubxlk#iefix') format('embedded-opentype'),
+    url('/assets/icons/icomoon.ttf?7ubxlk') format('truetype'),
+    url('/assets/icons/icomoon.woff?7ubxlk') format('woff'),
+    url('/assets/icons/icomoon.svg?7ubxlk#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-electronic-vote:before {
+  content: "\e900";
+  font-size: 22px;
+  font-weight: bold;
+}

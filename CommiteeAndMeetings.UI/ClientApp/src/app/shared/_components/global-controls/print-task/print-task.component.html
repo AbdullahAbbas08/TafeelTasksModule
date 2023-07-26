@@ -1,0 +1,29 @@
+<div class="print-container">
+    <h4>{{'tasksReport' | translate}}</h4>
+    <!--Start Meeting schedule-->
+    <div class="task-container">
+        <table>
+            <thead>
+                <th class="number">{{ "TaskTitle" | translate }}</th>
+                <th class="topic-head">{{ "TaskMainUser" | translate }}</th>
+                <th class="result-head">{{ "MultiTasks" | translate }}</th>
+                <th class="number">{{ "TaskEndDate" | translate }}</th>
+                
+                <th class="number">{{ "isCompleted" | translate }}</th>
+                <th class="number">{{ "Attachments" | translate }}</th>
+            </thead> 
+            <tbody>
+                <tr *ngFor="let task of tasksSummary">
+                    <td>{{task?.title}}</td>
+                    <td>{{this.translateService.currentLang === 'ar' ? task?.mainAssinedUser.fullNameAr : task?.mainAssinedUser.fullNameEn}}</td>
+                    <td>
+                      {{task?.multiMission.length ? 'يوجد' : ' لا يوجد'}}
+                    </td>
+                    <td><span>{{task?.endDate | HijriDate}}</span><br><span>{{this.dateService.getTasksDateInArabic(task?.endDate)}}</span></td>
+                    <td>{{task?.completed ? 'نعم' : 'لا'}}</td>
+                    <td>{{task?.taskAttachments.length ? 'نعم' : ' لا'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="settings-add-edit">
+    <div class="box-shadow expanded bkg-gray">
+      <p class="box-title">{{'ProjectData' | translate}}</p>
+      <div class="custom-form">
+        <div class="form-box">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>{{'ProjectNameAr' | translate}}</label>
+                <input type="text" class="form-control" [(ngModel)]="project.projectNameAr">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>{{'ProjectNameEn' | translate}}</label>
+                <input type="text" class="form-control" [(ngModel)]="project.projectNameEn">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <p class="text-right">
+          <button type="button" nz-button nzType="primary" *ngIf="!projectCreate"
+            (click)="editProject()" [disabled]="!project.projectNameEn || !project.projectNameAr">
+            {{'SaveChanges' | translate}}
+          </button>
+          <button type="button" nz-button nzType="primary" *ngIf="projectCreate"
+            (click)="insertProject()" [disabled]="!project.projectNameEn || !project.projectNameAr">
+            {{'InsertProject' | translate}}
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+  

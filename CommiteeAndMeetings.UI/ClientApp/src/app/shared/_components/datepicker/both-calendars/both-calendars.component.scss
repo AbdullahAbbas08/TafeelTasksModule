@@ -1,0 +1,17 @@
+.__datepickers-container {
+    width: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+
+    * {
+        user-select: none;
+    }
+    ngbd-datepicker-islamicumalqura, ngb-datepicker {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        background-color: white;
+    }
+}

@@ -1,0 +1,46 @@
+@import "./../../../../../variables";
+
+::ng-deep .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  border-bottom: 1px solid $solitude;
+  background-image: linear-gradient($white, #f5fbff);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.4rem 1.6rem;
+}
+
+::ng-deep
+  .ant-collapse
+  > .ant-collapse-item
+  > .ant-collapse-header
+  .ant-collapse-arrow {
+  padding-top: 15px;
+  font-size: 1rem;
+}
+
+::ng-deep .my-modal .ant-modal-header {
+  background: lightgray;
+}
+
+::ng-deep .my-modal .ant-modal-title {
+  font-weight: 600;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item .anticon {
+  color: #97949462;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item {
+  align-items: center;
+}
+
+::ng-deep .my-modal .ant-select-arrow .anticon {
+  color: #97949462;
+  font-size: 13px;
+}
+
+::ng-deep .my-modal .ant-radio-wrapper {
+  margin: 0;
+}

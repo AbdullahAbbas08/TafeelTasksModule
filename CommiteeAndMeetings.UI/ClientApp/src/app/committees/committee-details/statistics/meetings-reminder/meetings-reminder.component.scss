@@ -1,0 +1,21 @@
+.date-headline{
+    justify-content: space-between;
+    i {
+        margin-top: 2px;
+        font-size: 15px;
+        color: #67b5ec;
+        cursor: pointer;
+    }
+    .day-date {
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+}
+.cal-header{
+    b{
+        font-size: 11px !important;
+        text-transform: capitalize;
+        text-align: center;
+    }
+}

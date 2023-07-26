@@ -1,0 +1,45 @@
+<form nz-form nzLayout="vertical" [formGroup]="editgroup" class="popup-form">
+    <nz-form-item>
+        <nz-form-label>{{ "Groups" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            nzPlaceHolder=""
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="groups"
+            (nzOnSearch)="onSearch(lookupTypes.GROUPS, $event)"
+            nzMode="multiple"
+          >
+            <ng-container *ngFor="let opt of groupList">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.groupId"
+                [nzLabel]="
+                   currentLang === 'ar'
+                      ? opt?.groupNameAr
+                      : opt?.groupNameEn
+                "
+                [nzHide]="!isNotGroupSelected(opt?.groupId)"
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <button
+      type="submit"
+      nz-button
+      nzType="primary"
+      [disabled]="!editgroup.valid"
+      [nzLoading]="saving"
+      [ngClass]="{ rtl: currentLang === 'ar' }"
+      (click)="submitGroupData()"
+    >
+      {{ "SaveEdit" | translate}}
+    </button>
+</form>

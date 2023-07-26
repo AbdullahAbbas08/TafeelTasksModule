@@ -1,0 +1,26 @@
+<div *ngFor="let item of answerUsers" style="text-align: right">
+  <div class="item">
+    <div class="item__header">
+      <div class="item__user">
+        <img
+          class="item__user-img"
+          [src]="
+            item?.user.profileImage
+              ? 'data:image/png;base64,' + item?.user.profileImage
+              : 'assets/images/unknown.png'
+          "
+          alt="userImage"
+        />
+      </div>
+
+      <div class="item__user-name">
+        <span *ngIf="currentLanguage === 'ar'">
+          {{ item?.user.fullNameAr }}</span
+        >
+        <span *ngIf="currentLanguage === 'en'">
+          {{ item?.user.fullNameEn }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

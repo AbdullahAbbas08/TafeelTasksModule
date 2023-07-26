@@ -1,0 +1,89 @@
+<div class="container-fluid px-5 py-3">
+  <div class="head-txt mb-3">
+    <h3 class="font-weight-bold text-center">{{'Settings' | translate}}</h3>
+  </div>
+  <div class="settings">
+    <div class="row">
+      <!--"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteLocalization']"> 
+        <div class="box-shadow" routerLink="localizations">
+          <span>{{'CommitteeLocalizations' | translate}}</span>
+          <img src="assets/images/settings/localizations.svg" [alt]="'CommitteeLocalizations'|translate">
+        </div>
+      </div>
+      <!--*appHasAuthUserViewPermission="['CommittePermission']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommittePermission']" >  
+        <div class="box-shadow" routerLink="permissions">
+          <span>{{'CommitteePermissions' | translate}}</span>
+          <img src="assets/images/settings/permission.svg" [alt]="'CommitteePermissions'|translate">
+        </div>
+      </div>
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteUsers']">  
+        <div class="box-shadow" routerLink="Users">
+          <span>{{'Users' | translate}}</span>
+          <img src="assets/images/settings/users.svg" [alt]="'users'|translate">
+        </div>
+      </div>
+      <!--*appHasAuthUserViewPermission="['CommitteRoles']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteRoles']">  
+        <div class="box-shadow" routerLink="roles">
+          <span>{{'Roles' | translate}}</span>
+          <img src="assets/images/settings/roles.svg" [alt]="'Roles'|translate">
+        </div>
+      </div>
+      <!--*appHasAuthUserViewPermission="['CommitteTypes']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteTypes']">  
+        <div class="box-shadow" routerLink="types">
+          <span>{{'CommitteeTypes' | translate}}</span>
+          <img src="assets/images/settings/categories-list.svg" [alt]="'CommitteeTypes'|translate">
+        </div>
+      </div>
+      <!--*appHasAuthUserViewPermission="['CommitteStatus']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteStatus']" >  
+        <div class="box-shadow" routerLink="statuses">
+          <span>{{'CommitteeStatuses' | translate}}</span>
+          <img src="assets/images/settings/services.svg" [alt]="'CommitteeStatuses'|translate">
+        </div>
+      </div>
+      <!--*appHasAuthUserViewPermission="['CommitteCategory']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteCategory']">  
+        <div class="box-shadow" routerLink="categories">
+          <span>{{'CommitteeCategories' | translate}}</span>
+          <img src="assets/images/settings/categories-code.svg" [alt]="'CommitteeCategories'|translate">
+        </div>
+      </div>
+       <!--*appHasAuthUserViewPermission="['MEETINGSPROJECTSPAGE']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteProjects']">  
+        <div class="box-shadow" routerLink="projects">
+          <span>{{'MeetingsProjects' | translate}}</span>
+          <img src="assets/images/settings/meetingsprojects.svg" [alt]="'MeetingsProjects'|translate">
+        </div>
+      </div>
+        <!--*appHasAuthUserViewPermission="['MEETINGSPROJECTSPAGE']"-->
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['CommitteMOMLetter']" >  
+        <div class="box-shadow" routerLink="letter-templates">
+          <span>{{'LetterTemplate' | translate}}</span>
+          <img src="assets/images/settings/letter.svg" [alt]="'LetterTemplate'|translate">
+        </div>
+      </div>
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['ComiteeTaskCategory']">  
+        <div class="box-shadow" routerLink="task-classifications">
+          <span>{{'ComiteeTaskCategory' | translate}}</span>
+          <img src="assets/images/settings/classifications.svg" [alt]="'tasksClassifications'|translate">
+        </div>
+      </div>
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['SystemSettings']">  
+        <div class="box-shadow" routerLink="system-settings">
+          <span>{{'SystemSettings' | translate}}</span>
+          <img src="assets/images/settings/system_settings.svg" [alt]="'tasksClassifications'|translate">
+        </div>
+      </div>
+      <div class="col-lg-3" *appHasAuthUserViewPermission="['Escalation']">  
+        <div class="box-shadow" routerLink="escalation">
+          <span>{{'Escalation' | translate}}</span>
+          <img src="assets/images/settings/escalate.svg" [alt]="'Escalation'|translate">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

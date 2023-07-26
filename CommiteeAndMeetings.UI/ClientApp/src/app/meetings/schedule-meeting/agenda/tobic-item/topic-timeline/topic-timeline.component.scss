@@ -1,0 +1,43 @@
+@import "./../../../../../../variables";
+
+.timeline {
+  padding: 1.3rem 2.6rem 0;
+}
+
+.padding-rtl {
+  padding-right: 1.8rem;
+}
+
+.comment-item {
+  padding-top: 5.2rem;
+  margin: 0 0 -5.9rem;
+  width: 98%;
+}
+.comment-icon {
+  height: 1.6rem;
+  width: 1.6rem;
+  fill: $persianBlue;
+}
+
+.voting-item {
+  padding-top: 5.4rem;
+  margin: .5rem 0.7rem -7rem;
+}
+
+.voting-icon {
+  height: 1.6rem;
+  width: 1.6rem;
+  fill: $dodgerBlue;
+}
+
+.recommend-item {
+  padding-top: 5rem;
+  margin: 0 0 -5.9rem;
+  width: 98%;
+}
+
+.recommend-icon {
+  height: 1.6rem;
+  width: 1.6rem;
+  fill: rgb(241, 187, 8);
+}

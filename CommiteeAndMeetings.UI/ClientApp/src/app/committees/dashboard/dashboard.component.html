@@ -1,0 +1,14 @@
+<div class="dashboard">
+  <div class="container-fluid">
+    <app-specific-controls ></app-specific-controls>
+
+    <div class="committees-list">
+      <ng-container *ngIf="!committeeService?.treeView; else treeViewTmp;">
+        <app-committees-list></app-committees-list>
+      </ng-container>
+      <ng-template #treeViewTmp>
+        <app-committees-tree></app-committees-tree>
+      </ng-template>
+    </div>
+  </div>
+</div>

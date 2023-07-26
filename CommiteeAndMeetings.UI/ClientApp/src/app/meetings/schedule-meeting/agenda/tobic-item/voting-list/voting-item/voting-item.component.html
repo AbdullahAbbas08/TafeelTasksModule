@@ -1,0 +1,124 @@
+<div
+  class="item-container"
+  dir="{{ translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }}"
+>
+  <header class="item-header" *ngIf="!recommendationSurvary">
+    <div class="user-data">
+      <div class="img-wrapper">
+        <img
+          *ngIf="createdUserImage"
+          [src]="'data:image/png;base64,' + createdUserImage"
+          [alt]=""
+        />
+        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
+        <!-- <span class="active-state"></span> -->
+      </div>
+      <div class="user-name">
+        <p class="m-0">
+          {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
+        </p>
+      </div>
+    </div>
+    <div class="item-control-options">
+      <div style="direction: rtl">
+        <span style="color: teal">{{ createdOnTime }}</span
+        >&nbsp;
+        <span style="color: teal">{{ createdOnDate }}</span>
+      </div>
+    </div>
+  </header>
+  <nz-divider *ngIf="!recommendationSurvary" nzDashed></nz-divider>
+  <section class="item-content">
+    <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
+  </section>
+
+  <footer class="item-footer">
+    <div *ngIf="item?.surveyAnswers.length > 0" class="item-button">
+      <button
+        nz-button
+        nzType="default"
+        [disabled]="
+          voteAnswer.length === 0 ||
+          userParticipated || (!started && !isCoordinator && !isCreator && !byPassStartForActivities) || isMeetingClosed
+        "
+        (click)="sendVote()"
+      >
+        {{ "SendVote" | translate }}
+      </button>
+    </div>
+  </footer>
+</div>
+
+<ng-template #itemContentTpl>
+  <h6 class="item-subject" *ngIf="!recommendationSurvary">
+    {{ item?.subject }}
+  </h6>
+  <p *ngIf="!recommendationSurvary">
+    <span class="mx-1 font-weight-bold">{{'votingEndDate' | translate}} : </span>
+    <span style="font-size:14px">{{
+      currentLang === "ar"
+        ? (voteEndDate | customDate)
+        : (voteEndDate | date)
+    }}</span>
+  </p>
+  <!-- Vote Content Data  -->
+  <div *ngIf="item?.surveyAnswers.length > 0">
+    <ng-container>
+      <div *ngIf="!item.multi" class="voting-wrapper">
+        <nz-radio-group [(ngModel)]="voteAnswer[0]">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="
+                  userParticipated || (!started && !isCoordinator && !isCreator && !byPassStartForActivities) || isMeetingClosed || checkEndDate
+                "
+                nz-radio
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}
+              </label>
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0 && checkEndDate"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-radio-group>
+      </div>
+      <div *ngIf="item.multi" class="voting-wrapper">
+        <nz-checkbox-wrapper (nzOnChange)="voteAnswer = $event">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="
+                userParticipated || (!started && !isCoordinator && !isCreator && !byPassStartForActivities) || isMeetingClosed || checkEndDate
+                "
+                nz-checkbox
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}</label
+              >
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0 && checkEndDate"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-checkbox-wrapper>
+      </div>
+    </ng-container>
+  </div>
+  <!-- Attachments  -->
+  <div class="attachments" *ngIf="attachments?.length > 0">
+    <ng-container>
+      <app-attachment-item-files
+        [attachments]="attachments"
+      ></app-attachment-item-files>
+    </ng-container>
+    <br />
+  </div>
+</ng-template>

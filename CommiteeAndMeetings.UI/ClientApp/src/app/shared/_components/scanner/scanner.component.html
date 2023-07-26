@@ -1,0 +1,21 @@
+<div id="scan-label">{{ "Select a device and scan" | translate }}</div>
+  <select [(ngModel)]="selectedTwainSourceIdx" class="form-control custom-form-select"
+    (ngModelChange)="selectedTwainSourceChanged($event)">
+    <option *ngFor="let source of twainSources" [ngValue]="source.idx" [selected]="selectedTwainSourceIdx==source.idx">
+      {{source.name}}
+    </option>
+  </select>
+<br />
+<div class="scan">
+  <nz-form-control class="scan__file-name">
+    <input nz-input placeholder="اسم الملف" [(ngModel)]="fileName" />
+  </nz-form-control>
+
+  <button [disabled]="!fileName" nz-button (click)="acquireImage()" id="scan-btn">
+    <i class="fa fa-camera"></i>
+    &nbsp;
+    {{ "Scan" | translate }}
+  </button>
+
+  <div id="dwtcontrolContainer"></div>
+</div>

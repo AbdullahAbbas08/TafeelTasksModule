@@ -1,0 +1,36 @@
+<div class="settings-add-edit">
+    <div class="box-shadow expanded bkg-gray">
+      <p class="box-title">{{'classificationData' | translate}}</p>
+      <div class="custom-form">
+        <div class="form-box">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>{{'CategoryNameAr' | translate}}</label>
+                <input type="text" class="form-control" [(ngModel)]="category.categoryNameAr">
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>{{'CategoryNameEn' | translate}}</label>
+                <input type="text" class="form-control" [(ngModel)]="category.categoryNameEn">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <p class="text-right">
+          <button type="button" nz-button nzType="primary" *ngIf="!categoryCreate"
+            (click)="editCategory()" [disabled]="!category.categoryNameEn || !category.categoryNameAr">
+            {{'SaveChanges' | translate}}
+          </button>
+          <button type="button" nz-button nzType="primary" *ngIf="categoryCreate"
+            (click)="insertCategory()" [disabled]="!category.categoryNameEn || !category.categoryNameAr">
+            {{'InsertClassification' | translate}}
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,58 @@
+<div class="main-container">
+  <div class="meeting-item" *ngFor="let meeting of meetingList">
+    <div class="meeting-item__calendar">
+      <div class="meeting-item__calendar-text">
+        {{ meeting.date.getDate() }}
+      </div>
+      <svg class="meeting-item__calendar-icon">
+        <use xlink:href="assets\images\sprite-2.svg#icon-calendar-o"></use>
+      </svg>
+    </div>
+    <div class="meeting-item__head">
+      <div class="meeting-item__title">{{ meeting.title | maxLenth: 27 }}</div>
+      <div class="meeting-item__date">{{ meeting.date | date }}</div>
+    </div>
+    <div class="meeting-item__subject">
+      {{ meeting.subject | maxLenth: 240 }}
+    </div>
+    <div class="meeting-item__state">
+      <div [ngSwitch]="meeting?.meetingState">
+        <div *ngSwitchCase="meetingState._1" class="meeting-item__state-next">
+          {{ "Next1" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="meetingState._2"
+          class="meeting-item__state-current"
+        >
+          {{ "InProgress" | translate }}
+        </div>
+        <div
+          *ngSwitchCase="meetingState._3"
+          class="meeting-item__state-finished"
+        >
+          {{ "Finished" | translate }}
+        </div>
+        <div *ngSwitchCase="meetingState._4" class="meeting-item__state-closed">
+          {{ "Closed" | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="meeting-item__actions">
+      <i
+        class="control-icon"
+        nz-icon
+        nzType="ellipsis"
+        nz-popover
+        [nzPopoverContent]="controlTmp"
+        nzPopoverPlacement="bottom"
+      ></i>
+      <ng-template #controlTmp>
+        <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+          <li (click)="navigateToMeeting(meeting.id)">
+            {{ "EditMeeting" | translate }}
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+</div>

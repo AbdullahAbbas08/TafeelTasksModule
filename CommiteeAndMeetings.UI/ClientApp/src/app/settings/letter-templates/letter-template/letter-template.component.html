@@ -1,0 +1,80 @@
+<div class="settings-add-edit">
+    <form #HeaderAndFooterForm="ngForm">
+        <p class="head-title text-center">{{'LetterTemplatesHeaderAndFooter' | translate}}</p>
+        <div class="box-shadow">
+         <div class="custom-form">
+             <div class="form-box">
+                 <div class="row">
+                     <div class="col-lg-3">
+                       <nz-form-item>
+                           <nz-form-control>
+                             <nz-form-label nzRequired>{{ 'HeaderAndFooterType'|translate }}</nz-form-label>
+                             <nz-select [(ngModel)]="letterTemplate.headerAndFooterType" name="typeIds">
+                                 <nz-option [nzValue]="1" nzLabel="{{'header' | translate}}"></nz-option>
+                                 <nz-option [nzValue]="2" nzLabel="{{'footer' | translate}}"></nz-option>
+                             </nz-select>
+                           </nz-form-control>
+                         </nz-form-item>
+                         <nz-form-item>
+                          <nz-form-control [nzErrorTip]="nameTpl">
+                            <nz-form-label nzRequired>{{'HeaderAndfooterNameAr' | translate}}</nz-form-label>
+                            <input nz-input type="text" name="letterTemplateNameAr" placeholder="" required [(ngModel)]="letterTemplate.titleAR" autocomplete="off">
+                          </nz-form-control>
+                         </nz-form-item>
+                         <nz-form-item>
+                          <nz-form-control [nzErrorTip]="nameTpl">
+                            <nz-form-label nzRequired>{{'HeaderAndfooterNameEn' | translate}}</nz-form-label>
+                            <input nz-input type="text" name="letterTemplateNameEn" required placeholder="" [(ngModel)]="letterTemplate.titleEn" autocomplete="off" />
+                            <ng-template #nameTpl let-control>
+                              <ng-container *ngIf="control.hasError('required')">
+                                {{'PleaseInputLetterName'|translate}}
+                              </ng-container>
+                            </ng-template>
+                          </nz-form-control>
+                        </nz-form-item>
+                         <nz-form-item>
+                          <nz-form-control [nzErrorTip]="meetingTpl">
+                            <nz-form-label nzRequired>{{ 'MeetingList'|translate }}</nz-form-label>
+                            <nz-select dir="{{this.translate.currentLang === 'ar' ? 'rtl': 'ltr' }}"
+                            [(ngModel)]="meetingList"
+                            required
+                            [nzSize]="size" nzMode="multiple"
+                            name="meetingsIds"
+                            nzShowSearch
+                            nzServerSearch
+                            (ngModelChange)="onChangeMeetingList($event)"
+                            (nzOnSearch)="onSearch(lookupTypes.MeetingsList, $event)">
+                              <ng-container *ngFor="let meeting of MeetingListLookup$">
+                                <nz-option *ngIf="!isLoading" [nzValue]="meeting.id" [nzLabel]="meeting.name"></nz-option>
+                              </ng-container>
+                              <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                                <i nz-icon nzType="loading" class="loading-icon"></i>
+                                {{ "LoadingData" | translate }}
+                              </nz-option>
+                            </nz-select>
+                            <ng-template #meetingTpl let-control>
+                              <ng-container *ngIf="control.hasError('required')">
+                                {{'pleaseselectmeeting'|translate}}
+                              </ng-container>
+                            </ng-template>
+                          </nz-form-control>
+                        </nz-form-item>
+                        <button type="button" (click)="editHeaderAndFooter()" nz-button nzType="primary" *ngIf="!letterCreate"
+                        [disabled]="HeaderAndFooterForm.invalid">
+                        {{'SaveChanges' | translate}}
+                      </button>
+                      <button type="button" (click)="insertHeaderAndFooter()" nz-button nzType="primary" *ngIf="letterCreate"
+                      [disabled]="HeaderAndFooterForm.invalid">
+                        {{'InsertLetter' | translate}}
+                      </button>
+                     </div>
+                     <div class="col-lg-9">
+                      <app-ck-editor (ready)="initEditor($event)" [config]="editorConfig" *ngIf="letterTemplate"></app-ck-editor>
+                     </div>
+                 </div>
+             </div>
+         </div>
+        </div>
+       </form>
+       
+</div>

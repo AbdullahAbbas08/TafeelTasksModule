@@ -1,0 +1,47 @@
+<div id="fullChart">
+  <div class="div-wrapper px-2"  id="systemChart">
+    <div class="d-flex justify-content-between">
+      <h6 class="mb-3">
+        <i nz-icon nzType="solution"></i>
+        <span class="mx-2">{{'tasksStatictis'|translate}}</span>
+      </h6>
+      <ng-container *appHasAuthUserViewPermission="['DisplayEmployeeStatistics']">
+        <i nzTooltipTitle="{{'userStatistics' | translate}}" nzTooltipPlacement="bottom" nz-tooltip nz-icon nzType="fullscreen" *ngIf="!status && !committeeId" nzTheme="outline" style="cursor:pointer;font-size: 19px;color: #0075c9;"
+        [routerLink]="['./taskStatistics']"></i>
+      </ng-container>
+    </div>
+     <div class="d-flex justify-content-center">
+      <div id="main" style="width:300px;height:280px"></div>
+     </div>
+      <div class="statictis-items">
+        <div class="d-flex justify-content-around align-items-center" >
+            <div class="d-flex align-item-center" *appHasAuthUserViewPermission="['allTasks']">
+              <span [ngClass]="status ? 'stats-with-bg cyan-bg  w-font ' :  'stats-with-bg cyan-bg'" class="stats-with-bg cyan-bg">{{statisticsCount[0]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'AllTasks' | translate}}</span>
+            </div>
+            <div class="d-flex align-item-center" *appHasAuthUserViewPermission="['lateTasks']">
+              <span [ngClass]="status ? 'stats-with-bg red-bg  w-font ' :  'stats-with-bg red-bg '" class="stats-with-bg red-bg ">{{statisticsCount[1]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'LateTasks' | translate}}</span>
+            </div>
+            <div class="d-flex align-item-center ">
+              <span [ngClass]="status ? 'stats-with-bg yellow-bg w-font ' :  'stats-with-bg yellow-bg'">{{statisticsCount[2]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'ToBeImplementdTasks' | translate}}</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-around align-items-center mt-3" *appHasAuthUserViewPermission="['closedTasks','assisstantTasks','taskToView']">
+          <div class="d-flex align-item-center" *appHasAuthUserViewPermission="['closedTasks']">
+              <span [ngClass]="status ? 'stats-with-bg green-bg w-font ' :  'stats-with-bg green-bg'" class="stats-with-bg green-bg">{{statisticsCount[3]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'ClosedTasks' | translate}}</span>
+            </div>
+            <div class="d-flex align-item-center" *appHasAuthUserViewPermission="['assisstantTasks']">
+              <span [ngClass]="status ? 'stats-with-bg black-bg w-font ' :  'stats-with-bg black-bg'">{{statisticsCount[4]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'AssistantUserTasks' | translate}}</span>
+            </div>
+            <div class="d-flex align-item-center" *appHasAuthUserViewPermission="['taskToView']">
+              <span [ngClass]="status ? 'stats-with-bg gray-bg w-font ' :  'stats-with-bg gray-bg'">{{statisticsCount[5]?.count}}</span>
+               <span [ngClass]="status ? 'stats-text w-font' : 'stats-text'">{{'Taskstoview' | translate}}</span>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>

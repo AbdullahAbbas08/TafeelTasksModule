@@ -1,0 +1,222 @@
+<div class="side-menu-wrapper">
+  <div class="d-flex align-items-center px-4 py-3">
+    <div class="toggle-btn">
+      <button nz-button nzType="primary" (click)="toggleCollapsed()">
+        <i
+          nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          style="color: #ffffff"
+        ></i>
+      </button>
+    </div>
+    <div *ngIf="!isCollapsed" class="mx-2">
+      <strong>{{ "CommitteeData" | translate }}</strong>
+    </div>
+  </div>
+
+  <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <li
+      [routerLink]="['/committees/', routeId]"
+      nz-menu-item
+      nz-tooltip
+      [nzTooltipTitle]="(isCollapsed ? 'GeneralLook' : '') | translate"
+      (click)="closeFilter()"
+    >
+      <i nz-icon nzType="container"></i>
+      <span>{{ "GeneralLook" | translate }}</span>
+    </li>
+    <li
+      [routerLink]="['statistics']"
+      nz-menu-item
+      nz-tooltip
+       routerLinkActive="active"
+      [nzTooltipTitle]="(isCollapsed ? 'Statistics' : '') | translate"
+      (click)="closeFilter()"
+    >
+      <i nz-icon nzType="line-chart"></i>
+      <span>{{ "Statistics" | translate }}</span>
+    </li>
+    <!--*appHasAuthUserViewPermission="['ForAllCommitte']"-->
+ 
+      <li 
+      [routerLink]="['attachments']"
+      nz-menu-item
+      nz-tooltip
+     routerLinkActive="active"
+      [nzTooltipTitle]="(isCollapsed ? 'Attachments' : '') | translate"
+      (click)="closeFilter()"
+    >
+      <i nz-icon nzType="paper-clip"></i>
+      <span>{{ "Attachments" | translate }}</span>
+    </li>
+    <li
+      [routerLink]="['users']"
+      nz-menu-item
+      nz-tooltip
+      [nzTooltipTitle]="(isCollapsed ? 'CommitteeUsers' : '') | translate"
+       routerLinkActive="active"
+      (click)="closeFilter()"
+    >
+      <i nz-icon nzType="usergroup-add"></i>
+      <span>{{ "CommitteeUsers" | translate }}</span>
+    </li>
+    <ng-container *ngIf="enableTransaction">
+      <li
+      nz-submenu
+      *ngIf="permittedInboxTransactions || permittedOutboxTransactions"
+      [nzTitle]="'TransactionsBox' | translate"
+      nzIcon="inbox"
+       routerLinkActive="active"
+      (click)="closeFilter()"
+    >
+      <ul>
+        <li
+          [routerLink]="['transactions/inbox']"
+          *ngIf="permittedInboxTransactions"
+          nz-menu-item
+          (click)="closeFilter()"
+        >
+          <svg width="20" height="20" viewBox="0 0 23.952 23.824">
+            <g transform="translate(-178.707 -179.65)">
+              <path
+                class="inbox"
+                d="M196.9,190.6a.443.443,0,0,0-.544.7l4.168,3.242a.443.443,0,0,0,.544,0l4.168-3.242a.443.443,0,0,0-.544-.7l-3.453,2.685v-13.2a.443.443,0,0,0-.886,0v13.2Z"
+                transform="translate(-10.114)"
+              />
+              <path
+                class="inbox"
+                d="M202.658,204.387v-.01a.417.417,0,0,0-.008-.056v0a.409.409,0,0,0-.015-.051l0-.01a.5.5,0,0,0-.023-.051h0a.48.48,0,0,0-.03-.048l0,0-4.743-6.508a.443.443,0,0,0-.358-.182H192.5a.443.443,0,0,0,0,.886h4.751l4.1,5.621h-5.659a.443.443,0,0,0-.443.443v2.7h-9.118v-2.7h0a.443.443,0,0,0-.443-.443h-5.659l4.1-5.621h4.751a.443.443,0,0,0,0-.886h-4.977a.443.443,0,0,0-.358.182l-4.743,6.508,0,.008c-.009.013-.018.027-.026.041l-.007.015a.325.325,0,0,0-.016.035c0,.006-.005.013-.007.019s-.007.023-.01.035,0,.011,0,.017a.464.464,0,0,0-.007.049c0,.008,0,.016,0,.024s0,.012,0,.019v8.923a.443.443,0,0,0,.443.443h23.066a.443.443,0,0,0,.443-.443v-8.923C202.659,204.406,202.659,204.4,202.658,204.387Zm-.885,8.509h-22.18v-8.037h5.644v2.7a.443.443,0,0,0,.443.443h10a.443.443,0,0,0,.443-.443v-2.7h5.645Z"
+                transform="translate(0 -10.308)"
+              />
+            </g>
+          </svg>
+          <span class="mx-2">{{ "TransactionsInbox" | translate }}</span>
+        </li>
+        <li
+          [routerLink]="['transactions/outbox']"
+          *ngIf="permittedOutboxTransactions"
+          nz-menu-item
+          (click)="closeFilter()"
+        >
+          <svg width="20" height="20" viewBox="0 0 23.952 23.824">
+            <defs>
+              <style>
+                .outbox-1 {
+                  transform: rotate(180deg) translate(-392px, -375px);
+                }
+              </style>
+            </defs>
+            <g transform="translate(-178.707 -179.65)">
+              <path
+                class="outbox outbox-1"
+                d="M196.9,190.6a.443.443,0,0,0-.544.7l4.168,3.242a.443.443,0,0,0,.544,0l4.168-3.242a.443.443,0,0,0-.544-.7l-3.453,2.685v-13.2a.443.443,0,0,0-.886,0v13.2Z"
+                transform="translate(-10.114)"
+              />
+              <path
+                class="outbox"
+                d="M202.658,204.387v-.01a.417.417,0,0,0-.008-.056v0a.409.409,0,0,0-.015-.051l0-.01a.5.5,0,0,0-.023-.051h0a.48.48,0,0,0-.03-.048l0,0-4.743-6.508a.443.443,0,0,0-.358-.182H192.5a.443.443,0,0,0,0,.886h4.751l4.1,5.621h-5.659a.443.443,0,0,0-.443.443v2.7h-9.118v-2.7h0a.443.443,0,0,0-.443-.443h-5.659l4.1-5.621h4.751a.443.443,0,0,0,0-.886h-4.977a.443.443,0,0,0-.358.182l-4.743,6.508,0,.008c-.009.013-.018.027-.026.041l-.007.015a.325.325,0,0,0-.016.035c0,.006-.005.013-.007.019s-.007.023-.01.035,0,.011,0,.017a.464.464,0,0,0-.007.049c0,.008,0,.016,0,.024s0,.012,0,.019v8.923a.443.443,0,0,0,.443.443h23.066a.443.443,0,0,0,.443-.443v-8.923C202.659,204.406,202.659,204.4,202.658,204.387Zm-.885,8.509h-22.18v-8.037h5.644v2.7a.443.443,0,0,0,.443.443h10a.443.443,0,0,0,.443-.443v-2.7h5.645Z"
+                transform="translate(0 -10.308)"
+              />
+            </g>
+          </svg>
+          <span class="mx-2">{{ "TransactionsOutbox" | translate }}</span>
+        </li>
+      </ul>
+    </li>
+    </ng-container>
+    <li
+      [routerLink]="['tasks']"
+      nz-menu-item
+      nz-tooltip
+       routerLinkActive="active"
+      [nzTooltipTitle]="(isCollapsed ? 'Tasks' : '') | translate"
+      (click)="closeFilter()"
+    >
+      <i nz-icon nzType="solution"></i>
+      <span>{{ "Tasks" | translate }}</span>
+    </li>
+    <li [routerLink]="['votes']"  (click)="closeFilter()"  routerLinkActive="active" nz-menu-item nz-tooltip>
+      <!-- <i class="icon-electronic-vote"></i> -->
+      <svg width="28" height="28" viewBox="0 0 28 28">
+        <defs>
+          <style>
+            .vote-a {
+              fill: #ffffff;
+            }
+
+            .vote-b,
+            .vote-c {
+              fill: none;
+              stroke: #0075c9;
+              stroke-linejoin: round;
+            }
+
+            .vote-b {
+              fill-rule: evenodd;
+            }
+          </style>
+        </defs>
+        <g transform="translate(-633 -160)">
+          <rect
+            class="vote-a"
+            width="28"
+            height="28"
+            transform="translate(633 160)"
+          />
+          <g transform="translate(-451.092 -16)">
+            <path
+              class="vote-b"
+              d="M1112.578,202.671l-1.035-1.792a1.093,1.093,0,0,1,.4-1.5h0a1.093,1.093,0,0,1,1.5.4l2.233,3.867,1.186,2.055"
+              transform="translate(-13.079 -10.351)"
+            />
+            <path
+              class="vote-b"
+              d="M1108.475,205.04l-1.035-1.792a1.093,1.093,0,0,1,.4-1.5h0a1.092,1.092,0,0,1,1.5.4l1.035,1.792"
+              transform="translate(-10.871 -11.626)"
+            />
+            <path
+              class="vote-b"
+              d="M1104.371,207.409l-1.035-1.792a1.092,1.092,0,0,1,.4-1.5h0a1.093,1.093,0,0,1,1.5.4l1.035,1.792"
+              transform="translate(-8.663 -12.901)"
+            />
+            <path
+              class="vote-b"
+              d="M1100.207,209.313l-4.391-1.18a1.1,1.1,0,0,1-.775-1.343h0a1.091,1.091,0,0,1,1.34-.774l2.03.546-4.011-6.947a1.092,1.092,0,0,1,.4-1.5h0a1.092,1.092,0,0,1,1.5.4l3.267,5.658"
+              transform="translate(-3.854 -9.672)"
+            />
+            <rect
+              class="vote-c"
+              width="9.814"
+              height="3.52"
+              transform="translate(1095.816 199.951) rotate(-30)"
+            />
+            <rect
+              class="vote-c"
+              width="6.124"
+              height="6.124"
+              transform="translate(1087.091 180)"
+            />
+            <rect
+              class="vote-c"
+              width="6.124"
+              height="6.124"
+              transform="translate(1095.176 180)"
+            />
+            <rect
+              class="vote-c"
+              width="6.124"
+              height="6.124"
+              transform="translate(1103.26 180)"
+            />
+            <path
+              class="vote-b"
+              d="M1090.252,185.283l1.068,1.068,2.136-2.136"
+              transform="translate(-1.701 -2.268)"
+            />
+          </g>
+        </g>
+      </svg>
+      <span>{{ (isCollapsed ? "" : "CommitteeVotings") | translate }}</span>
+    </li>
+  </ul>
+</div>

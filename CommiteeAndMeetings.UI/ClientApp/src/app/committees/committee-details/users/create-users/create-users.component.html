@@ -1,0 +1,89 @@
+<form nz-form nzLayout="vertical" [formGroup]="UserForm" class="popup-form">
+  <div class="mt-auto">
+    <nz-form-item>
+        <nz-form-control>
+          <nz-form-label class="font-weight-bold">{{ 'SelectUserType'|translate }}</nz-form-label>
+          <nz-select [(ngModel)]="selectedUser" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectChange()">
+              <nz-option nzValue="{{'Internal' | translate}}" nzLabel="{{'Internal' | translate}}"></nz-option>
+              <nz-option nzValue="{{'External' | translate}}" nzLabel="{{'External' | translate}}"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-form-label class="font-weight-bold">{{ 'selectedUserState'|translate }}</nz-form-label>
+          <nz-select [(ngModel)]="selectedUserState" [ngModelOptions]="{standalone: true}">
+              <nz-option [nzValue]="true" nzLabel="{{'BasicUser' | translate}}"></nz-option>
+              <nz-option [nzValue]="false" nzLabel="{{'spareUser' | translate}}"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="roleTpl">
+          <nz-form-label class="font-weight-bold">{{ 'SelectRole'|translate }}</nz-form-label>
+          <nz-select  formControlName="roleId">
+            <ng-container *ngFor="let role of UserRoles">
+              <nz-option *ngIf="!isLoading" nzValue="{{role.id}}" nzLabel="{{role.name}}"></nz-option>
+            </ng-container>
+          </nz-select>
+          <ng-template #roleTpl let-control class="mt-3">
+            <ng-container *ngIf="control.hasError('required')">
+              {{'PleaseSelectRole'|translate}}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="selectedUser == 'Internal' || selectedUser == 'داخلي'">
+        <nz-form-label class="font-weight-bold">{{ 'SelectUser'|translate }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="userTpl">
+          <nz-select dir="{{this.translate.currentLang === 'ar' ? 'rtl': 'ltr' }}"
+          [ngClass]="{ rtl: currentLang === 'ar' }"
+          nzShowSearch
+          nzServerSearch
+          (nzOnSearch)="onSearch(lookupTypes.InternalUsers, $event)"
+          formControlName="userId"
+          >
+            <ng-container *ngFor="let internal of InternalUsers">
+              <nz-option *ngIf="!isLoading" nzValue="{{internal.id}}" nzLabel="{{internal.name}}"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+          <ng-template #userTpl let-control class="mt-3">
+            <ng-container *ngIf="control.hasError('required')">
+              {{'PleaseSelectUser'|translate}}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="selectedUser === 'External' || selectedUser == 'خارجي'">
+        <nz-form-label class="font-weight-bold">{{ 'SelectUser'|translate }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="userTpl">
+          <nz-select dir="{{this.translate.currentLang === 'ar' ? 'rtl': 'ltr' }}"
+          [ngClass]="{ rtl: currentLang === 'ar' }"
+          nzShowSearch
+          nzServerSearch
+          formControlName="userId"
+          (nzOnSearch)="onSearch(lookupTypes.ExternalUsers, $event)">
+            <ng-container *ngFor="let external of ExternalUsers">
+              <nz-option *ngIf="!isLoading" nzValue="{{external.id}}" nzLabel="{{external.name}}"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+          <ng-template #userTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{'PleaseSelectUser'|translate}}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    <button type="button" class="mx-2" nz-button (click)="close()">{{'Close'|translate}}</button>
+    <button type="submit" (click)="createUser()" [nzLoading]="isLoadingUser" [disabled]="!UserForm.valid" nz-button nzType="primary"
+      >{{'CreateNewUser'|translate}}</button>
+  </div>
+</form>

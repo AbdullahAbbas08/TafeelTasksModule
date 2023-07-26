@@ -1,0 +1,144 @@
+<!-- User Data -->
+<form (ngSubmit)="onSave()" [formGroup]="postForm" nz-form nzLayout="vertical" class="popup-form">
+  <nz-form-label [ngClass]="{ rtl: currentLang === 'ar' }">
+    <nz-avatar
+      *ngIf="!userImage"
+      nzSize="large"
+      [nzSrc]="'assets/images/unknown.png'"
+      nzIcon="user"
+    ></nz-avatar>
+    <nz-avatar
+      *ngIf="userImage"
+      nzSize="large"
+      [nzSrc]="'data:image/png;base64,' + userImage"
+      nzIcon="user"
+    ></nz-avatar>
+    &nbsp;
+    <div>
+      <h6 class="user-name">
+        {{ userName ? userName : ("anonymous" | translate) }}
+      </h6>
+      <a
+        class="attach-type-link"
+        nz-button
+        nz-dropdown
+        (click)="createTplModal(tplTitle, tplContent)"
+        >{{ "Privacy" | translate }}<i nz-icon nzSize="small" nzType="down"></i
+      ></a>
+    </div>
+  </nz-form-label>
+
+  <!-- Attachment Description -->
+  <nz-form-item>
+    <nz-form-label>
+      {{ "Description" | translate }}
+    </nz-form-label>
+    <nz-form-control [nzErrorTip]="titleTpl">
+      <textarea
+        nz-input
+        [ngClass]="{ rtl: currentLang === 'ar' }"
+        rows="2"
+        formControlName="description"
+        placeholder=""
+        autocomplete="off"
+      ></textarea>
+      <ng-template #titleTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          {{ "PleaseEnterDescription" | translate }}
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- File Upload -->
+  <div *ngFor="let file of files; let i = index">
+    <p class="file-name" [ngClass]="{ rtl: currentLang === 'ar' }">
+      {{ file.name }}
+      <i
+        class="delete-file"
+        nz-icon
+        nzType="close"
+        (click)="removeSelectedFile(i)"
+      ></i>
+    </p>
+  </div>
+  <p class="mt-3">
+    <a nz-button (click)="fileInput.click()"
+      ><i nz-icon nzType="upload"> </i> {{ "Upload" | translate }}</a
+    >
+    <input
+      hidden
+      type="file"
+      #fileInput
+      (change)="onSelectFile($event)"
+      multiple
+    />
+  </p>
+
+  <!-- Modal for selecting attachment type then users -->
+
+  <ng-template #tplTitle>
+    <span>{{ "SelectPrivacy" | translate }}</span>
+  </ng-template>
+  <ng-template #tplContent>
+    <nz-radio-group formControlName="privacy">
+      <label nz-radio nzValue="public">{{ "Public" | translate }}</label>
+      <label nz-radio nzValue="private">{{
+        "SpecificUsers" | translate
+      }}</label>
+    </nz-radio-group>
+    <!-- Selected Users -->
+    <div class="selected-users">
+      <nz-form-item *ngIf="privacy === 'private'">
+        <nz-form-control [nzErrorTip]="usersTpl">
+          <nz-select
+            [nzPlaceHolder]="'selectedUsers' | translate"
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="selectedUsers"
+            (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+            nzMode="multiple"
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+          >
+            <ng-container *ngFor="let opt of users">
+              <nz-option
+                *ngIf="!isLoading"
+                [nzValue]="opt?.userId"
+                [nzLabel]="
+                  currentLang === 'ar' ? opt?.user.fullNameAr : opt?.user.fullNameEn
+                "
+              ></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              {{ "LoadingData" | translate }}
+            </nz-option>
+          </nz-select>
+          <ng-template #usersTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{ "PleaseSelectTheMembers" | translate }}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </ng-template>
+
+  <!-- Form Footer -->
+  <div class="text-center mt-3">
+    <button type="button" class="mx-2" nz-button (click)="close()">
+      {{ "Cancel" | translate }}
+    </button>
+    <button
+      type="submit"
+      nz-button
+      nzType="primary"
+      [disabled]="!postForm.valid"
+      [nzLoading]="saving"
+      [ngClass]="{ rtl: currentLang === 'ar' }"
+    >
+      {{ "SendAttachment" | translate }}
+    </button>
+  </div>
+</form>

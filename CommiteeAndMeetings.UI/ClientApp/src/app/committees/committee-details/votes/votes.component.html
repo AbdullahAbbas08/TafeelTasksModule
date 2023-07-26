@@ -1,0 +1,16 @@
+<div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div *ngIf="!loadingData">
+    <div *ngFor="let voting of votings">
+      <app-voting-item
+        [item]="voting"
+        [periodState]="validityPeriod.periodState"
+      ></app-voting-item>
+    </div>
+  </div>
+</div>

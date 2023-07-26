@@ -1,0 +1,568 @@
+<div
+  class="main-container"
+  [ngStyle]="{
+    direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr'
+  }"
+>
+  <div class="spinner" *ngIf="loadingData">
+    <ng-template #indicatorTemplate
+      ><i class="spinner-icon" nz-icon nzType="loading"></i
+    ></ng-template>
+    <nz-spin nzSimple [nzIndicator]="indicatorTemplate"> </nz-spin>
+  </div>
+
+  <form
+    nz-form
+    [formGroup]="meetingForm"
+    class="popup-form"
+    nzLayout="vertical"
+    *ngIf="!loadingData"
+  >
+    <!-- Meeting Title -->
+    <nz-form-item>
+      <nz-form-label nzRequired>{{ "Title" | translate }}</nz-form-label>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="suffixIconTitle" nzRequired>
+          <input
+            type="text"
+            nz-input
+            formControlName="title"
+            [placeholder]="'Title' | translate"
+          />
+        </nz-input-group>
+        <ng-template #suffixIconTitle>
+          <i nz-icon nzType="container" nzTheme="outline"></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Meeting Subject -->
+    <nz-form-item>
+      <nz-form-label>{{ "Subject" | translate }}</nz-form-label>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="suffixIconSubject">
+          <textarea
+            formControlName="subject"
+            nz-input
+            rows="3"
+            [placeholder]="'Subject' | translate"
+            nzBorderless
+            [nzAutosize]="{ minRows: 3, maxRows: 3 }"
+          ></textarea>
+        </nz-input-group>
+        <ng-template #suffixIconSubject>
+          <i nz-icon nzType="solution" nzTheme="outline"></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Date & Time -->
+    <div class="row">
+      <div class="col-md-12 col-lg-6 col-xl-3">
+         <div class="marg">
+          <nz-form-label nzRequired>{{ "Date" | translate }}</nz-form-label>
+          <hijri-gregorian-datepicker
+            [placeHolder]="'Date' | translate"
+            [isRequired]="true"
+            [GregLabel]="'Greg' | translate"
+            [hijriLabel]="'Hijri' | translate"
+            [selectedDateType]="selectedDateType"
+            #datePicker
+            (select)="dateSelected($event)"
+            (selectedDateChange)="dateSelected($event)"
+            [readonly]="true"
+            [minHijri]="minHijri"
+            [minGreg]="minGreg"
+            [selectedDate]="meetingDateNgb"
+            [disabled]="
+              !(isCoordinator || isCreator) ||
+              singleMeetingService.meeting?.isFinished ||
+              singleMeetingService.meeting?.isCanceled
+            "
+          >
+          </hijri-gregorian-datepicker>
+         </div>
+      </div>
+
+      <!-- Start Time -->
+      <div class="col-md-12 col-lg-6 col-xl-3" *ngIf="newMeetingDate">
+        <nz-form-item>
+          <nz-form-label nzRequired>{{ "StartTime" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-time-picker
+              [nzPlaceHolder]="'StartTime' | translate"
+              [nzAllowEmpty]="false"
+              [nzSuffixIcon]="suffixIconStartTime"
+              formControlName="startTime"
+              [nzDisabledHours]="getDisabledStartHours"
+              [nzDisabledMinutes]="getdisabledEndMinutes"
+              (ngModelChange)="changeHours($event)"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #suffixIconStartTime>
+          <svg class="svg-icon">
+            <use xlink:href="assets\images\sprite.svg#icon-clock"></use>
+          </svg>
+        </ng-template>
+      </div>
+      <div class="col-md-12 col-lg-6 col-xl-3" *ngIf="!newMeetingDate">
+        <nz-form-item>
+          <nz-form-label nzRequired>{{ "StartTime" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-time-picker
+              [nzPlaceHolder]="'StartTime' | translate"
+              [nzAllowEmpty]="false"
+              [nzSuffixIcon]="suffixIconStartTime"
+              formControlName="startTime"
+              (ngModelChange)="changeHours($event)"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #suffixIconStartTime>
+          <svg class="svg-icon">
+            <use xlink:href="assets\images\sprite.svg#icon-clock"></use>
+          </svg>
+        </ng-template>
+      </div>
+      <!-- End Time -->
+      <div class="col-md-12 col-lg-6 col-xl-3">
+        <nz-form-item>
+          <nz-form-label nzRequired>{{ "EndTime" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-time-picker
+              formControlName="endTime"
+              [nzPlaceHolder]="'EndTime' | translate"
+              [nzAllowEmpty]="false"
+              (ngModelChange)="changeValid($event)"
+              [nzSuffixIcon]="suffixIconEndTime"
+              [nzDisabledHours]="getDisabledHours"
+              [nzDisabledMinutes]="getdisabledMinutes"
+              [nzDisabled]="meetingForm.get('startTime').invalid"
+              nzFormat="HH:mm"
+            ></nz-time-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #suffixIconEndTime>
+          <svg class="svg-icon">
+            <use xlink:href="assets\images\sprite.svg#icon-clock2"></use>
+          </svg>
+        </ng-template>
+      </div>
+
+      <!-- RemindBefore -->
+      <div class="col-md-12 col-lg-6 col-xl-3">
+        <nz-form-item>
+          <nz-form-label>{{ "RemindBefore" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-time-picker
+              formControlName="remindBefore"
+              [nzPlaceHolder]="'RemindBefore' | translate"
+              [nzAllowEmpty]="false"
+              [nzSuffixIcon]="suffixIconAlarm"
+              nzFormat="mm"
+            ></nz-time-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #suffixIconAlarm>
+          <svg class="svg-icon">
+            <use xlink:href="assets\images\sprite.svg#icon-alarm"></use>
+          </svg>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row" *ngIf="repeated && !meetingId">
+      <!-- Repetition Type -->
+      <div class="col-md-12 col-xl-6">
+        <nz-form-item>
+          <nz-form-label>{{ "repeatedType" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              formControlName="repeatedType"
+              [nzPlaceHolder]="'repeatedType' | translate"
+              [nzAllowEmpty]="false"
+            >
+              <nz-option
+                [nzValue]="period._1"
+                [nzLabel]="'Daily' | translate"
+              ></nz-option>
+              <nz-option
+                [nzValue]="period._7"
+                [nzLabel]="'Weekly' | translate"
+              ></nz-option>
+              <nz-option
+                [nzValue]="period._30"
+                [nzLabel]="'Monthly' | translate"
+              ></nz-option>
+              <nz-option
+                [nzValue]="period._365"
+                [nzLabel]="'Yearly' | translate"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <!-- Repetition Times -->
+      <div class="col-md-12 col-xl-6">
+        <nz-form-item>
+          <nz-form-label>{{ "repeatedTimes" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-input-number
+              formControlName="repeatedTimes"
+              [nzPlaceHolder]="'repeatedTimes' | translate"
+              [nzMin]="1"
+              [nzMax]="12"
+              [nzStep]="1"
+            ></nz-input-number>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-template #suffixIconAlarm>
+          <svg class="svg-icon">
+            <use xlink:href="assets\images\sprite.svg#icon-alarm"></use>
+          </svg>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Location & Addresses -->
+    <div class="location-address-wrapper">
+      <div class="item">
+        <nz-form-item>
+          <nz-form-label>{{ "AddMeetingLink" | translate }}</nz-form-label>
+
+          <nz-input-group
+            [nzAddOnAfter]="suffixButton"
+         
+          >
+            <input
+              type="text"
+              nz-input
+              formControlName="meetingUrls"
+              [placeholder]="'AddMeetingLink' | translate"
+              #meetingLink
+            />
+          </nz-input-group>
+          <ng-template #suffixButton>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="addAddress(meetingLink.value)"
+              type="button"
+              [disabled]="
+                !(isCoordinator || isCreator) ||
+                singleMeetingService.meeting?.isFinished ||
+                singleMeetingService.meeting?.isCanceled
+              "
+            >
+              {{ "AddLink" | translate }}
+            </button>
+          </ng-template>
+          <ng-template #suffixIconGlobal>
+            <svg class="svg-icon">
+              <use xlink:href="assets\images\sprite.svg#icon-sphere"></use>
+            </svg>
+          </ng-template>
+        </nz-form-item>
+      </div>
+
+      <div class="item">
+        <nz-form-item>
+          <nz-form-label nzRequired>{{ "Location" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-input-group>
+              <input
+                type="text"
+                nz-input
+                formControlName="location"
+                [placeholder]="'Location' | translate"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div class="addresses" *ngIf="onlineAddresses.length >= 1">
+      <div
+        class="address-name"
+        *ngFor="let address of onlineAddresses; let i = index"
+      >
+        <a [href]="address" target="_blank" rel="noopener">{{ address }}</a>
+        <i
+          class="delete-address"
+          nz-icon
+          nzType="close"
+          (click)="removeSelectedAddress(i)"
+        ></i>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="projects">
+          <div class="search-container">
+            <nz-form-item class="item">
+              <nz-form-label>{{ "LinkedTo" | translate }}</nz-form-label>
+              <nz-form-control>
+                <nz-select
+                  [nzPlaceHolder]="'ProjectName' | translate"
+                  nzShowSearch
+                  nzServerSearch
+                  (nzOnSearch)="onSearch(lookupTypes.PROJECTS, $event)"
+                  #selectedProject
+                  formControlName="meetingProjects"
+                  [nzAllowClear]="true"
+                  [nzAutoClearSearchValue]="true"
+                  [(ngModel)]="clearInput"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <ng-container *ngFor="let project of projects">
+                    <nz-option
+                      *ngIf="!isLoading"
+                      [nzValue]="project?.id"
+                      [nzLabel]="project?.name"
+                    ></nz-option>
+                  </ng-container>
+                  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon nzType="loading" class="loading-icon"></i>
+                    {{ "LoadingData" | translate }}
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <button
+              nz-button
+              nzType="primary"
+              (click)="addProject(selectedProject.value)"
+              class="btn-add"
+              type="button"
+              [disabled]="
+                !(isCoordinator || isCreator) ||
+                singleMeetingService.meeting?.isFinished ||
+                singleMeetingService.meeting?.isCanceled
+              "
+            >
+              {{ "AddProject" | translate }}
+            </button>
+          </div>
+          <div class="addresses" *ngIf="selectedProjects.length >= 1">
+            <div
+              class="address-name"
+              *ngFor="let project of selectedProjects; let i = index"
+            >
+              {{ project.name }}
+              <i
+                class="delete-address"
+                nz-icon
+                nzType="close"
+                (click)="removeSelectedProject(i)"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="projects">
+          <div>
+            <nz-form-item class="item">
+              <nz-form-label> {{ "AddActualLocation" | translate }}</nz-form-label>
+    
+              <nz-input-group
+                [nzAddOnAfter]="suffixButton22"
+                [nzPrefix]="suffixIconLocation"
+              >
+                <input
+                  type="text"
+                  nz-input
+                  formControlName="ActualLocation"
+                  [placeholder]="'ActualLocation' | translate"
+                  #ActualLocation
+                />
+              </nz-input-group>
+              <ng-template #suffixButton22>
+                <button
+                  nz-button
+                  nzType="primary"
+                  (click)="addActualLocation(ActualLocation.value)"
+                  type="button"
+                  [disabled]="
+                    !(isCoordinator || isCreator) ||
+                    singleMeetingService.meeting?.isFinished
+                    || actualLocation.length >= 1
+                    || singleMeetingService.meeting?.isCanceled
+                  "
+                >
+                  {{ "AddActualLocation" | translate }}
+                </button>
+              </ng-template>
+              <ng-template #suffixIconLocation>
+                <svg class="svg-icon">
+                  <use xlink:href="assets\images\sprite.svg#icon-location"></use>
+                </svg>
+              </ng-template>
+            </nz-form-item>
+          </div>
+        </div>
+    
+        <div class="addresses" *ngIf="actualLocation.length >= 1">
+            <ng-container>
+              <div
+              class="address-name"
+              *ngFor="let address of actualLocation; let i = index"
+            >
+              <a (click)="goToLink(address)"  rel="noopener">{{ address | maxLenth:70 }}</a>
+              <i
+                class="delete-address"
+                nz-icon
+                nzType="close"
+                (click)="removeSelectedLocation(i)"
+              ></i>
+            </div>
+            </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Committees -->
+    <div class="projects">
+      <div class="search-container">
+        <nz-form-item class="item">
+          <nz-form-label>{{ "LinkedToCommitee" | translate }}</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              [nzPlaceHolder]="'CommitteeName' | translate"
+              nzShowSearch
+              nzServerSearch
+              (nzOnSearch)="onSearch(lookupTypes.COMMITTEE, $event)"
+              formControlName="committee"
+            >
+              <ng-container *ngFor="let committee of committees">
+                <nz-option
+                  *ngIf="!isLoading"
+                  [nzValue]="committee?.id"
+                  [nzLabel]="committee?.name"
+                ></nz-option>
+              </ng-container>
+              <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                <i nz-icon nzType="loading" class="loading-icon"></i>
+                {{ "LoadingData" | translate }}
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-wrapper" style="margin-bottom: 20px;">
+      <div class="meeting-options">
+        <nz-form-item>
+          <nz-form-control>
+            <span class="label mx-2">{{ "Security" | translate }}</span>
+            <nz-switch class="mx-2" formControlName="isSecret"></nz-switch>
+            <span class="mx-2" *ngIf="isSecret">{{
+              "Secret" | translate
+            }}</span>
+            <span class="mx-2" *ngIf="!isSecret">{{
+              "NotConfidential" | translate
+            }}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <span class="label mx-2">{{ "Privacy" | translate }}</span>
+            <nz-switch class="mx-2" formControlName="isPublic"></nz-switch>
+            <span class="mx-2" *ngIf="isPublic">{{
+              "Public" | translate
+            }}</span>
+            <span class="mx-2" *ngIf="!isPublic">{{
+              "NotPublic" | translate
+            }}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <span class="label mx-2">{{
+              "RequestConfirmation" | translate
+            }}</span>
+
+            <nz-switch class="mx-2" formControlName="isConfirm"></nz-switch>
+            <span class="mx-2" *ngIf="isConfirm">{{
+              "ConfirmationRequired" | translate
+            }}</span>
+            <span class="mx-2" *ngIf="!isConfirm">{{
+              "NoConfirmationNeeded" | translate
+            }}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="meetingId">
+          <nz-form-control>
+            <span class="label mx-2">{{ "approveMeeting" | translate }}</span>
+
+            <nz-switch
+              class="mx-2"
+              formControlName="approveMeeting"
+              (ngModelChange)="meetingApprovalStateChange($event)"
+            ></nz-switch>
+            <span class="mx-2" *ngIf="approved">{{
+              "Approved" | translate
+            }}</span>
+            <span class="mx-2" *ngIf="!approved">{{
+              "NotApproved" | translate
+            }}</span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div *ngIf="meetingId" class="mb-5">
+      <nz-divider nzDashed="true" class="my-4"></nz-divider>
+      <h2 class="title">{{ "AddCoordinators" | translate }}</h2>
+      <div class="row">
+        <div
+          class="col-md-9 col-12"
+          [ngClass]="{
+            'col-md-12':
+              singleMeetingService.meeting?.closed ||
+              singleMeetingService.meeting?.isFinished ||
+              singleMeetingService.meeting?.isCanceled
+          }"
+        >
+          <app-search-users
+            *ngIf="
+              (isCoordinator || isCreator) &&
+              !singleMeetingService.meeting?.closed &&
+              !singleMeetingService.meeting?.isFinished &&
+              !singleMeetingService.meeting?.isCanceled
+              
+            "
+            [coordinators]="coordinators"
+            (userIdEmitter)="onAddCoordinator($event)"
+          ></app-search-users>
+          <app-users-list
+            [coordinators]="coordinators"
+            [userType]="userType._1"
+          ></app-users-list>
+        </div>
+        <div
+          class="col-md-3 col-12"
+          *ngIf="
+            !singleMeetingService.meeting?.closed &&
+            !singleMeetingService.meeting?.isFinished &&
+            !singleMeetingService.meeting?.isCanceled
+          "
+        >
+          <app-user-schedule
+            [coordinators]="coordinators"
+            [userType]="userType._1"
+            [viewDate]="meetingDate"
+          ></app-user-schedule>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

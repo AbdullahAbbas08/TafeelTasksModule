@@ -1,0 +1,26 @@
+@import '../../../../variables';
+
+.side-menu-wrapper {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  
+  .ant-menu {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    li {
+      .ant-menu-item .ant-menu-item-icon, 
+      .ant-menu-item .anticon, 
+      .ant-menu-submenu-title .ant-menu-item-icon, 
+      .ant-menu-submenu-title .anticon {
+        font-size: 18px !important;
+        [class^="icon-"], [class*=" icon-"] {
+          &:before {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,103 @@
+@import "../../../../variables";
+:host {
+  transition: all 0.3s;
+}
+.item-content {
+  display: flex;
+  flex-wrap: wrap;
+  transition: all 0.5s;
+  backface-visibility: none;
+
+  .item-title {
+    font-size: $fs14;
+  }
+  .saved-Attachment {
+    background-color: #e1f0fe;
+    padding: 0.5rem;
+    margin: 0.8rem 0.3rem 0;
+    border-radius: 0.5rem;
+    opacity: 1;
+    transition: all 0.5s;
+    backface-visibility: none;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+    white-space: nowrap;
+    max-width: 13rem;
+
+    &:hover {
+      overflow-x: auto;
+    }
+    &::-webkit-scrollbar {
+      width: 20px;
+      height: 5px;
+      backface-visibility: none;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: linear-gradient(
+        0.25turn,
+        $persianGreen-white,
+        #eef3f3,
+        $persianGreen-white
+      ); /* color of the tracking area */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(69 162 254); /* color of the scroll thumb */
+      border-radius: 0.3rem; /* roundness of the scroll thumb */
+    }
+  }
+}
+
+.saved-Attachment:hover {
+  opacity: 1;
+  .thumb-list {
+    height: 4.5rem;
+    opacity: 1;
+  }
+
+  .download-thumb {
+    opacity: 1;
+    height: 4.5rem;
+  }
+}
+.att-icon {
+  margin-top: 0rem;
+  margin-bottom: 0.3rem;
+}
+
+.thumb-list {
+  opacity: 0;
+  height: 0;
+  transition: all 0.5s ease-out;
+  margin-bottom: 0.5rem;
+
+  .attachment-thumb {
+    width: 45px;
+    height: 54px;
+    margin: 0.2rem 0.2rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0.2rem 0.6rem rgba($black, 0.5);
+    transition: transform 0.5s ease-out;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &:hover {
+      transform: translateY(-0.2rem) scale(1.03);
+    }
+  }
+}
+
+.download-thumb {
+  opacity: 0;
+  height: 0;
+  transition: all 0.5s ease-out;
+  backface-visibility: hidden;
+  img {
+    height: 4rem;
+  }
+}

@@ -1,0 +1,46 @@
+<div class="online-users">
+  <div class="header d-flex align-items-center justify-content-between">
+    <div class="users-count">
+      <p class="m-0 mb-1">
+        <span>{{'UsersInContactList'|translate}} </span>
+        <span></span>
+      </p>
+      <p class="m-0">{{'AleardyOnlineUsers'|translate}} <span>{{onlineUsersNumber.length}}</span></p>
+    </div>
+  </div>
+  <nz-divider></nz-divider>
+
+  <div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+  [infiniteScrollContainer]="'.ps'"
+>
+<perfect-scrollbar [autoPropagation]="true">
+  <div class="online-users-list">
+    <ng-container *ngFor="let user of onlineUsers; let i = index;">
+        <div class="user-data" *ngIf="user.active == true">
+          <div class="img-wrapper">
+            <img [src]="user.user?.profileImage ? 'data:image/png;base64,'+user.user?.profileImage:'../../../../assets/images/unknown.png'" />
+            <span [ngClass]="user.isLogin ? 'active-state': 'notActive-state'"></span>
+          </div>
+          <div class="user-name">
+            <h5 class="m-0" nz-tooltip [nzTooltipTitle]="users">{{this.translateService.currentLang === 'ar' ? (user.user?.fullNameAr | maxLenth:20) : (user.user?.fullNameEn | maxLenth:20)}}</h5>
+            <!-- <h6 class="m-0">{{this.translateService.currentLang === 'ar'? user.commiteeRoles[0].roleNameAR : user.commiteeRoles[0].roleNameEn}}</h6> -->
+            <ng-template #users>
+              <span>{{this.translateService.currentLang === 'ar' ? user.user?.fullNameAr : user.user?.fullNameEn}}</span>
+            </ng-template>
+          </div>
+        </div>
+      <nz-divider nzDashed *ngIf="i < onlineUsers?.length - 1"></nz-divider>
+    </ng-container>
+  </div>
+</perfect-scrollbar>
+</div>
+
+  <div class="text-center font-weight-bold mt-3">
+    <p class="mb-0" *ngIf="onlineUsers.length == 0">لا يوجد أعضاء</p>
+  </div>
+</div>

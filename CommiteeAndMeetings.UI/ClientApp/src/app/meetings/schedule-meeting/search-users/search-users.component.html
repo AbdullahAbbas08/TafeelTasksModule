@@ -1,0 +1,161 @@
+<div class="search-container">
+  <nz-slider
+    class="slider"
+    [nzMarks]="marks"
+    [nzStep]="50"
+    [(ngModel)]="searchValue"
+    [nzIncluded]="false"
+    [nzTooltipVisible]="'never'"
+    (ngModelChange)="onChange($event)"
+  ></nz-slider>
+  <nz-form-item class="item">
+    <nz-form-control>
+      <nz-select
+        nzMode="multiple"
+        [nzPlaceHolder]="'AddToList' | translate"
+        nzShowSearch
+        nzServerSearch
+        nzAutoClearSearchValue
+        [(ngModel)]="listOfSelectedValue"
+        [ngModelOptions]="{ standalone: true }"
+        (nzOnSearch)="onSearch($event)"
+        (ngModelChange)="checkUser($event)"
+        #selectedUser
+      >
+        <ng-container *ngFor="let user of users">
+          <nz-option
+            *ngIf="!isLoading"
+            [nzValue]="user?.id"
+            [nzHide]="!isNotSelected(user.id)"
+            [nzLabel]="user?.name"
+          ></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i>
+          {{ "LoadingData" | translate }}
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    class="add-btn"
+    nz-button
+    nzType="primary"
+    (click)="addUsers(selectedUser.value)"
+  >
+    <svg class="add-icon">
+      <use xlink:href="assets\images\sprite-3.svg#icon-person_add_alt_1"></use>
+    </svg>
+  </button>
+  <button
+  class="committee-btn org-btn"
+  nzTooltipTitle="إضافة اعضاء من الإدارات" nzTooltipPlacement="bottom" nz-button nz-tooltip
+  nzType="primary"
+  (click)="
+    getAllOrganizations(); openOrgMembersPopup(orgTitle, orgContent)
+  "
+  *ngIf="userType === checkType._2"
+>
+<span nz-icon nzType="usergroup-add" nzTheme="outline" style="font-size: 23px;
+font-weight: bold;"></span>
+</button>
+  <button
+  class="comm-btn"
+  nzTooltipTitle="إضافة أعضاء من اللجنة" nzTooltipPlacement="bottom" nz-button nz-tooltip
+  nzType="primary"
+    (click)="
+      getCommitteeMembers(); openCommiteeMembersPopup(tplTitle, tplContent)
+    "
+    *ngIf="userType === checkType._2 && singleMeeting.meeting.committeId"
+  >
+    <svg class="committee-icon">
+      <use xlink:href="assets\images\sprite-3.svg#icon-groups"></use>
+    </svg>
+  </button>
+</div>
+
+<!-- Modal for Adding Committee Members -->
+<ng-template #orgTitle>
+  <span>{{
+    translate.currentLang == "ar"
+      ? "إضافة أعضاء من الإدارات"
+      : "Add Members From Organizations"
+  }}</span>
+</ng-template>
+<ng-template #orgContent let-ref="modalRef" (nzAfterClose)="onCloseModal()">
+  <nz-select [ngClass]="{ rtl: currentLang === 'ar' }" nzPlaceHolder="" nzShowSearch nzServerSearch
+  (nzOnSearch)="orgSearch(lookupTypes.ALLORGANIZATION, $event)" style="width: 100%; margin: 5px;"
+  [(ngModel)]="selectedOrganization" nzMode="multiple" >
+  <ng-container *ngFor="let opt of organizations">
+      <nz-option [nzValue]="opt.id" [nzHide]="!isNotOrgSelected(opt.id)" [nzLabel]="opt.name"></nz-option>
+  </ng-container>
+  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+      <i nz-icon nzType="loading" class="loading-icon"></i>
+      {{ "LoadingData" | translate }}
+  </nz-option>
+</nz-select>
+<button
+target="_blank"
+nz-button
+class="item-button"
+nzBlock
+(click)="addOrgUsers(selectedOrganization); ref.destroy()"
+[disabled]="selectedOrganization?.length == 0"
+>
+{{ translate.currentLang == "ar" ? "إضافة" : "Add" }}
+</button>
+</ng-template>
+<ng-template #tplTitle>
+  <span>{{
+    translate.currentLang == "ar"
+      ? "إضافــة من أعضاء اللجنة"
+      : "Add From Committee Members"
+  }}</span>
+</ng-template>
+<ng-template>
+  
+</ng-template>
+<ng-template #tplContent let-ref="modalRef">
+  <div *ngIf="committeeMembers.length === 0" class="noUsers">
+    {{
+      translate.currentLang == "ar"
+        ? "لا يوجد أعضاء للإضافة"
+        : "No Users to Be Added"
+    }}
+  </div>
+  <div *ngIf="committeeMembers.length > 0">
+    <div
+      *ngFor="let member of committeeMembers"
+      class="user-item-container"
+      [ngClass]="{ rtl: translate.currentLang == 'ar' }"
+    >
+      <div class="user-data">
+        <div class="user-name">
+          {{
+            member?.user?.fullNameAr
+              ? member?.user?.fullNameAr
+              : ("anonymous" | translate)
+          }}
+        </div>
+      </div>
+
+      <label
+        nz-checkbox
+        [ngModel]="false"
+        (ngModelChange)="addRemoveCommitteeUsers($event, member.userId)"
+      >
+      </label>
+    </div>
+  </div>
+
+  <button
+    target="_blank"
+    nz-button
+    class="item-button"
+    nzBlock
+    (click)="addUsers(selectedCommitteeMembersIds); ref.destroy()"
+    [disabled]="committeeMembers.length == 0"
+  >
+    {{ translate.currentLang == "ar" ? "حـفـظ" : "Save" }}
+  </button>
+</ng-template>

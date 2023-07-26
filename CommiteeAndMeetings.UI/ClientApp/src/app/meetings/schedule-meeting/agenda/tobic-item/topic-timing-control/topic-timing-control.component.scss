@@ -1,0 +1,142 @@
+@import "./../../../../../../variables";
+
+.meeting-timing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 6rem;
+  font-size: 13px;
+  & > * {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__clock {
+    margin-bottom: 0.6rem;
+    color: $silver;
+  }
+
+  &__clock-running {
+    color: $persianBlue;
+  }
+
+  &__clock-warning {
+    color: $darkYellow;
+  }
+
+  &__clock-completed {
+    color: $persianGreen-med;
+  }
+
+  &__clock-alarm {
+    color: darkRed;
+  }
+
+  &__clock-wrapper {
+    padding: 0.2rem;
+    color: currentColor;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    margin-bottom: 0.4rem;
+  }
+
+  &__timer {
+    color: currentColor;
+    width: 5rem;
+  }
+
+  &__countdown {
+    border: 1px solid currentColor;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+  }
+
+  &__countup {
+    border: none;
+    color: white;
+    background-color: darkred;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+  }
+
+  &__text {
+    color: currentColor;
+  }
+
+  &__clock-icon {
+    height: 1.6rem;
+    width: 1.6rem;
+    fill: currentColor;
+  }
+
+  &__pause {
+    margin-bottom: 0.6rem;
+  }
+
+  &__next {
+  }
+
+  &__pause-icon {
+    height: 1rem;
+    width: 1rem;
+    fill: #fff;
+    cursor: pointer;
+  }
+
+  &__resume-icon {
+    height: 1.4rem;
+    width: 1.4rem;
+    fill: #fff;
+    cursor: pointer;
+  }
+
+  &__pause-btn,
+  &__pause-btn:disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: $persianBlue;
+    margin-bottom: 0.3rem;
+  }
+
+  &__resume-btn,
+  &__resume-btn:disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: $persianBlue;
+    margin-bottom: 0.3rem;
+  }
+
+  &__pause-text {
+    color: $persianBlue;
+  }
+
+  &__next-icon {
+    height: 1.3rem;
+    width: 1.3rem;
+    fill: darkRed;
+  }
+
+  &__next-btn,
+  &__next-btn:disabled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid rgb(185, 4, 4);
+    margin-bottom: 0.3rem;
+  }
+
+  &__next-text {
+    color: rgb(185, 4, 4);
+  }
+}

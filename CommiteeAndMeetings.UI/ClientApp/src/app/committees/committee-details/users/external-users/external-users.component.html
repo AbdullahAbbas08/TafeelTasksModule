@@ -1,0 +1,506 @@
+<div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div
+    class="members d-flex align-items-center justify-content-between"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseExample"
+  >
+    <p class="mb-0 mr-2 font-weight-bold">
+      {{ "InternalUser" | translate }}
+      <span>{{internalUsers.length}}</span>
+    </p>
+    <i nz-icon nzType="caret-up" *ngIf="!isCollapsed" nzTheme="outline"></i>
+    <i nz-icon nzType="caret-down" *ngIf="isCollapsed" nzTheme="outline"></i>
+  </div>
+  <div [(ngbCollapse)]="isCollapsed">
+    <div class="card" *ngIf="!loadingData">
+      <div class="card-body">
+        <ng-container *ngFor="let users of AllUsers; let i = index">
+          <ng-container *ngIf="!users.user?.externalUser">
+            <div class="users" [ngClass]="users.commiteeRoles[users.commiteeRoles.length - 1].delegated == true ? 'with-cursor':'without-cursor'">
+              <div
+                class="d-flex align-items-center justify-content-between "
+                (click)="delagateToggle[i] = !delagateToggle[i]"
+              >
+                <div class="user-details d-flex align-items-center">
+                    <div class="img-wrapper position-relative">
+                        <img [src]="users.user?.profileImage ? 'data:image/png;base64,'+users.user?.profileImage:'../../../assets/images/unknown.png'" class="img-fluid" />
+                        <span [ngClass]="users.isLogin ? 'active-state': 'notActive-state'" *ngIf="users.active == true"></span>
+                    </div>
+                    <div class="user-content mx-2">
+                       <p class="mb-0 font-weight-bold" nz-tooltip [nzTooltipTitle]="internalUser">{{this.translateService.currentLang === 'ar' ? (users.user?.fullNameAr | maxLenth: 13 ) : (users.user?.fullNameEn | maxLenth: 15)}}</p>
+                       <ng-template #internalUser>
+                        <span>{{this.translateService.currentLang === 'ar' ? users.user?.fullNameAr : users.user?.fullNameEn}}</span>
+                      </ng-template> 
+                      <p class="mb-0 user-role" >{{'role' | translate}}<span style="font-size: 10px !important;">: {{this.translateService.currentLang === 'ar' ? (users.commiteeRoles[users.commiteeRoles.length-1]?.roleNameAR) : users.commiteeRoles[users.commiteeRoles.length-1]?.roleNameEn}}</span></p>
+                    </div>
+                </div>
+                <nz-divider [nzText]="text" nzType="vertical">
+                  <ng-template #text>
+                    <i
+                      nz-icon
+                      nzType="small-dash"
+                      nzRotate="90"
+                      style="color: #c1c2c1"
+                    ></i>
+                  </ng-template>
+                </nz-divider>
+                <div class="user-details d-flex align-items-center testing">
+                  <i nz-icon nzType="inbox" nzTheme="outline"></i>
+                  <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">
+                      {{ "Email" | translate }}
+                    </p>
+                    <span class="">{{ users.user?.email }}</span>
+                  </div>
+                </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                    <ng-template #text>
+                      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                    </ng-template>
+            </nz-divider>
+            <div class="user-details d-flex align-items-center testing">
+                <i nz-icon nzType="link" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{users.countOfAttachments}} {{'Circulatedfiles' | translate}}</p>
+                </div>
+            </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                <ng-template #text>
+                  <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                </ng-template>
+              </nz-divider>
+              <div class="user-details d-flex align-items-center testing">
+                <i nz-icon nzType="container" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{users.countOfTasks}} {{'task' | translate}}</p>
+                </div>
+            </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                <ng-template #text>
+                  <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                </ng-template>
+              </nz-divider>
+              <div class="user-details d-flex align-items-center testing">
+                <i nz-icon nzType="calendar" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{'Dateofentry' | translate}}</p>
+                    <span class="">{{this.translateService.currentLang === 'ar' ? (users?.createdOn | customDate) : (users?.createdOn | date:"dd/MM/yy")}}</span>
+                  </div>
+                </div>
+                <nz-divider [nzText]="text" nzType="vertical">
+                  <ng-template #text>
+                    <i
+                      nz-icon
+                      nzType="small-dash"
+                      nzRotate="90"
+                      style="color: #c1c2c1"
+                    ></i>
+                  </ng-template>
+                </nz-divider>
+                <div class="user-details d-flex align-items-center testing">
+                  <i
+                    nz-icon
+                    nzType="check"
+                    *ngIf="users.memberState === 1 || users.memberState === 2"
+                    nzTheme="outline"
+                  ></i>
+                  <i
+                    nz-icon
+                    nzType="close"
+                    *ngIf="users.memberState === 3 || users.memberState === 4"
+                    nzTheme="outline"
+                  ></i>
+                  <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">
+                      {{ "Generalsituation" | translate }}
+                    </p>
+                    <span class="pending font-weight-bold" *ngIf="users.memberState === 1">{{ "PendingConfirmation" | translate }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 2 || users.memberState ===0">{{ "Active" | translate }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 3">{{
+                      "Not Active" | translate
+                    }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 4">{{
+                      "NotAccepted" | translate
+                    }}</span>
+                  </div>
+                </div>
+                <ng-conatiner *ngIf="((users.memberState === 1 && permittedToChangeUserStatus) || users.memberState != 1)">
+                  <div class="user-stats" *ngIf ="permittedToDelegateMember || permittedToDisableMember || permittedToEditCommittePermissions ">
+                    <i
+                    class="control-icon"
+                    nz-icon
+                    nzType="ellipsis"
+                    nz-popover
+                    [nzPopoverContent]="controlTmp"
+                    nzPopoverPlacement="right"
+                  ></i>
+                  <ng-template #controlTmp>
+                    <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                      <li
+                        *ngIf="(users.memberState === 1 || users.memberState === 3 || users.memberState === 4) && permittedToDisableMember"
+                        (click)="
+                          onItemClick(
+                            activeStats[0].value,
+                            2,
+                            users.commiteeMemberId
+                          )
+                        "
+                        class=""
+                      >
+                        {{ activeStats[0].name | translate }}
+                      </li>
+                      <li
+                        *ngIf="users.memberState === 2 && permittedToDisableMember"
+                        (click)="
+                          onItemClick(
+                            activeStats[1].value,
+                            3,
+                            users.commiteeMemberId
+                          )
+                        "
+                        class=""
+                      >
+                        {{ activeStats[1].name | translate }}
+                      </li>
+                      <li
+                        class=""
+                        *ngIf="users.memberState === 2 && permittedToDelegateMember && users.commiteeRoles[0]?.isMangerRole != true && users.commiteeRoles.length <= 1"
+                        (click)="
+                          delegateUser(
+                            users.commiteeId,
+                            users.userId,
+                            users.commiteeMemberId
+                          )
+                        "
+                      >
+                        {{ activeStats[2].name | translate }}
+                      </li>
+                      <li *ngIf="permittedToEditCommittePermissions"
+                      (click)="EditCommitteUserPermissions(users.commiteeRoles[users.commiteeRoles.length - 1].roleId,users.commiteeRoles[users.commiteeRoles.length - 1].delegated,users.userId)">
+                        {{ 'EditPermissions' | translate }}
+                      </li>
+                    </ul>
+                  </ng-template>
+                  </div>
+                </ng-conatiner>
+              </div>
+              <ng-container *ngIf="users.active">
+                <ng-container
+                  *ngFor="let roles of users.commiteeRoles; let x = index"
+                >
+                  <ng-container *ngIf="x == users.commiteeRoles.length - 1">
+                    <div
+                      [(ngbCollapse)]="!delagateToggle[i]"
+                      *ngIf="roles.delegated == true"
+                    >
+                      <div class="pt-3 d-flex justify-content-around">
+                        <div class="delegate-name d-flex align-items-center">
+                          <i
+                            nz-icon
+                            nzType="usergroup-add"
+                            nzTheme="outline"
+                          ></i>
+                          <p class="mb-0 mx-1">
+                            {{ "delegateFrom" | translate }} : <span>{{this.translateService.currentLang === 'ar' ? roles.createdUser?.fullNameAr : roles.createdUser.fullNameEn}}</span>
+                          </p>
+                        </div>
+                        <div class="delegate-time d-flex align-items-center">
+                          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+                          <p class="mb-0 mx-1" > 
+                            <span *ngIf="roles.enableUntil != undefined">
+                              {{'From' | translate}} : {{this.translateService.currentLang === 'ar' ? (roles?.createdOn | customDate) : (roles?.createdOn | date:"dd/MM/yy")}} 
+
+                               -
+                               
+                             {{'To' | translate}} :   {{this.translateService.currentLang === 'ar' ? (roles?.enableUntil | customDate) : (roles?.enableUntil | date:"dd/MM/yy")}}
+                            </span>
+                           <span *ngIf="roles.enableUntil === undefined">{{'permenant' | translate}}</span>
+                          </p>
+                        </div>
+                        <div class="delegate-info d-flex align-items-center">
+                          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+                          <span class="mx-1"
+                            >{{ "reasonFor" | translate }} : 
+                            <span>{{ roles?.notes }}</span>
+                            <i
+                              nz-icon
+                              nzType="close"
+                              nz-tooltip
+                              [nzTooltipTitle]="disabledelegate"
+                              class="close-icon mx-2"
+                              (click)="
+                                disableDelegate(roles.commiteeUsersRoleId)
+                              "
+                              nzTheme="outline"
+                            ></i>
+                            <ng-template #disabledelegate>
+                              <span>{{ "disabledelegate" | translate }}</span>
+                            </ng-template>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div
+    class="members d-flex align-items-center justify-content-between"
+    (click)="isCollapsed2 = !isCollapsed2"
+    [attr.aria-expanded]="!isCollapsed2"
+    aria-controls="collapseExample"
+  >
+    <p class="mb-0 mr-2 font-weight-bold">
+      {{ "ExternalUser" | translate }}
+      <span>{{externalUsers.length}}</span>
+    </p>
+    <i nz-icon nzType="caret-up" *ngIf="!isCollapsed2" nzTheme="outline"></i>
+    <i nz-icon nzType="caret-down" *ngIf="isCollapsed2" nzTheme="outline"></i>
+  </div>
+  <div [(ngbCollapse)]="isCollapsed2">
+    <div class="card" *ngIf="!loadingData">
+      <div class="card-body">
+        <ng-container *ngFor="let users of AllUsers; let i = index">
+          <ng-container *ngIf="users.user?.externalUser">
+            <div class="users">
+              <div
+                class="d-flex align-items-center justify-content-between"
+                (click)="delagateToggle[i] = !delagateToggle[i]"
+              >
+                <div class="user-details d-flex align-items-center">
+                    <div class="img-wrapper position-relative">
+                        <img [src]="users.user?.profileImage ? 'data:image/png;base64,'+users.user?.profileImage:'../../../assets/images/unknown.png'" class="img-fluid" />
+                        <span [ngClass]="users.isLogin ? 'active-state': 'notActive-state'" *ngIf="users.active == true"></span>
+                    </div>
+                    <div class="user-content mx-2">
+                       <p class="mb-0 font-weight-bold" nz-tooltip [nzTooltipTitle]="internalUser">{{this.translateService.currentLang === 'ar' ? (users.user?.fullNameAr | maxLenth: 15 ) : (users.user?.fullNameEn | maxLenth: 15)}}</p>
+                       <ng-template #internalUser>
+                        <span>{{this.translateService.currentLang === 'ar' ? users.user?.fullNameAr : users.user?.fullNameEn}}</span>
+                      </ng-template> 
+                      <p class="mb-0 user-role" >{{'role' | translate}}<span style="font-size: 10px !important;">: {{this.translateService.currentLang === 'ar' ? (users.commiteeRoles[users.commiteeRoles.length-1]?.roleNameAR) : users.commiteeRoles[users.commiteeRoles.length-1]?.roleNameEn}}</span></p>
+                    </div>
+                </div>
+                <nz-divider [nzText]="text" nzType="vertical">
+                  <ng-template #text>
+                    <i
+                      nz-icon
+                      nzType="small-dash"
+                      nzRotate="90"
+                      style="color: #c1c2c1"
+                    ></i>
+                  </ng-template>
+                </nz-divider>
+                <div class="user-details d-flex align-items-center">
+                  <i nz-icon nzType="inbox" nzTheme="outline"></i>
+                  <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">
+                      {{ "Email" | translate }}
+                    </p>
+                    <span class="">{{ users.user?.email }}</span>
+                  </div>
+                </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                    <ng-template #text>
+                      <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                    </ng-template>
+            </nz-divider>
+            <div class="user-details d-flex align-items-center">
+                <i nz-icon nzType="link" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{users.countOfAttachments}} {{'Circulatedfiles' | translate}}</p>
+                </div>
+            </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                <ng-template #text>
+                  <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                </ng-template>
+              </nz-divider>
+              <div class="user-details d-flex align-items-center">
+                <i nz-icon nzType="container" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{users.countOfTasks}} {{'task' | translate}}</p>
+                </div>
+            </div>
+            <nz-divider [nzText]="text" nzType="vertical">
+                <ng-template #text>
+                  <i nz-icon nzType="small-dash" nzRotate="90" style="color:#c1c2c1;"></i>
+                </ng-template>
+              </nz-divider>
+              <div class="user-details d-flex align-items-center">
+                <i nz-icon nzType="calendar" nzTheme="outline"></i>
+                <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">{{'Dateofentry' | translate}}</p>
+                    <span class="">{{this.translateService.currentLang === 'ar' ? (users?.createdOn | customDate) : (users?.createdOn | date:"dd/MM/yy")}}</span>
+                  </div>
+                </div>
+                <nz-divider [nzText]="text" nzType="vertical">
+                  <ng-template #text>
+                    <i
+                      nz-icon
+                      nzType="small-dash"
+                      nzRotate="90"
+                      style="color: #c1c2c1"
+                    ></i>
+                  </ng-template>
+                </nz-divider>
+                <div class="user-details d-flex align-items-center">
+                  <i
+                    nz-icon
+                    nzType="check"
+                    *ngIf="users.memberState === 1 || users.memberState === 2"
+                    nzTheme="outline"
+                  ></i>
+                  <i
+                    nz-icon
+                    nzType="close"
+                    *ngIf="users.memberState === 3 || users.memberState === 4"
+                    nzTheme="outline"
+                  ></i>
+                  <div class="user-content mx-2">
+                    <p class="mb-0 font-weight-bold">
+                      {{ "Generalsituation" | translate }}
+                    </p>
+                    <span class="pending font-weight-bold" *ngIf="users.memberState === 1">{{ "PendingConfirmation" | translate }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 2 || users.memberState ===0">{{ "Active" | translate }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 3">{{
+                      "Not Active" | translate
+                    }}</span>
+                    <span class="font-weight-bold" *ngIf="users.memberState === 4">{{
+                      "NotAccepted" | translate
+                    }}</span>
+                  </div>
+                </div>
+                <ng-container *ngIf="((users.memberState === 1 && permittedToChangeUserStatus) ||users.memberState != 1)">
+                  <div class="user-stats" *ngIf ="permittedToDelegateMember || permittedToDisableMember || permittedToEditCommittePermissions">
+                    <i
+                    class="control-icon"
+                    nz-icon
+                    nzType="ellipsis"
+                    nz-popover
+                    [nzPopoverContent]="controlTmp"
+                    nzPopoverPlacement="right"
+                  ></i>
+                  <ng-template #controlTmp>
+                    <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                      <li
+                        *ngIf="(users.memberState === 1 || users.memberState === 3 || users.memberState === 4) && permittedToDisableMember "
+                        (click)="
+                          onItemClick(
+                            activeStats[0].value,
+                            2,
+                            users.commiteeMemberId
+                          )
+                        "
+                        class=""
+                      >
+                        {{ activeStats[0].name | translate }}
+                      </li>
+                      <li
+                        *ngIf="users.memberState === 2 && permittedToDisableMember"
+                        (click)="
+                          onItemClick(
+                            activeStats[1].value,
+                            3,
+                            users.commiteeMemberId
+                          )
+                        "
+                        class=""
+                      >
+                        {{ activeStats[1].name | translate }}
+                      </li>
+                      <li
+                        class=""
+                        *ngIf="users.memberState === 2 && permittedToDelegateMember && users.commiteeRoles[0]?.isMangerRole != true && users.commiteeRoles.length <= 1"
+                        (click)="
+                          delegateUser(
+                            users.commiteeId,
+                            users.userId,
+                            users.commiteeMemberId
+                          )
+                        "
+                      >
+                        {{ activeStats[2].name | translate }}
+                      </li>
+                      <li *ngIf="permittedToEditCommittePermissions"
+                      (click)="EditCommitteUserPermissions(users.commiteeRoles[users.commiteeRoles.length - 1].roleId,users.commiteeRoles[users.commiteeRoles.length - 1].delegated,users.userId)">
+                        {{ 'EditPermissions' | translate }}
+                      </li>
+                    </ul>
+                  </ng-template>
+                </div>
+                </ng-container>
+              </div>
+              <ng-container *ngIf="users.active">
+                <ng-container
+                  *ngFor="let roles of users.commiteeRoles; let x = index"
+                >
+                  <ng-container *ngIf="x == users.commiteeRoles.length - 1">
+                    <div
+                      [(ngbCollapse)]="!delagateToggle[i]"
+                      *ngIf="roles.delegated == true"
+                    >
+                      <div class="pt-3 d-flex justify-content-around">
+                        <div class="delegate-name d-flex align-items-center">
+                          <i
+                            nz-icon
+                            nzType="usergroup-add"
+                            nzTheme="outline"
+                          ></i>
+                          <p class="mb-0 mx-1">
+                            {{ "delegateFrom" | translate }} : <span>{{this.translateService.currentLang === 'ar' ? roles.createdUser?.fullNameAr : roles.createdUser.fullNameEn}}</span>
+                          </p>
+                        </div>
+                        <div class="delegate-time d-flex align-items-center">
+                          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+                          <p class="mb-0 mx-1"> {{'From' | translate}} - {{'To' | translate}} : <span *ngIf="roles.enableUntil != undefined">
+                            {{this.translateService.currentLang === 'ar' ? (roles?.createdOn | customDate) : (roles?.createdOn | date:"dd/MM/yy")}}
+                             -
+                            {{this.translateService.currentLang === 'ar' ? (roles?.enableUntil | customDate) : (roles?.enableUntil | date:"dd/MM/yy")}}</span>
+                          <span *ngIf="roles.enableUntil === undefined">{{'permenant' | translate}}</span>
+                          </p>
+                        </div>
+                        <div class="delegate-info d-flex align-items-center">
+                          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+                          <span class="mx-1"
+                            >{{ "reasonFor" | translate }} : 
+                            <span>{{ roles?.notes }}</span>
+                            <i
+                              nz-icon
+                              nzType="close"
+                              nz-tooltip
+                              [nzTooltipTitle]="disabledelegate"
+                              class="close-icon mx-2"
+                              (click)="
+                                disableDelegate(roles.commiteeUsersRoleId)
+                              "
+                              nzTheme="outline"
+                            ></i>
+                            <ng-template #disabledelegate>
+                              <span>{{ "disabledelegate" | translate }}</span>
+                            </ng-template>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

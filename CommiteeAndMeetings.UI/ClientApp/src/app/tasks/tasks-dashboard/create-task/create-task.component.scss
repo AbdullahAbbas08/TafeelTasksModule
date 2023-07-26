@@ -1,0 +1,54 @@
+nz-form-item {
+  margin-top: -0.6rem;
+}
+
+.marg {
+  padding-bottom: 0.6rem;
+  margin-top: -0.3rem;
+}
+
+.task-actions {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.3rem;
+}
+
+.option-input {
+  flex: 1 auto;
+  margin: 0 0;
+}
+
+.delete-btn {
+  margin: 1px;
+  color: red;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.add-button {
+  width: 100%;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-picker {
+  display: block;
+  direction: rtl;
+ }
+
+ .ant-radio-group {
+  direction: rtl;
+}
+nz-form-item , .marg {
+  nz-form-label {
+    font-weight: bold !important;
+  }
+}

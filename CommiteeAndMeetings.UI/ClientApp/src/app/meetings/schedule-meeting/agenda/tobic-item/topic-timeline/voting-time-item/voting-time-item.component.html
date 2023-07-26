@@ -1,0 +1,117 @@
+<div
+  class="item-container"
+  dir="{{ this.translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }}"
+>
+  <header class="item-header">
+    <div class="user-data">
+      <div class="img-wrapper">
+        <img
+          *ngIf="createdUserImage"
+          [src]="'data:image/png;base64,' + createdUserImage"
+          [alt]=""
+        />
+        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
+        <span class="active-state"></span>
+      </div>
+      <div class="user-name">
+        <h5 class="m-0">
+          {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
+        </h5>
+      </div>
+    </div>
+    <div class="item-control-options">
+      <!-- <div class="mx-1">
+        <i
+          class="control-icon"
+          nz-icon
+          nzType="ellipsis"
+          nz-popover
+          [nzPopoverContent]="controlTmp"
+          nzPopoverPlacement="bottom"
+        ></i>
+        <ng-template #controlTmp>
+          <ul class="list-unstyled p-0- m-0 dashboard-filter-list"></ul>
+        </ng-template>
+      </div> -->
+    </div>
+  </header>
+  <nz-divider nzDashed></nz-divider>
+  <section class="item-content">
+    <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
+  </section>
+
+  <footer class="item-footer">
+    <div *ngIf="item?.surveyAnswers.length > 0" class="item-button">
+      <button
+        nz-button
+        nzType="default"
+        [disabled]="voteAnswer.length === 0 || userParticipated"
+        (click)="sendVote()"
+      >
+        {{ "SendVote" | translate }}
+      </button>
+    </div>
+  </footer>
+</div>
+
+<ng-template #itemContentTpl>
+  <h6 class="item-subject">
+    <strong>{{ item?.subject }}</strong>
+  </h6>
+  <!-- Vote Content Data  -->
+  <div *ngIf="item?.surveyAnswers.length > 0">
+    <ng-container>
+      <div *ngIf="!item.multi" class="voting-wrapper">
+        <nz-radio-group [(ngModel)]="voteAnswer[0]">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="userParticipated"
+                nz-radio
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}
+              </label>
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-radio-group>
+      </div>
+      <div *ngIf="item.multi" class="voting-wrapper">
+        <nz-checkbox-wrapper (nzOnChange)="voteAnswer = $event">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="userParticipated"
+                nz-checkbox
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}</label
+              >
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-checkbox-wrapper>
+      </div>
+    </ng-container>
+  </div>
+  <!-- Attachments  -->
+  <div class="attachments" *ngIf="attachments?.length > 0">
+    <ng-container>
+      <app-attachment-item-files
+        [attachments]="attachments"
+      ></app-attachment-item-files>
+    </ng-container>
+    <br />
+  </div>
+</ng-template>

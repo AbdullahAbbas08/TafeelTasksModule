@@ -1,0 +1,101 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{ "EscalationData" | translate }}</p>
+    <form #form="ngForm" (ngSubmit)="submitForm(form)" class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-3">
+            <label>{{ "TaskMainUser" | translate }}</label>
+            <nz-form-control>
+              <nz-select
+                [nzPlaceHolder]=""
+                nzAllowClear
+                nzShowSearch
+                nzServerSearch
+                name="mainUser"
+                [(ngModel)]="mainAssinedUserId"
+                (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+                required="true"
+              >
+                <ng-container *ngFor="let opt of users">
+                  <nz-option
+                    *ngIf="!isLoading"
+                    [nzValue]="opt?.id"
+                    [nzLabel]="opt?.name"
+                  ></nz-option>
+                </ng-container>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                  <i nz-icon nzType="loading" class="loading-icon"></i>
+                  {{ "LoadingData" | translate }}
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </div>
+          <div class="col-lg-3">
+            <nz-form-control>
+              <label>{{ "DelayPeriod" | translate }}</label>
+              <input
+                nz-input
+                type="number"
+                name="delay"
+                min="0"
+                [(ngModel)]="delayPeriod"
+                required="true"
+              />
+            </nz-form-control>
+          </div>
+
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>{{ "Classification" | translate }}</label>
+              <nz-select [(ngModel)]="classificationId"   nzAllowClear name="classification">
+                <nz-option
+                  [nzValue]="category.comiteeTaskCategoryId"
+                  [nzLabel]="category.categoryNameAr"
+                  *ngFor="let category of taskCategories"
+                ></nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label>{{ "NewAssignedUser" | translate }}</label>
+            <nz-form-control [nzErrorTip]="">
+              <nz-select
+                [nzPlaceHolder]=""
+                nzAllowClear
+                nzShowSearch
+                nzServerSearch
+                name="newUser"
+                [(ngModel)]="newAssinedUserId"
+                (nzOnSearch)="onSearch(lookupTypes.ASSISTANTUSERS, $event)"
+                required="true"
+              >
+                <ng-container *ngFor="let opt of newAssisgendUsers">
+                  <nz-option
+                    *ngIf="!isLoading"
+                    [nzValue]="opt?.id"
+                    [nzLabel]="opt?.name"
+                  ></nz-option>
+                </ng-container>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                  <i nz-icon nzType="loading" class="loading-icon"></i>
+                  {{ "LoadingData" | translate }}
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </div>
+        </div>
+      </div>
+      <p class="text-center mt-3">
+        <button
+          type="submit"
+          nz-button
+          nzType="primary"
+          [disabled]="form.invalid"
+        >
+          {{ "Save" | translate }}
+        </button>
+      </p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+@import '../../../../variables';
+
+.online-users {
+  border-radius: 10px;
+  background-color: $white;
+  padding: 20px 0;
+  box-shadow: 0px 3px 6px $boxShadow;
+  .search-results {
+    height: 300px;
+  }
+  .header {
+    padding: 0 20px 10px;
+  }
+  .online-users-list {
+    .user-data {
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        img {
+          width: 30px;
+          height: 30px;
+          border-radius:50%
+        }
+        .active-state {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $persianGreen;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+        .notActive-state{
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $dustyGray;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs16;
+          color: $dodgerBlue;
+        }
+        h6 {
+          font-size: $fs14;
+        }
+      }
+    }
+  }
+  .ant-divider-horizontal {
+    margin: 0;
+    border-color: rgb(0 0 0 / .06);
+  }
+}

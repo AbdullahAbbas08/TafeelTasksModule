@@ -1,0 +1,126 @@
+<div class="print-container">
+    <h4>{{'CommitteMinutes' | translate}}</h4>
+    <!--Start Meeting details-->
+    <div class="meeting-schedule">
+        <h5>{{ 'CommitteeData' | translate}} : </h5>
+        <table>
+            <tbody>
+                <tr>
+                    <td><span class="font-weight-bold">{{"committeeName" | translate}}</span></td>
+                    <td><p>{{committeDetails?.name}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{"CommitteeTitle" | translate}}</span></td>
+                    <td><p>{{committeDetails?.title ? committeDetails?.title: ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{"committeCategory" | translate}}</span></td>
+                    <td><p>{{committeDetails?.category? committeDetails?.category.categoryNameAr: ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{ "commiteeType" | translate }}</span></td>
+                    <td><p>{{committeDetails?.commiteeType? committeDetails?.commiteeType.commiteeTypeNameAr: ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{"currentHeadUnit" | translate}}</span></td>
+                    <td><p>{{committeDetails?.currenHeadUnit? committeDetails?.currenHeadUnit.fullNameAr: ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{"currentStatus" | translate}}</span></td>
+                    <td><p>{{committeDetails?.currentStatus? committeDetails?.currentStatus.currentStatusNameAr: ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{"departmentLink" | translate}}</span></td>
+                    <td><p>{{committeDetails?.departmentLink ? committeDetails?.departmentLink.organizationNameAr : ("noData" | translate)}}</p></td>
+                </tr>
+                <tr>
+                    <td><span class="font-weight-bold">{{ "description" | translate }}</span></td>
+                    <td><p>{{committeDetails?.description ? committeDetails?.description : ("noData" | translate)}}</p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="meeting-schedule">
+        <h5>{{ 'CommitteestatsCount' | translate}} : </h5>
+        <table>
+            <tbody>
+                <tr *ngFor="let stats of commiteeMinutsCount">
+                    <td style="width: 31%;"><span class="font-weight-bold">{{ stats.name | translate }}</span></td>
+                    <td><p>{{stats.count}}</p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--Start Meeting attendes-->
+    <div class="committe-attendes" >
+        <h5>{{'CommitteeMembers' | translate}} : </h5>
+        <table>
+            <thead>
+                <th>{{'Name' | translate}}</th>
+                <th>{{'Email' | translate}}</th>
+                <th>{{'phone' | translate}}</th>
+            </thead>
+            <tbody>
+             <ng-container>
+                <tr *ngFor="let participants of AllUsers">
+                  <ng-container *ngIf="participants.memberState === 2">
+                    <td><p>{{this.translateService.currentLang === 'ar' ? participants.user?.fullNameAr : participants.user?.fullNameEn}}</p></td>
+                    <td><p>{{participants.user?.email}}</p></td>
+                    <td><p>{{participants.user?.mobile}}</p></td>
+                  </ng-container>
+                </tr>
+             </ng-container>
+        
+            </tbody>
+        </table>
+    </div> 
+    <div class="committe-attendes" >
+        <h5>{{'committeperiods' | translate}} : </h5>
+        <table>
+            <thead>
+                <th>{{'From' | translate}}</th>
+                <th>{{'To' | translate}}</th>
+                <th>{{'currentStatus' | translate}}</th>
+            </thead>
+            <tbody> 
+             <ng-container>
+                <tr *ngFor="let opt of committeDetails?.validityPeriod">
+                    <td class="text-center"><p>{{
+                        opt?.validityPeriodFrom.getFullYear() > 1900 ? this.translateService.currentLang === "ar"
+                        ? (opt?.validityPeriodFrom | customDate)
+                        : (opt?.validityPeriodFrom | date) : 'دائمة'
+                      }}</p></td>
+                    <td class="text-center"><p>  {{
+                        opt?.validityPeriodTo.getFullYear() > 1900 ? this.translateService.currentLang === "ar"
+                        ? (opt?.validityPeriodTo | customDate)
+                        : (opt?.validityPeriodTo | date) : 'دائمة'
+                      }}</p></td>
+                    <td class="text-center"><p>{{opt?.periodState === 1 ? ('ActiveStatus' | translate) : ('archived' | translate)}}</p></td>
+                </tr>
+             </ng-container>
+        
+            </tbody>
+        </table>
+    </div> 
+    <!-- <div class="committe-attendes" *ngIf="tasksStats.length > 0">
+        <h5>{{'tasksperUser' | translate}} : </h5>
+        <table>
+            <thead>
+                <th>{{'Name' | translate}}</th>
+                <th>{{'AllTasks' | translate}}</th>
+                <th>{{'finishedTasks' | translate}}</th>
+            </thead>
+            <tbody>
+             <ng-container>
+                <tr *ngFor="let stats of tasksStats">
+                    <td class="text-center"><p>{{this.translateService.currentLang === 'ar' ? stats.user?.fullNameAr : stats.user?.fullNameEn}}</p></td>
+                    <td class="text-center"><p>{{stats.totalTaskCount}}</p></td>
+                    <td class="text-center"><p>{{stats.finishedTaskCount}}</p></td>
+                </tr>
+             </ng-container>
+        
+            </tbody>
+        </table>
+    </div>  -->
+</div>
+

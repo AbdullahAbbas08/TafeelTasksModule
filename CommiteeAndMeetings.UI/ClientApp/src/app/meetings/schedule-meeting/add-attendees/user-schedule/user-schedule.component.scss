@@ -1,0 +1,154 @@
+@import "./../../../../../variables";
+
+.meeting-day {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0.5rem 0.5rem;
+  background: linear-gradient(#47eee8, rgb(240, 238, 238));
+  font-weight: 600;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+
+.meeting-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #1e615f;
+
+  &__details {
+    padding: 0.3rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  &__title {
+    padding: 0.2rem 0;
+    font-size: 1rem;
+  }
+
+  &__count {
+    font-size: 0.9rem;
+  }
+
+  &__icon {
+    padding: 0.3rem;
+  }
+
+  &__icon-calendar {
+    height: 2.7rem;
+    width: 2.7rem;
+    fill: currentColor;
+  }
+}
+
+.event-template {
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 16%);
+  background-color: #fff;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  .border-div {
+    border-right: 3px solid $persianBlue;
+    margin: 0 0.7rem;
+  }
+  .event-details {
+    .title {
+      margin-bottom: 0.6rem;
+    }
+    .members-imgs {
+      display: flex;
+      flex-wrap: wrap;
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.meeting-popup {
+  width: 13rem;
+  padding: 0.5rem;
+}
+
+.meeting-title {
+  font-size: 13px;
+  padding: 0.5rem;
+  color: $persianBlue;
+  background-color: #f4f4f4;
+  font-weight: 700;
+}
+
+.meeting-content {
+  font-size: 11px;
+  padding: 0.5rem;
+}
+.meeting-time {
+  padding: 0.5rem 0.3rem;
+  background-color: #f4f4f4;
+  color: $persianBlue;
+  .meeting-time-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: bold;
+  }
+  p {
+    font-size: 11px;
+    font-weight: bold;
+  }
+}
+
+.meeting-coordinator:not(:last-child) {
+  border-bottom: 2px dotted #eeee;
+}
+
+.meeting-coordinators {
+  max-height: 10rem;
+}
+
+.meeting-coordinator {
+  padding: 0.3rem 0.3rem;
+  .meeting-coordinators-details {
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    p {
+      font-size: 11px;
+      font-weight: bold;
+      margin-top: 3px;
+    }
+  }
+  i {
+    font-size: 13px !important;
+  }
+  .pending {
+    color: #ffab72;
+  }
+  .confirmed {
+    color: #3ccbc6;
+  }
+  .closed {
+    color: #d02f2f;
+  }
+}
+.meetings-details-button {
+  button:hover {
+    background-color: #fff !important;
+    color: $persianBlue;
+  }
+}
+
+
+::ng-deep .cal-week-view mwl-calendar-week-view-hour-segment, .cal-week-view .cal-hour-segment {
+  direction: ltr;
+}

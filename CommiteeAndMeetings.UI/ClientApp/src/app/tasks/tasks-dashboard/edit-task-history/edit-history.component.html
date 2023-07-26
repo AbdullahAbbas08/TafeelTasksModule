@@ -1,0 +1,32 @@
+<div>
+    <nz-table #basicTable [nzData]="listofEditHistory" [nzFrontPagination]="false" [nzBordered]="true" [nzLoading]="isLoading">
+        <thead>
+          <tr>
+            <th>{{'allnotes' | translate}}</th>
+            <th>{{'complete' | translate}}  / {{'open' | translate}} {{'tasks' | translate}}</th>
+            <th>{{'createdBy' | translate}}</th>
+            <th>{{'action' | translate}}</th>
+            <th>{{ "TaskEndDate" | translate }}</th>
+            <th>{{ "TaskDetails" | translate }}</th>
+            <th>{{"Subject" | translate}}</th>
+            <th>{{ "assistantUser" | translate }}</th>
+            <th>{{ "TaskMainUser" | translate }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data;index as i">
+            <td>{{data?.notes ? data.notes : '-'}}</td>
+            <td>{{data.completed === null ? '-' : data.completed === true ?  ('complete' | translate) : ('open' | translate) }}</td>
+            <td>{{this.translateService.currentLang === "ar" ? (data?.createdByUserFullNameAr) : (data?.createdByUserFullNameEn)}}</td>
+            <td>{{data.action ?  (data.action | translate) : '-'}}</td>
+            <td><span>{{(data.endDate | date: 'yyyy') < 1900 ?  ('لم يتم التعديل') :  (data.endDate | customDate) }}</span><br><span>{{(data.endDate | date: 'yyyy') < 1900 ?  ('') :  (this.dateService.getTasksDateInArabic(data.endDate)) }}</span><br><span>{{(data.endDate | date: 'yyyy') < 1900 ?  ('') :  (data.endDate | date:"hh:mm a":"+0000") }}</span></td>
+            <td>{{data.taskDetails ? (data.taskDetails ): ('لم يتم التعديل')}}</td>
+            <td>{{data.title ? (data.title ): ('لم يتم التعديل')}}</td>
+            <td>{{ data.assistantUserId ? (this.translateService.currentLang === "ar" ? data.fullNameAr : data.fullNameEn) : (this.translateService.currentLang === "ar" ? 'لم يتم التعديل' : 'Not Modified') }}</td>
+            <td>{{ data.mainAssignedUserId ? (this.translateService.currentLang === "ar" ? data.fullNameAr : data.fullNameEn) : (this.translateService.currentLang === "ar" ? 'لم يتم التعديل' : 'Not Modified') }}</td>
+            <td class="font-weight-bold">{{listofEditHistory.length - i}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</div>

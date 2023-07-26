@@ -1,0 +1,46 @@
+<div class="item-content d-flex align-items-center">
+    <div *ngFor="let attachment of attachments; let j = index">
+      <ng-container>
+        <div class="saved-Attachment">
+          <div class="att-icon">
+            <nz-tag [nzColor]="'#108ee9'" style="font-size: medium">{{
+              attachment.attachmentName
+            }}</nz-tag>
+          </div>
+          <div *ngIf="attachment.pageCount > 0">
+            <ul
+              class="thumb-list list-unstyled m-0 p-0 mt-1 d-flex align-items-center"
+            >
+              <ng-container *ngFor="let item of imagesListList[j]; let i = index">
+                <a (click)="openImageGallery(j, i)"
+                  ><li class="attachment-thumb">
+                 
+                    <img [src]="item.thumbUrl ? item.thumbUrl: 'ahmed'" /></li
+                ></a>
+              </ng-container>
+            </ul>
+          </div>
+          <div
+            class="download-thumb"
+            *ngIf="attachment.pageCount || attachment.pageCount < 1"
+          >
+            <a (click)="openDownloadFile(j)"> <img [src]="iconLogos[j]" /></a>
+          </div>
+        </div>
+      </ng-container>
+      <app-dynamic-images
+        *ngIf="showGallery[j]"
+        [images]="imagesListList[j]"
+        [file]="attachment"
+        (close)="showGallery[j] = false"
+        [targetIndex]="targetIndex"
+      ></app-dynamic-images>
+  
+      <app-download
+        *ngIf="showDownload[j]"
+        [file]="attachment"
+        (close)="showDownload[j] = false"
+        [fileIcon]="iconLogos[j]"
+      ></app-download>
+    </div>
+  </div>

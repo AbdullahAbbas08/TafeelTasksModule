@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="table-wrapper">
+      <div class="setting-list table-container">
+        <div class="settings-header d-flex align-items-center flex-grow-1 justify-content-between mb-3">
+          <!-- search -->
+          <div class="searchBox none-responsive">
+            <nz-input-group [nzPrefix]="iconSearch">
+              <input nz-input type="text" class="form-control" style="font-size: 14px;"
+                placeholder="{{'SearchIn' | translate}}{{ 'SystemSettings' | translate }}" [formControl]="searchControl">
+            </nz-input-group>
+            <ng-template #iconSearch>
+              <i nz-icon nzType="search" class="mx-1" style="color: #c1c2c1 !important;"></i>
+            </ng-template>
+            <span nz-icon class="close" [hidden]="!searchTxt" (click)="searchTxt = '';searchControl.setValue('')"><i
+                nzType="close"></i></span>
+          </div>
+        </div>
+  
+        <!-- list table  -->
+        <nz-table #basicTable [nzData]="systemSettings" class="w-100" [nzTotal]="count" [nzPageSize]="pageSize"
+        [(nzPageIndex)]="pageIndex" [nzLoading]="loading" [nzShowTotal]="rangeTemplate"
+        [nzItemRender]="renderDataTemplate" [nzFrontPagination]="false"
+        (nzPageIndexChange)="currentPageIndexChange($event)" (nzPageSizeChange)="currentPageSizeChange($event)" class="w-100">
+          <thead>
+            <tr>
+              <th><b>{{'Settings' | translate}}</b></th>
+              <th><b>{{'update' | translate}}</b></th>
+              <th><b>{{'value' | translate}}</b></th>
+              <th><b>{{'Save' | translate}}</b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let setting of basicTable.data; let index = i;">
+              <td>{{this.translate.currentLang === 'ar' ? setting.systemSettingNameAr : setting.systemSettingNameEn}}</td>
+              <td class="d-flex justify-content-center"><input  type="text" value="{{setting.systemSettingValue}}"
+                nz-input type="text" class="form-control" style="font-size: 14px; width: 50%;" (input)="changeSettingValue(setting,$event)"></td>
+              <td>{{setting.instructions}}</td>
+              <td><button class="btn save-btn" (click)="saveChanges(setting)">{{'Save' | translate}}</button></td>
+            </tr>
+            <tr>
+             <td class="border-0" style="width:30%"></td>
+             <td class="border-0"><button class="btn save-btn" [ngClass]="this.translate.currentLang === 'ar' ? 'mr-100' : 'ml-100'" (click)="saveAllChanges()">{{'SaveChanges' | translate}}</button></td>
+             <td class="border-0"></td>
+             <td class="border-0"></td>
+            </tr>
+          </tbody>
+          <div class="d-flex justify-content-end mt-3 mx-3" style="width:243%">
+            
+          </div>
+        </nz-table>
+        <ng-template #renderDataTemplate let-type let-page="page">
+          <a *ngIf="type === 'prev'">{{ 'Previous' | translate }}</a>
+          <a *ngIf="type === 'next'">{{ 'Next' | translate }}</a>
+          <a *ngIf="type === 'page'">{{ page }}</a>
+        </ng-template>
+        <ng-template #rangeTemplate let-range="range" let-total>
+          {{ range[0] }}-{{ range[1] }} {{ 'Of' | translate }} {{ total }} {{ 'Items' | translate }}
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

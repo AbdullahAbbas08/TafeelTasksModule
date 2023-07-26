@@ -1,0 +1,49 @@
+<div *ngIf="!loadingData && !loadingTaskCount">
+  <div class="task-statictics mt-4">
+    <div class="d-flex" *ngIf="showTasksWithCommittePermission">
+      <ng-container *ngFor="let stats of statisticsCount; let i = index">
+        <div
+          class="all-stats"
+          [ngClass]="committeeId ? 'without-width' : 'with-width'"
+          *ngIf="i !== 2 ? checkTasksPermissions(stats.permissionValue) : true"
+          (click)="filterWzClick(i + 1)"
+        >
+          <div
+            class="item-container d-flex justify-content-between"
+            [ngClass]="{ active: tab === 'tab' + i }"
+          >
+            <div>
+              <h6 class="stats-title">{{ stats.name | translate }}</h6>
+            </div>
+            <div class="with-back" [class]="'bg-color' + i">
+              <p class="stats-number">{{ stats.count }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div
+    class="search-results"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="togglebetweenTasks ? onScroll() : onFilterScroll()"
+  >
+    <div>
+      <ng-container *ngIf="tasks.length">
+        <div *ngFor="let task of tasks">
+          <app-task-item
+            [task]="task"
+            [periodState]="validityPeriod?.periodState"
+            [CommitteName]="CommitteName"
+            [isForGeneralTasks]="!committeeId"
+          ></app-task-item>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!tasks.length">
+        <p class="text-center mt-3 no-data">{{ "noData" | translate }}</p>
+      </ng-container>
+    </div>
+  </div>
+</div>

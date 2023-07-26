@@ -1,0 +1,150 @@
+<div class="add-topic">
+  <div class="add-topic__header">
+    <h3 class="add-topic__text">{{ "AddTobic" | translate }}</h3>
+  </div>
+
+  <div class="add-topic__content">
+    <form
+      class="add-topic__form"
+      nz-form
+      [formGroup]="topicForm"
+      class="popup-form"
+      nzLayout="vertical"
+    >
+      <nz-form-item>
+        <nz-form-label>{{ "TopicType" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-select
+            formControlName="type"
+            [nzPlaceHolder]="'TopicType' | translate"
+          >
+            <nz-option
+              [nzValue]="topicType._1"
+              [nzLabel]="'Tobic' | translate"
+            ></nz-option>
+            <nz-option
+              [nzValue]="topicType._2"
+              [nzLabel]="'Break' | translate"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Meeting Title -->
+      <nz-form-item *ngIf="isTopic">
+        <nz-form-label>{{ "Title" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzRequired>
+            <input
+              type="text"
+              nz-input
+              formControlName="title"
+              [placeholder]="'Title' | translate"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="row mt-2">
+        <div class="col-12 col-md-3">
+          <nz-form-item>
+            <nz-form-label>{{ "numberOfMinutes" | translate }}</nz-form-label>
+            <nz-form-control>
+                <nz-input-number  formControlName="topicMinutes" (focusout)="onKeyUp($event)" [nzSize]="'medium'" [nzMin]="1"  [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item>
+          <ng-template #suffixIconAlarm>
+            <svg class="svg-icon">
+              <use xlink:href="assets\images\sprite.svg#icon-alarm"></use>
+            </svg>
+          </ng-template>
+        </div>
+      </div>
+      <!-- Meeting Subject -->
+      <button
+      nz-button
+      class="save-btn mb-3"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="collapseExample"
+      (click)="isCollapsed = !isCollapsed"
+    >
+    <span>    {{ "TopicPoints" | translate }}</span>
+      <span>
+        <i class="mr-2" nz-icon nzType="caret-up" *ngIf="isCollapsed" nzTheme="outline"></i>
+        <i class="mr-2" nz-icon nzType="caret-down" *ngIf="!isCollapsed" nzTheme="outline"></i>
+      </span>
+    </button>
+         <ng-container *ngIf="isCollapsed">
+          <ejs-richtexteditor
+          #toolsRTE
+          *ngIf="showRichTextEditor && isTopic"
+          id="defaultRTE"
+          [toolbarSettings]="tools"
+          [(value)]="pointsHTML"
+        >
+        </ejs-richtexteditor>
+              <!-- Date & Time -->
+      <div class="row mt-2">
+        <!-- Start Time -->
+        <div class="col-12 col-md-3">
+          <nz-form-item>
+            <nz-form-label>{{ "StartTime" | translate }}</nz-form-label>
+            <nz-form-control>
+              <nz-time-picker
+                [nzPlaceHolder]="'StartTime' | translate"
+                [nzAllowEmpty]="false"
+                [nzSuffixIcon]="suffixIconStartTime"
+                formControlName="startTime"
+                nzFormat="HH:mm"
+                [nzDisabled]="true"
+                [nzDefaultOpenValue]="topicStartTime"
+              ></nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+          <ng-template #suffixIconStartTime>
+            <svg class="svg-icon">
+              <use xlink:href="assets\images\sprite.svg#icon-clock"></use>
+            </svg>
+          </ng-template>
+        </div>
+        <!-- End Time -->
+        <div class="col-12 col-md-3">
+          <nz-form-item>
+            <nz-form-label>{{ "EndTime" | translate }}</nz-form-label>
+            <nz-form-control>
+              <nz-time-picker
+                formControlName="endTime"
+                [nzPlaceHolder]="'EndTime' | translate"
+                [nzAllowEmpty]="false"
+                [nzSuffixIcon]="suffixIconEndTime"
+                nzFormat="HH:mm"
+                [nzDisabledHours]="disabledHours"
+                [nzDisabledMinutes]="disabledMinutes"
+                [nzDisabled]="!disabledEndInput"
+              ></nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+          <ng-template #suffixIconEndTime>
+            <svg class="svg-icon">
+              <use xlink:href="assets\images\sprite.svg#icon-clock2"></use>
+            </svg>
+          </ng-template>
+        </div>
+      </div>
+         </ng-container>
+
+      <div class="action-btns">
+        <button
+          nz-button
+          class="save-btn"
+          (click)="submitTopic()"
+          [disabled]="topicForm.invalid"
+        >
+          {{ "Save" | translate }}
+        </button>
+        <button nz-button class="cancel-btn" (click)="closeAddTopic()">
+          <span>{{ "Cancel" | translate }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

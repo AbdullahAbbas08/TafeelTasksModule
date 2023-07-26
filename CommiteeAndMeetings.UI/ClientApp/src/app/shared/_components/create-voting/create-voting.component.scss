@@ -1,0 +1,102 @@
+@import "../../../../variables";
+
+.label {
+  color: $dodgerBlue;
+  font-size: $fs13;
+}
+
+.form-icon {
+  display: inline-block;
+}
+
+.title {
+  font-size: $fs13;
+  color: $dodgerBlue;
+  font-weight: 700;
+}
+
+.vote-type-link {
+  border: none;
+  padding: 0 5px;
+  font-size: 10px;
+  text-align: center;
+  background-color: $whitblue;
+  color: $dodgerBlue;
+  border-radius: 3px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.3rem;
+}
+
+.option-input {
+  flex: 1;
+  margin: 0 0;
+}
+.delete-btn {
+  flex: 0 10%;
+}
+
+.radio {
+  align-self: stretch;
+  width: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voting-options {
+  border: 1px solid #dddddd;
+  padding: 1rem;
+  border-radius: 3px;
+  background-color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.selected-users {
+  margin-top: 1rem;
+}
+
+.add-button {
+  display: inline-block;
+  width: 100%;
+}
+
+nz-radio-group {
+  width: 100%;
+  [nz-radio] {
+    height: 32px;
+    line-height: 32px;
+    background-color: $whitblue;
+    margin: 5px 5px;
+    align-items: center;
+    padding-left: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.voting-type {
+  [nz-checkbox] {
+    height: 32px;
+    line-height: 32px;
+    background-color: $whitblue;
+    margin: 7px 0;
+    align-items: center;
+    padding-left: 5px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+}
+
+.file-name {
+  background-color: $whitblue;
+  padding: 3px;
+  color: $dodgerBlue;
+  font-size: $fs12;
+  font-weight: 500;
+  margin-bottom: 2px;
+}

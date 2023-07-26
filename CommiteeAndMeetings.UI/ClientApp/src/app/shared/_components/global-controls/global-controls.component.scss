@@ -1,0 +1,134 @@
+@import "./../../../../variables";
+
+::ng-deep .my-modal .ant-modal-header {
+  background: lightgray;
+}
+
+::ng-deep .my-modal .ant-modal-title {
+  font-weight: 600;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item .anticon {
+  color: #97949462;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item {
+  align-items: center;
+}
+
+::ng-deep .my-modal .ant-select-arrow .anticon {
+  color: #97949462;
+  font-size: 13px;
+}
+
+::ng-deep .my-modal .ant-radio-wrapper {
+  margin: 0;
+}
+
+::ng-deep .my-modal .ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .icon-font {
+    font-size: 1.1rem;
+    font-weight: 700;
+    background-image: linear-gradient(to right, $lochmara, $doveGray);
+    // -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+.btn {
+  color: $lochmara;
+  transition: all 0.2s;
+  padding: 0.375rem 0.2rem;
+  &:hover {
+    color: $madison;
+  }
+}
+
+.btn-reload {
+  color: $lochmara;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 300;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $madison;
+  }
+}
+
+// Transaction Select Modal Buttons
+.item-button {
+  border: 1px solid #117a8b;
+  border-radius: 5px;
+  color: #117a8b;
+  font-weight: bold;
+  display: block;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: #eee !important;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 1rem;
+  }
+}
+
+.meet-icon {
+  height: 25px;
+  width: 25px;
+  fill: currentColor;
+}
+.icon-print {
+  i {
+    color: currentColor;
+    font-size: 1.1rem;
+    margin: 5px 8px 0px 3px;
+  }
+}
+.h-50{
+  height: 55% !important;
+}
+.h-100 {
+  height: 100%;
+}
+.icon-print-search{
+   color: #457093;
+   font-size: 1.1rem;
+   i {
+     padding-top: 8px;
+   }
+}
+.w-h{
+  height: 50px;
+  margin-top: 4px;
+} 
+.marg {
+  padding-bottom: 0.6rem;
+  margin-top: -0.3rem;
+}
+.out-margin {
+  margin-bottom: 14px;
+  margin-top: 5px;
+}
+.w-margin {
+  margin-top: 62px;
+  margin-bottom: 86px;
+}
+.w-m {
+  margin-bottom: 90px;
+}
+.wo-m{
+  margin-bottom: 60px;
+}

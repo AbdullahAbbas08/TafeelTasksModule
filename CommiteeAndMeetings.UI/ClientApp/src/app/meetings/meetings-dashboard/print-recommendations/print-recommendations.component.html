@@ -1,0 +1,29 @@
+<div class="print-container">
+    <h4>{{'AllRecommendations' | translate}}</h4>
+     <div class="meeting-recommendations">
+        <table *ngFor="let recommend of recommendations; let i = index" style="margin-bottom: 50px;">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="5"><p style="font-size: 20px;"><span dir="ltr">{{recommend.comment.text}}</span> </p></th>
+                </tr>
+                <tr >
+                    <th>الأسم</th>
+                    <th>موافق</th>
+                    <th>غير موافق</th>
+                    <th>متحفظ</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let user of allUsers">
+                <tr *ngIf="user.id === recommend.id">
+                    <td>{{user.user.fullNameAr}}</td>
+                    <td class="text-center">{{user.answer === 'موافق' ? '✔':'-'}}</td>
+                    <td class="text-center">{{user.answer === 'غير موافق' ? '✔':'-'}}</td>
+                    <td class="text-center">{{user.answer === 'متحفظ' ? '✔':'-'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-center no-recommendations" *ngIf="!recommendations.length">لايوجد توصيات</p>
+    </div>
+        <!--Start Meeting Topics-->
+</div>
+

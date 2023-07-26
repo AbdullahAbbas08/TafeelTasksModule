@@ -1,0 +1,168 @@
+<div class="dashboard-header d-flex align-items-center">
+  <ng-container>
+    <div class="dashboard-add-btn">
+      <button
+        *appHasAuthUserViewPermission="['AddNewCommitte']"
+        nz-button
+        nzType="primary"
+        nzBlock
+        (click)="addNewCommittee()"
+        [ngStyle]="themeService.primaryBackground"
+      >
+        <i nz-icon nzType="plus" nzTheme="outline" style="color: #fff"></i>
+        <span class="mx-2"> {{ "AddNewCommittee" | translate }} </span>
+      </button>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <div class="dashboard-search">
+      <nz-input-group [nzPrefix]="iconSearch">
+        <input
+          nz-input
+          type="search"
+          [(ngModel)]="searchword"
+          (keydown.enter)="searchThis()"
+          [placeholder]="'SearchInCommittees' | translate"
+        />
+        <i
+          nz-icon
+          nzType="close"
+          [hidden]="!searchword"
+          (click)="cancelSearch()"
+          class="clearIcon"
+          nzTheme="outline"
+        ></i>
+      </nz-input-group>
+      <ng-template #iconSearch>
+        <i
+          nz-icon
+          nzType="search"
+          class="mx-1"
+          style="color: #c1c2c1 !important"
+        ></i>
+      </ng-template>
+    </div>
+    <nz-divider [nzText]="text" nzType="vertical">
+      <ng-template #text>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
+      </ng-template>
+    </nz-divider>
+    <div class="dashboard-controls">
+      <div
+        class="mx-2"
+        (click)="showTreeView()"
+        [nzTooltipTitle]="
+          !committeeService.treeView
+            ? ('TreeView' | translate)
+            : ('CloseTreeView' | translate)
+        "
+        nzTooltipPlacement="bottom"
+        nz-tooltip
+      >
+        <svg *ngIf="committeeService.treeView" class="menu-icon">
+          <use xlink:href="assets\images\sprite-3.svg#icon-menu"></use>
+        </svg>
+        <svg
+          *ngIf="!committeeService.treeView"
+          width="24"
+          height="24"
+          viewBox="0 0 30 30"
+        >
+          <defs>
+            <style>
+              .tree-path-a {
+                fill: #ffffff;
+              }
+
+              .tree-path-b {
+                opacity: 0;
+              }
+
+              .tree-path-c {
+                fill: #0075c9;
+              }
+
+              .tree-path-d {
+                fill: #359afe;
+              }
+            </style>
+          </defs>
+          <g transform="translate(-801.47 -387.53)">
+            <rect
+              class="tree-path-a"
+              width="30"
+              height="30"
+              rx="6"
+              transform="translate(801.47 417.53) rotate(-90)"
+            />
+            <g
+              class="tree-path-b"
+              transform="translate(1152.241 -445.307) rotate(90)"
+            >
+              <circle
+                class="tree-path-c"
+                cx="1.885"
+                cy="1.885"
+                r="1.885"
+                transform="translate(854.307 340.771) rotate(-90)"
+              />
+              <circle
+                class="tree-path-c"
+                cx="1.885"
+                cy="1.885"
+                r="1.885"
+                transform="translate(848.307 340.771) rotate(-90)"
+              />
+              <circle
+                class="tree-path-c"
+                cx="1.885"
+                cy="1.885"
+                r="1.885"
+                transform="translate(842.307 340.771) rotate(-90)"
+              />
+            </g>
+            <g transform="translate(179.47 -322.313)">
+              <path
+                class="tree-path-d"
+                d="M646.807,726.6a2.025,2.025,0,0,0-1.593.783l-1.811-.828a1.988,1.988,0,0,0-.112-1.158l2.061-1.29a2.089,2.089,0,1,0-.641-.681l-1.954,1.223a2.018,2.018,0,0,0-3.3,2.067l-2.076,1.3v-2.476a2.025,2.025,0,0,0,1.2-3.16l2.829-2.1a2.013,2.013,0,0,0,1.273.46,2.036,2.036,0,1,0-2.036-2.036,2.015,2.015,0,0,0,.195.856l-2.972,2.2a2.009,2.009,0,0,0-.484-.185V719a2.037,2.037,0,1,0-.917,0v2.587a2.006,2.006,0,0,0-.484.185l-2.972-2.2a2.015,2.015,0,0,0,.195-.856,2.036,2.036,0,1,0-2.036,2.036,2.014,2.014,0,0,0,1.273-.46l2.829,2.1a2.025,2.025,0,0,0,1.2,3.16v2.476l-2.076-1.3a2.018,2.018,0,0,0,.086-.555,2.027,2.027,0,0,0-3.387-1.512l-1.954-1.223a2.013,2.013,0,0,0,.286-1.023,2.045,2.045,0,1,0-.927,1.7l2.061,1.29a1.985,1.985,0,0,0-.112,1.158l-1.811.828a2,2,0,1,0,.4.827l1.8-.821a2.014,2.014,0,0,0,3.12.132l2.52,1.578v5.372h-2.74a.458.458,0,0,0,0,.917h6.4a.458.458,0,0,0,0-.917H637.38V729.1l2.52-1.578a2.014,2.014,0,0,0,3.12-.132l1.8.821a2.036,2.036,0,1,0,1.99-1.61Zm-.345-5.316a1.12,1.12,0,1,1-1.12,1.12A1.121,1.121,0,0,1,646.462,721.287Zm-3.785-3.7a1.12,1.12,0,1,1-1.119,1.12A1.121,1.121,0,0,1,642.677,717.591Zm-11.511,2.239a1.12,1.12,0,1,1,1.119-1.12A1.121,1.121,0,0,1,631.166,719.83Zm-4.9,2.576a1.119,1.119,0,1,1,1.119,1.12A1.121,1.121,0,0,1,626.262,722.406Zm.774,7.352a1.12,1.12,0,1,1,1.119-1.12A1.121,1.121,0,0,1,627.036,729.758Zm5.4-2.475a1.119,1.119,0,1,1,1.12-1.119A1.12,1.12,0,0,1,632.437,727.283Zm3.365-10.267a1.119,1.119,0,1,1,1.12,1.12A1.12,1.12,0,0,1,635.8,717.016Zm0,6.547a1.119,1.119,0,1,1,1.12,1.119A1.12,1.12,0,0,1,635.8,723.563Zm5.6,3.721a1.119,1.119,0,1,1,1.119-1.119A1.12,1.12,0,0,1,641.406,727.283Zm5.4,2.475a1.12,1.12,0,1,1,1.119-1.12A1.12,1.12,0,0,1,646.807,729.758Z"
+              />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="mx-1">
+        <a
+          class="btn-reload"
+          (click)="refresh()"
+          ><i class="fa fa-sync-alt"></i
+        ></a>
+      </div>
+      <div class="mx-1">
+        <i
+          class="filter-icon"
+          nz-icon
+          nzType="filter"
+          nz-popover
+          [nzPopoverContent]="dashboardFilterListTmp"
+          nzPopoverPlacement="right"
+        ></i>
+        <ng-template #dashboardFilterListTmp>
+          <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+            <ng-container *ngFor="let option of filterOptions">
+              <li (click)="getCommitteesData(option?.currentStatusId)">
+                {{
+                  translateService.currentLang === "ar"
+                    ? option?.currentStatusNameAr
+                    : option?.currentStatusNameEn
+                }}
+              </li>
+            </ng-container>
+          </ul>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</div>

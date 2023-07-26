@@ -1,0 +1,327 @@
+<div *ngIf="!loadingData">
+  <div class="committee-details">
+    <div class="container-fluid py-3 px-4">
+      <nz-list nzItemLayout="vertical" [nzLoading]="dataLoading">
+        <nz-list-item>
+          <nz-list-item-meta>
+            <nz-list-item-meta-title>
+              <!-- {{ committeDetails?.name}} -->
+            </nz-list-item-meta-title>
+            <nz-list-item-meta-description>
+              <!-- {{committeDetails?.description | maxLenth: 100}}
+                <span class="show-more" (click)="showFullData()">{{'More'|translate}}</span> -->
+              <div class="media">
+                <img
+                  class="mr-3 ml-3"
+                  src="../../../assets/images/logo.png"
+                  alt=""
+                />
+                <div class="media-body">
+                  <h3 class="mt-0 title">{{ committeDetails?.name }}</h3>
+                  <span class="title mr-0">{{
+                    committeDetails?.description | maxLenth: 150
+                  }}</span>
+                  <br>
+                  <span
+                    class="show-more"
+                    (click)="showFullData()"
+                    *ngIf="!openDialog"
+                    >{{ "More" | translate }}</span
+                  >
+                  <span
+                    class="show-more"
+                    (click)="showFullData()"
+                    *ngIf="openDialog"
+                    >{{ "Less" | translate }}</span
+                  >
+                </div>
+              </div>
+            </nz-list-item-meta-description>
+          </nz-list-item-meta>
+
+          <nz-list-item-extra *ngIf="(validityPeriods[0].validityPeriodFrom.getFullYear() > 1900 && validityPeriods[0].validityPeriodTo.getFullYear() > 1900) ||  validityPeriods[0].periodState === 2">
+            <div class="committee-periods">
+              <nz-tag
+              *ngIf="committeDetails.currentStatus.currentStatusId === 2"
+              class="state"
+              [nzColor]="'#f50'"
+              >{{ "NotActiveCommittee" | translate }}</nz-tag
+            >
+              <nz-tag
+                *ngIf="selectedPeriod.periodState !== 2"
+                class="state"
+                [nzColor]="'green'"
+                >{{ "ActivePeriod" | translate }}</nz-tag
+              >
+              <nz-tag
+                class="dates"
+                [nzColor]="'#428b44'"
+                *ngIf="selectedPeriod.periodState !== 2"
+                >{{
+                  currentLang === "ar"
+                    ? (selectedPeriod.validityPeriodFrom | customDate)
+                    : (selectedPeriod.validityPeriodFrom | date)
+                }}
+                -
+                <ng-container *ngIf="selectedPeriod.validityPeriodTo === undefined">
+                  دائمة
+                </ng-container>
+                <ng-container *ngIf="selectedPeriod.validityPeriodTo !== undefined">
+                  {{
+                    selectedPeriod.validityPeriodTo.getFullYear() > 1900 ? currentLang === "ar"
+                    ? (selectedPeriod.validityPeriodTo | customDate)
+                    : (selectedPeriod.validityPeriodTo | date) : 'دائمة'
+                  }}
+                </ng-container>
+ 
+                </nz-tag
+              >
+              <nz-tag
+                class="state"
+                [nzColor]="'gold'"
+                *ngIf="selectedPeriod.periodState === 2"
+                >{{ "ArchivedPeriod" | translate }}</nz-tag
+              >
+              <nz-tag
+                *ngIf="selectedPeriod.periodState === 2"
+                class="dates"
+                [nzColor]="'gold'"
+                >{{
+                  currentLang === "ar"
+                    ? (selectedPeriod.validityPeriodFrom | customDate)
+                    : (selectedPeriod.validityPeriodFrom | date)
+                }}
+                -
+                {{
+                  currentLang === "ar"
+                    ? (selectedPeriod.validityPeriodTo | customDate)
+                    : (selectedPeriod.validityPeriodTo | date)
+                }}</nz-tag
+              >
+              <button
+                class="committee-archive"
+                nz-button
+                nz-dropdown
+                [nzClickHide]="true"
+                [nzDropdownMenu]="menuTpl"
+              >
+                <i
+                  nz-icon
+                  nzType="setting"
+                  style="font-size: 12px; margin: 0 0.3rem"
+                ></i>
+                <span>{{ "SelectPeriod" | translate }}</span>
+                <i nz-icon nzType="down"></i>
+              </button>
+              <nz-dropdown-menu #menuTpl="nzDropdownMenu">
+                <ul nz-menu>
+                  <ng-container
+                    *ngFor="let opt of validityPeriods; let i = index"
+                  >
+                    <li
+                      nz-menu-item
+                      (click)="
+                        changeSeletedPeriod(
+                          opt?.periodState,
+                          opt?.validityPeriodId,
+                          opt?.validityPeriodFrom,
+                          opt?.validityPeriodTo
+                        )
+                      "
+                      [ngClass]="{ rtl: currentLang === 'ar' }"
+                    >
+                      {{
+                        currentLang === "ar"
+                          ? (opt?.validityPeriodFrom | customDate)
+                          : (opt?.validityPeriodFrom | date)
+                      }}
+                      -
+                      {{
+                        opt?.validityPeriodTo.getFullYear() > 1900 ? currentLang === "ar"
+                        ? (opt?.validityPeriodTo | customDate)
+                        : (opt?.validityPeriodTo | date) : 'دائمة'
+                      }}
+                    </li>
+                    <ng-container
+                      *ngIf="i < committeDetails?.validityPeriod?.length - 1"
+                    >
+                      <nz-divider nzDashed></nz-divider>
+                    </ng-container>
+                  </ng-container>
+                </ul>
+              </nz-dropdown-menu>
+            </div>
+          </nz-list-item-extra>
+          <nz-list-item-extra  *ngIf="validityPeriods[0].validityPeriodFrom.getFullYear() < 1900 && validityPeriods[0].validityPeriodTo.getFullYear() < 1900 && validityPeriods[0].periodState !== 2">
+            <nz-tag
+            class="state"
+            style=" height: 1.7rem;
+            width: 6rem;
+            padding: 0.2rem 0;text-align: center;background-color: rgb(66, 139, 68)!important"
+            [nzColor]="'#428b44'"
+            >{{ "committePermenant" | translate }}</nz-tag
+          >
+          </nz-list-item-extra>
+        </nz-list-item>
+        <nz-list-item-extra class="committee-more-detail" *ngIf="openDialog">
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "committeeName" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.name
+                ? committeDetails?.name
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "CommitteeTitle" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.title
+                ? committeDetails?.title
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "committeCategory" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.category
+                ? committeDetails?.category.categoryNameAr
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold"
+              >{{ "commiteeType" | translate }} </span
+            >:
+            {{
+              committeDetails?.commiteeType
+                ? committeDetails?.commiteeType.commiteeTypeNameAr
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "currentHeadUnit" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.currenHeadUnit
+                ? committeDetails?.currenHeadUnit.fullNameAr
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "currentStatus" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.currentStatus
+                ? committeDetails?.currentStatus.currentStatusNameAr
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "departmentLink" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.departmentLink
+                ? committeDetails?.departmentLink.organizationNameAr
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{ "description" | translate }}</span>
+            :
+            {{
+              committeDetails?.description
+                ? committeDetails?.description
+                : ("noData" | translate)
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "selectedDateFrom" | translate
+            }}</span>
+            :
+            {{
+              committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodFrom.getFullYear() > 1900 ? currentLang === "ar"
+              ? (committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodFrom | customDate)
+              : (   committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodFrom | date) : 'دائمة'
+            }}
+          </span>
+          <span class="mt-0 title"
+            ><span class="font-weight-bold">{{
+              "selectDateTo" | translate
+            }}</span>
+            :                
+            {{
+              committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodTo.getFullYear() > 1900 ? currentLang === "ar"
+              ? (committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodTo | customDate)
+              : (   committeDetails?.validityPeriod[
+              committeDetails.validityPeriod.length - 1
+            ].validityPeriodTo | date) : 'دائمة'
+            }}
+          </span>
+        </nz-list-item-extra>
+        <nz-list-empty *ngIf="false"> </nz-list-empty>
+      </nz-list>
+    </div>
+  </div>
+
+  <div class="container-fluid py-3 px-4">
+    <div class="row">
+      <div [ngClass]="menuTogglled ? 'col-md-1' : 'col-md-2'">
+        <app-side-menu (menuToglled)="menuTogglled = $event" [enableTransaction]="enableTransaction"></app-side-menu>
+      </div>
+      <div
+        [ngClass]="{
+          'col-md-9 col-12': menuTogglled && !hideControlsAndUsers,
+          'col-md-8 col-12': !menuTogglled && !hideControlsAndUsers,
+          'col-md-11 col-12': menuTogglled && hideControlsAndUsers,
+          'col-md-10 col-12': !menuTogglled && hideControlsAndUsers
+        }"
+      >
+        <app-global-controls
+          *ngIf="!hideControlsAndUsers && !hidetransActionControls"
+          [committeeEndDate]="committeeEndDate" [enableTransaction]="enableTransaction"
+          [enableDescision]="enableDescision"
+          [committeDetails]="committeDetails"
+        ></app-global-controls>
+        <app-transaction-controls
+          *ngIf="hidetransActionControls"
+        ></app-transaction-controls>
+        <router-outlet></router-outlet>
+      </div>
+
+      <div class="col-md-2 col-12 p-1">
+        <app-online-users *ngIf="!hideControlsAndUsers && !hideonlineUserTasks"></app-online-users>
+        <div *ngIf="hideonlineUserTasks" class="">
+          <app-calender></app-calender>
+          <app-committe-tasts-stats></app-committe-tasts-stats>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

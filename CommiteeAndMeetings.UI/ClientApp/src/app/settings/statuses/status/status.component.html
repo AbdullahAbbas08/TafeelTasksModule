@@ -1,0 +1,35 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{'CommitteeStatusData' | translate}}</p>
+    <div class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'CommitteeStatusNameAr' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="committeeStatus.currentStatusNameAr">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'CommitteeStatusNameEn' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="committeeStatus.currentStatusNameEn">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <p class="text-right">
+        <button type="button" nz-button nzType="primary" *ngIf="!statusCreate" (click)="editCommitteeStatus()"
+          [disabled]="!committeeStatus.currentStatusNameAr || !committeeStatus.currentStatusNameEn">
+          {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" nz-button nzType="primary" *ngIf="statusCreate" (click)="insertCommitteeStatus()"
+          [disabled]="!committeeStatus.currentStatusNameAr || !committeeStatus.currentStatusNameEn">
+          {{'InsertCommitteeStatus' | translate}}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

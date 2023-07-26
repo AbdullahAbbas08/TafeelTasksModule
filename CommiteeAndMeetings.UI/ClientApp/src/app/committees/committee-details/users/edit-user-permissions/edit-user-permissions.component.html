@@ -1,0 +1,29 @@
+<div class="permissions-wrapper" style="direction: rtl;">
+    <div class="row">
+      <div class="d-flex justify-content-between align-items-center w-100" style="margin: 0 20px 10px 0px;">
+        <h5>{{'rolePermissions' | translate}}</h5>
+      </div>
+    </div>
+    <div class="row">
+      <ng-container *ngFor="let permission of userPermissionRole?.role.rolePermissions;let i = index;">
+        <!-- /* *ngIf="!permission.permission.isDeleted" */ -->
+        <div  class="col-lg-3 mb-3">
+          <div class="role-permission d-flex justify-content-sm-between align-items-center">
+            <div>
+              <span class="name">{{permission?.permission.commitePermissionNameAr}}</span>
+            </div>
+            <label nz-checkbox [(ngModel)]="permission.permission.enabled" (ngModelChange)="pushChanges($event,i,permission.permission.commitePermissionId)"
+              ></label>
+          </div>
+      </div>
+      </ng-container>
+    </div>
+    <div class="text-left">
+        <button type="button" nz-button nzType="primary" (click)="printRole()">
+            {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" class="mx-2" nz-button (click)="close()">
+          {{ "Cancel" | translate }}
+        </button>      
+      </div>
+  </div>

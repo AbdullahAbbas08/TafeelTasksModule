@@ -1,0 +1,66 @@
+<div>
+  <h2 class="title">{{ "Participants" | translate }}</h2>
+
+  <div class="participants">
+    <ng-container *ngIf="meetingParticipants.length !== 0">
+      <div class="item-container" *ngFor="let participants of meetingParticipants">
+        <header class="item-header">
+          <div class="user-data" *ngIf="participants.coordinator">
+              <div class="img-wrapper">
+                <img
+                  [src]="participants.coordinator?.profileImage ? 'data:image/png;base64,'+participants.coordinator?.profileImage:'../../../assets/images/unknown.png'"
+                  [alt]="" />
+                <span class="active-state"></span>
+              </div>
+              <div class="user-name">
+                <h5 class="m-0">
+                  {{this.translateService.currentLang === 'ar' ? participants.coordinator?.fullNameAr :
+                  participants.coordinator?.fullNameEn}}
+                </h5>
+                <h6 class="m-0 mt-1">
+                  <i class="fas fa-user-cog" style="color: #666666;"></i>
+                  {{ "Coordinator" | translate }}
+                </h6>
+              </div>
+     
+          </div>
+          <div class="user-data" *ngIf="participants.attendee">
+            <div class="img-wrapper">
+              <img
+                [src]="participants.attendee?.profileImage ? 'data:image/png;base64,'+participants.attendee?.profileImage:'../../../assets/images/unknown.png'"
+                [alt]="" />
+              <span class="active-state"></span>
+            </div>
+            <div class="user-name">
+              <h5 class="m-0">
+                {{this.translateService.currentLang === 'ar' ? participants.attendee?.fullNameAr :
+                participants.attendee?.fullNameEn}}
+              </h5>
+              <h6 class="m-0 mt-1">
+                <i class="fas fa-user-plus" style="color: #666666;"></i>
+                {{ "Invited" | translate }}
+              </h6>
+            </div>
+          </div>
+          <div class="participants-state">
+            <div class="icon-container-accept" *ngIf="participants?.state == 3">
+              <i nz-icon nzTheme="outline" [nzType]="'check'" class="accept"></i>
+            </div>
+            <div class="icon-container-reject" *ngIf="participants?.state == 4">
+              <i nz-icon nzType="close" nzTheme="outline" class="reject"></i>
+            </div>
+            <div>
+              <div class="icon-container-pending" *ngIf="participants?.state == 2 || participants?.state == 1">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" class="pending"></i>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+    </ng-container>
+    <div class="item-container" *ngIf="!meetingParticipants.length">
+      <p class="no-data text-center font-weight-bold m-0">{{'There are no participants' | translate}}</p>
+    </div>
+  </div>
+
+</div>

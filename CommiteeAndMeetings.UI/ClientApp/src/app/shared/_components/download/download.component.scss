@@ -1,0 +1,73 @@
+@import "../../../../variables";
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba($black, 0.8);
+  z-index: 50;
+  transition: all 0.3s;
+
+  @supports (-webkit-backdrop-filter: blur(10px)) or
+    (backdrop-filter: blur(10px)) {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba($black, 0.5);
+  }
+}
+
+.file-box {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50%;
+  z-index: 100;
+  box-shadow: 0 2px 8px rbga(0, 0, 0, 0.26);
+  img {
+    height: 100%;
+  }
+}
+
+.action {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 0rem;
+  left: 2rem;
+  font-size: 3rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  line-height: 2;
+  backface-visibility: hidden;
+  &:hover {
+    color: $red;
+  }
+}
+
+.title {
+  color: $wildSand;
+  z-index: 100;
+  position: absolute;
+  top: 1.3rem;
+  right: 2rem;
+  font-size: 2.5rem;
+}
+
+.info {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: $wildSand;
+  margin-bottom: 2rem;
+}
+
+.download-btn {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  width: 30%;
+  transform: translateX(-50%);
+}

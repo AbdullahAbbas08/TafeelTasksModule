@@ -1,0 +1,41 @@
+<div class="settings-add-edit">
+  <div class="box-shadow expanded bkg-gray">
+    <p class="box-title">{{'PermissionData' | translate}}</p>
+    <div class="custom-form">
+      <div class="form-box">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'PermissionNameAr' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="permission.commitePermissionNameAr">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'PermissionNameEn' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="permission.commitePermissionNameEn">
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label>{{'PermissionCode' | translate}}</label>
+              <input type="text" class="form-control" [(ngModel)]="permission.permissionCode" [disabled]="!permissionCreate">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <p class="text-right">
+        <button type="button" nz-button nzType="primary" *ngIf="!permissionCreate"
+          (click)="editPermission()" [disabled]="!permission.commitePermissionNameEn || !permission.commitePermissionNameAr || !permission.permissionCode">
+          {{'SaveChanges' | translate}}
+        </button>
+        <button type="button" nz-button nzType="primary" *ngIf="permissionCreate"
+          (click)="insertPermission()" [disabled]="!permission.commitePermissionNameEn || !permission.commitePermissionNameAr || !permission.permissionCode">
+          {{'InsertPermission' | translate}}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="votings">
+  <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+    <nz-timeline-item [nzDot]="votingIcon" *ngFor="let voting of topicVotings">
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="voting-item"
+      >
+        <app-voting-item-topic
+          [item]="voting"
+          [topicId]="topic.id"
+          [isCoordinator]="isCoordinator"
+          [isCreator]="isCreator"
+        ></app-voting-item-topic>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>
+<ng-template #votingIcon>
+  <svg
+    class="voting-icon"
+    nz-tooltip
+    [nzTooltipTitle]="translateService.currentLang == 'ar' ? 'تصويت' : 'Voting'"
+  >
+    <use xlink:href="assets\images\sprite-2.svg#icon-like"></use>
+  </svg>
+</ng-template>

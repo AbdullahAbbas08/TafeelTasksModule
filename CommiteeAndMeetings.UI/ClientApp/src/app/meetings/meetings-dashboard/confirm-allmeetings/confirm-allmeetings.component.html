@@ -1,0 +1,89 @@
+<div class="confirm-meetings p-3">
+  <div class="meetingBox-title d-flex align-item-center">
+    <i nz-icon nzType="usergroup-add" nzTheme="outline"></i>
+    <div class="mb-2">
+      <h6 class="font-weight-bold mx-1 mb-1">{{'confirmallmeetings' | translate}}</h6>
+      <span>{{'Allavailablemeetingsperweek' | translate}}</span>
+    </div>
+  </div>
+  <div class="confirmBox-details">
+    <ul class="p-0 m-0" *ngIf="meetingsState.length">
+      <li class="mt-2 d-flex justify-content-between" *ngFor="let meeting of meetingsState ;let index = index">
+        <div class="confirmBox-content">
+          <div >
+            <span>{{this.translateService.currentLang === 'ar' ? (meeting?.meetingFromTime | customDate) :(meeting?.meetingFromTime | date:'yyy/MM/dd')}}</span>
+
+            <!-- <span> - </span> -->
+
+            <!-- <span> {{this.translateService.currentLang === 'ar' ? (meeting?.meetingToTime | customDate) : (meeting?.meetingToTime | date:'yy/M/dd')}}</span> -->
+          </div>
+          <p [routerLink]="['schedule-meeting', meeting.id]" [nzTooltipTitle]="meeting?.title" nzTooltipPlacement="bottom" nz-tooltip>{{meeting?.title}}
+          </p>
+        </div>
+        <ng-container *ngIf="meeting.meetingAttendees.length">
+          <ng-container *ngFor="let attende of meeting.meetingAttendees">
+            <div class="confirmBox-action d-flex align-item-center pt-2" *ngIf="attende?.attendeeId == userId">
+              <p class="mb-0 confirmed mx-2" *ngIf="attende.state === 3"><span>{{'Confirmed' | translate}}</span></p>
+              <p class="mb-0 refused mx-2" *ngIf="attende.state === 4"><span>{{'Refused' | translate}}</span></p>
+              <p class="mb-0 pending mx-2" *ngIf="attende.state === 2 || attende.state === 1"><span>{{'pending' |
+                  translate}}</span></p>
+              <div>
+                <i class="control-icon controlMeeting-icon" nz-icon nzType="ellipsis" nz-popover
+                  [nzPopoverContent]="controlTmp" nzPopoverPlacement="right"></i>
+                <ng-template #controlTmp>
+                  <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                    <li (click)="changeState(attende.attendeeId,attende.meetingId,2,3)"
+                      *ngIf="attende.state === 4 || attende.state === 2 || attende.state === 1">
+                      {{ "Confirm" | translate }}
+                    </li>
+                    <!-- <li (click)="changeState(attende.attendeeId,attende.meetingId,2,4)"
+                      *ngIf="attende.state === 3 || attende.state === 2 || attende.state === 1">
+                      {{ "Refuse" | translate }}
+                    </li> -->
+                    <li (click)="openRecommendationModel(meeting.id,meeting.meetingAttendees,meeting.meetingCoordinator,2,4,attende.attendeeId,attende.userDelegate,index)"
+                    *ngIf="attende.state === 3 || attende.state === 2 || attende.state === 1">
+                    {{ "Refuse" | translate }}
+                  </li>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="meeting.meetingCoordinator.length">
+          <ng-container *ngFor="let coordinator of meeting.meetingCoordinator">
+            <div class="confirmBox-action d-flex align-item-center pt-2" *ngIf="coordinator?.coordinatorId == userId && coordinator?.isCreator == false">
+              <p class="mb-0 confirmed mx-2" *ngIf="coordinator.state === 3"><span>{{'Confirmed' | translate}}</span></p>
+              <p class="mb-0 refused mx-2" *ngIf="coordinator.state === 4"><span>{{'Refused' | translate}}</span></p>
+              <p class="mb-0 pending mx-2" *ngIf="coordinator.state === 2 || coordinator.state === 1"><span>{{'pending' |
+                  translate}}</span></p>
+              <div>
+                <i class="control-icon controlMeeting-icon" nz-icon nzType="ellipsis" nz-popover
+                  [nzPopoverContent]="controlTmp" nzPopoverPlacement="right"></i>
+                <ng-template #controlTmp>
+                  <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                    <li (click)="changeState(coordinator.coordinatorId,coordinator.meetingId,1,3)"
+                      *ngIf="coordinator.state === 4 || coordinator.state === 2 || coordinator.state === 1">
+                      {{ "Confirm" | translate }}
+                    </li>
+                    <!-- <li (click)="changeState(coordinator.coordinatorId,coordinator.meetingId,1,4)"
+                      *ngIf="coordinator.state === 3 || coordinator.state === 2 || coordinator.state === 1">
+                      {{ "Refuse" | translate }}
+                    </li> -->
+                    <li (click)="openRecommendationModel(meeting.id,meeting.meetingAttendees,meeting.meetingCoordinator,1,4,coordinator.coordinatorId,coordinator.userDelegate,index)"
+                    *ngIf="coordinator.state === 3 || coordinator.state === 2 || coordinator.state === 1">
+                    {{ "Refuse" | translate }}
+                  </li>
+                  </ul>
+                </ng-template>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </li>
+    </ul>
+    <div class="text-center no-data" *ngIf="!meetingsState.length">
+      <p class="m-2">{{'No meetings' | translate}} </p>
+    </div>
+  </div>
+</div>

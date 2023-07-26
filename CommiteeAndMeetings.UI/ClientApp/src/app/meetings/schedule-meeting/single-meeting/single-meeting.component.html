@@ -1,0 +1,101 @@
+<nz-tabset
+  [nzTabBarExtraContent]="extraTemplate"
+  [nzSize]="'large'"
+  [(nzSelectedIndex)]="selectedIndex"
+>
+  <nz-tab [nzTitle]="'MeetingInformation' | translate"
+    (nzSelect)="showMeetingInformation = true"
+    (nzDeselect)="showMeetingInformation = false"
+    [nzDisabled]="meetingStarted && !singleMeeting?.meeting?.isFinished"
+    ><app-meeting-data *ngIf="showMeetingInformation"
+      (meetingApprovedSwitch)="meetingApproved = $event"
+      (meetingInProgress)="openAgenda($event)"
+    ></app-meeting-data>
+  </nz-tab>
+  <nz-tab
+    [nzTitle]="'Agenda' | translate"
+    [nzDisabled]="!meetingId"
+    (nzSelect)="showAgenda = true"
+    (nzDeselect)="showAgenda = false"
+    ><app-agenda *ngIf="showAgenda" [meetingApproved]="meetingApproved" (meetingStarted)="checkMeeting($event)"></app-agenda
+  ></nz-tab>
+  <nz-tab
+  [nzTitle]="'AddAttendees' | translate"
+  [nzDisabled]="!meetingId"
+  (nzSelect)="showAttendees = true"
+  (nzDeselect)="showAttendees = false"
+  ><app-add-attendees *ngIf="showAttendees"></app-add-attendees
+></nz-tab>
+  <nz-tab
+    [nzTitle]="'MinuetsOfMeeting' | translate"
+    [nzDisabled]="!meetingApproved || !singleMeeting?.meeting?.isFinished"
+    (nzSelect)="showMoM = true"
+    (nzDeselect)="showMoM = false"
+    ><app-minutes-of-meeting *ngIf="showMoM"></app-minutes-of-meeting
+  ></nz-tab>
+</nz-tabset>
+<div class="d-flex justify-content-center movmentBtn">
+  <div>
+   <button nz-button
+   [disabled]="!meetingId || selectedIndex === 0 || (selectedIndex === 1  && (meetingStarted && !singleMeeting?.meeting?.isFinished))"
+   class="mx-2 nextandpervious"
+   nzType="primary"
+   (click)="addIndex()"
+   >السابق</button>
+   <button
+   [disabled]="!meetingId || selectedIndex === 3 || (selectedIndex === 2 && (!meetingApproved || !singleMeeting?.meeting?.isFinished))"
+   nz-button
+   (click)="removeIndex()"
+   nzType="primary"
+   class="mx-2 nextandpervious"
+   >التالي</button>
+  </div>
+</div>
+<ng-template #extraTemplate>
+  <div
+    class="buttons px-2"
+    *ngIf="
+      !showMoM &&
+      !showAgenda &&
+      !showAttendees &&
+      (singleMeeting?.meeting?.isCoordinator ||
+        singleMeeting?.meeting?.isCreator ||
+        !singleMeeting?.meeting?.id) &&
+      !singleMeeting?.meeting?.isFinished &&
+      !singleMeeting?.meeting?.isCanceled
+    "
+  >
+    <button
+      nz-button
+      nzType="primary"
+      nzShape="round"
+      [disabled]="!formValid"
+      (click)="saveForm()"
+    >
+      {{ "Save" | translate }}
+    </button>
+    <button
+      class="mx-3"
+      nz-button
+      nzShape="round"
+      [routerLink]="['/meetings']"
+      [disabled]="!formChanged"
+    >
+      {{ "Cancel" | translate }}
+    </button>
+  </div>
+  <div class="meeting-state">
+    <div
+      *ngIf="!singleMeeting?.meeting?.colsed && singleMeeting?.meeting?.isFinished"
+      class="meeting-state__finished"
+    >
+      {{ "Finished" | translate }}
+    </div>
+    <div *ngIf="singleMeeting?.meeting?.colsed" class="meeting-state__closed">
+      {{ "Closed" | translate }}
+    </div>
+    <div *ngIf="singleMeeting?.meeting?.isCanceled" class="meeting-state__closed">
+      {{ "canceled" | translate }}
+    </div>
+  </div>
+</ng-template>

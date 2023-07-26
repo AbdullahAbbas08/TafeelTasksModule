@@ -1,0 +1,76 @@
+<div class="recommendation">
+  <div class="recommendation__header">
+    <svg class="recommendation__icon">
+      <use xlink:href="assets\images\sprite-2.svg#icon-file-text2"></use>
+    </svg>
+
+    <div class="recommendation__actions" *ngIf="!singleMeeting.meeting?.colsed">
+      <a (click)="onEditRecommendation()">
+        <svg class="recommendation__icon">
+          <use
+            xlink:href="assets\images\sprite-3.svg#icon-clipboard-edit1"
+          ></use>
+        </svg>
+      </a>
+
+      <a (click)="onDeleteRecommendation()">
+        <svg class="recommendation__delete-icon">
+          <use
+            xlink:href="assets\images\sprite-3.svg#icon-delete_forever"
+          ></use>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="recommendation__content">
+    &nbsp;
+    <div class="recommendation__text">
+      {{ recommendation.comment.text }}
+    </div>
+  </div>
+  <div class="item-container">
+    <div class="item-content" *ngIf="recommendation?.surveyAnswers.length > 0">
+      <ng-container>
+        <div  class="voting-wrapper">
+          <nz-radio-group [(ngModel)]="voteAnswer[0]">
+            <div nz-row *ngFor="let opt of recommendation?.surveyAnswers">
+              <div nz-col nzSpan="24" class="option">
+                <label
+                  [nzDisabled]="
+                   userParticipated || (!isCoordinator && !isCreator && !byPassStartForActivities) || meetingClosed || notAttendees
+                  "
+                  nz-radio
+                  [nzValue]="opt?.surveyAnswerId"
+                  >{{ opt.answer }}
+                </label>
+                <app-vote-users
+                  class="vote-users"
+                  [answerId]="opt?.surveyAnswerId"
+                  [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                  [userCount]="opt?.surveyAnswerUsers?.length"
+                  *ngIf="opt?.surveyAnswerUsers?.length > 0 && meetingClosed"
+                ></app-vote-users>
+              </div>
+            </div>
+          </nz-radio-group>
+        </div>
+      </ng-container>
+    </div>
+    <footer class="item-footer">
+      <div *ngIf="recommendation?.surveyAnswers.length > 0" class="item-button">
+        <button
+          nz-button
+          nzType="default"
+          [disabled]="
+            voteAnswer.length === 0 ||
+            userParticipated || (!started && !isCoordinator && !isCreator && !byPassStartForActivities) || isMeetingClosed || meetingClosed || notAttendees
+          "
+          (click)="sendVote()"
+        >
+          {{ "SendVote" | translate }}
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

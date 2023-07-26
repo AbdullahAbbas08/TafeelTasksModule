@@ -1,0 +1,146 @@
+<div class="topic" *ngIf="topic.topicType === topicType._1">
+  <nz-collapse [nzBordered]="false">
+    <nz-collapse-panel [nzHeader]="headerTemp" [nzShowArrow]="false">
+      <div class="topic__content" #points></div>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+  <div class="topic__timeline">
+    <perfect-scrollbar [autoPropagation]="true">
+      <nz-tabset [nzSize]="'small'">
+        <nz-tab [nzTitle]="'Timeline' | translate"
+          ><app-topic-timeline
+            [topic]="topic"
+            [isCoordinator]="isCoordinator"
+            [isCreator]="isCreator"
+            [isMeetingClosed]="singleMeeting.meeting?.colsed"
+            [isMeetingCanceled]="singleMeeting.meeting?.isCanceled"
+          ></app-topic-timeline>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Comments' | translate"
+          ><app-topic-comments [topic]="topic"
+          [isMeetingCanceled]="singleMeeting.meeting?.isCanceled"
+          ></app-topic-comments
+        ></nz-tab>
+        <nz-tab [nzTitle]="'CommitteeVotings' | translate"
+          ><app-voting-list
+            [topic]="topic"
+            [isCoordinator]="isCoordinator"
+            [isCreator]="isCreator"
+            [isMeetingClosed]="singleMeeting.meeting?.colsed"
+          ></app-voting-list
+        ></nz-tab>
+        <nz-tab
+          [nzTitle]="'Conclusion' | translate"
+          [nzDisabled]="topic.topicState !== topicState._3"
+        >
+          <app-recommendation-list
+            [topic]="topic"
+            [isCoordinator]="isCoordinator"
+            [isCreator]="isCreator"
+          ></app-recommendation-list>
+        </nz-tab>
+      </nz-tabset>
+    </perfect-scrollbar>
+  </div>
+</div>
+
+<ng-template #headerTemp>
+  <div class="topic__header">
+    <div class="topic__title">
+      <div class="momNumber">
+        <div class="momNumber__text">{{ seqNumber }}</div>
+      </div>
+      <div class="mx-3">
+        {{ topic.topicTitle }}
+      </div>
+    </div>
+    <div class="mx-1 topic__actions">
+      <div
+        style="display: flex; align-items: center"
+        *ngIf="topic.topicState === topicState._5"
+      >
+        <nz-tag style="color: white" [nzColor]="'#ff0000'">{{
+          "Cancelled" | translate
+        }}</nz-tag>
+      </div>
+      <div class="topic__time">
+        {{ topic.topicFromDateTime | date: 'shortTime':"+0000" }} {{ "To" | translate }}
+        {{ topic.topicToDateTime | date:'shortTime':"+0000" }}
+      </div>
+      <i
+        class="control-icon"
+        nz-icon
+        nzType="ellipsis"
+        nz-popover
+        [nzPopoverContent]="controlTmp"
+        nzPopoverPlacement="bottom"
+        [(nzPopoverVisible)]="visible"
+        *ngIf="
+          topic.topicState !== topicState._3 &&
+          topic.topicState !== topicState._5 &&
+          (isCoordinator || isCreator) &&
+          !singleMeeting.meeting?.isCanceled
+        "
+      ></i>
+      <ng-template #controlTmp>
+        <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+          <li (click)="addNewTimeLineItem(); visible = false">
+            {{ "CreateVoting" | translate }}
+          </li>
+          <li
+            (click)="cancelTopic(); visible = false"
+            *ngIf="topic.topicState === topicState._1"
+          >
+            {{ "CancelTopic" | translate }}
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
+
+<div class="break" *ngIf="topic.topicType === topicType._2">
+  <div class="break__title">
+    <div class="momNumber mx-3">
+      <div class="momNumber__text">{{ seqNumber }}</div>
+    </div>
+    <svg class="break__icon">
+      <use xlink:href="assets\images\sprite-2.svg#icon-coffee"></use>
+    </svg>
+    <div class="break__text">
+      {{ "BreakTime" | translate }}
+    </div>
+  </div>
+  <div class="break__time">
+    <div
+      style="display: flex; align-items: center"
+      *ngIf="topic.topicState === topicState._5"
+    >
+      <nz-tag style="color: white" [nzColor]="'#ff0000'">{{
+        "Cancelled" | translate
+      }}</nz-tag>
+    </div>
+    <div class="mx-3">
+      {{ topic.topicFromDateTime | date: "shortTime":"+0000" }} {{ "To" | translate }}
+      {{ topic.topicToDateTime | date: "shortTime":"+0000" }}
+    </div>
+    <i
+      class="control-icon"
+      nz-icon
+      nzType="ellipsis"
+      nz-popover
+      [nzPopoverContent]="breakControlTmp"
+      nzPopoverPlacement="bottom"
+      [(nzPopoverVisible)]="visible"
+      *ngIf="topic.topicState === topicState._1"
+    ></i>
+    <ng-template #breakControlTmp>
+      <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+        <li (click)="cancelTopic(); visible = false">
+          {{ "CancelTopic" | translate }}
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+</div>

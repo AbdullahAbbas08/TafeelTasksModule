@@ -1,0 +1,22 @@
+<div class="div-wrapper" style="min-height:225px">
+    <h6>
+      <i nz-icon nzType="solution"></i>
+      <span class="mx-2">{{'Tasks'|translate}}</span>
+    </h6>
+    <p *ngIf="!tasksStats.length" class="text-center" style="font-size: 19px;margin-top: 40px;">{{'noData' | translate}} </p>
+    <ng-container *ngFor="let task of tasksStats">
+      <div class="d-flex align-items-center justify-content-between mb-2" *ngIf="tasksStats.length">
+        <div class="user-img">
+          <img [src]="task?.user?.profileImage ? 'data:image/png;base64,'+task?.user?.profileImage:'../../../../assets/images/unknown.png'" class="img-fluid" />
+        </div>
+        <div style="flex:2;">
+          <p nz-tooltip [nzTooltipTitle]="userName" >{{this.translateService.currentLang === 'ar' ? (task?.user.fullNameAr | maxLenth:22) : (task?.user.fullNameEn | maxLenth:22)}}</p>
+          <ng-template #userName>
+            <span>{{this.translateService.currentLang === 'ar' ? task?.user.fullNameAr : task?.user.fullNameEn}}</span>
+          </ng-template> 
+          <nz-progress [nzPercent]="((task?.finishedTaskCount/task?.totalTaskCount)*100).toFixed(2)" [nzShowInfo]="false"></nz-progress>
+        </div>
+         <div>{{(task?.finishedTaskCount/task?.totalTaskCount) | percent:'1.2-2'}}</div> 
+      </div>
+    </ng-container>
+  </div>

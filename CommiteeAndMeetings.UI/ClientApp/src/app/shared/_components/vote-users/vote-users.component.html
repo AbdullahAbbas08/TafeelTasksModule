@@ -1,0 +1,40 @@
+<a (click)="showAnswerUsers()">
+  <nz-avatar-group>
+    <nz-avatar
+      nzIcon="user"
+      [nzSrc]="
+        surveyAnswerUsers[0]?.user.profileImage
+          ? 'data:image/png;base64,' + surveyAnswerUsers[0]?.user.profileImage
+          : 'assets/images/unknown.png'
+      "
+      [nzTooltipTitle]="
+        translateService.currentLang == 'ar'
+          ? surveyAnswerUsers[0]?.user.fullNameAr
+          : surveyAnswerUsers[0]?.user.fullNameEn
+      "
+      nzTooltipPlacement="topCenter"
+      nz-tooltip
+    ></nz-avatar>
+    <nz-avatar
+      *ngIf="userCount > 1"
+      nzIcon="user"
+      [nzSrc]="
+        surveyAnswerUsers[1]?.user.profileImage
+          ? 'data:image/png;base64,' + surveyAnswerUsers[1]?.user.profileImage
+          : 'assets/images/unknown.png'
+      "
+      [nzTooltipTitle]="
+      translateService.currentLang == 'ar'
+        ? surveyAnswerUsers[1]?.user.fullNameAr
+        : surveyAnswerUsers[1]?.user.fullNameEn
+    "
+    nzTooltipPlacement="topCenter"
+    nz-tooltip
+    ></nz-avatar>
+    <nz-avatar
+      *ngIf="userCount > 2"
+      style="background-color: #e2f1f1; color: #0a6868"
+      [nzText]="'+' + (userCount - 2)"
+    ></nz-avatar>
+  </nz-avatar-group>
+</a>

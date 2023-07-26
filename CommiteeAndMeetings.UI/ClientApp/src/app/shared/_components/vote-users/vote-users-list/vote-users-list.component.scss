@@ -1,0 +1,40 @@
+@import "../../../../../variables";
+
+.item {
+  background: #f4f4f4 0% 0% no-repeat padding-box;
+  margin: 0.3rem auto;
+  width: 94%;
+  border-radius: 0.6rem;
+  padding: 0rem 0.3rem 0.1rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    padding: 0.3rem 0.5rem;
+    &-img {
+      height: 2rem;
+      width: 2rem;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 0.3rem;
+      object-fit: cover;
+    }
+    &-name {
+      color: $dodgerBlue;
+      font-size: $fs14;
+      font-weight: 700;
+      margin: 0 0.3rem;
+    }
+  }
+
+  &__title {
+    margin: 0 0.4rem;
+  }
+}

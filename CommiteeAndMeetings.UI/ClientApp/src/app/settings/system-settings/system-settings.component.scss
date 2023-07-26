@@ -1,0 +1,59 @@
+@import "../../../variables";
+
+.ant-table-wrapper {
+  box-shadow: 0px 10px 8px -10px $boxShadow;
+  background-color: $white;
+}
+
+.settings-header {
+  padding: 20px;
+  box-shadow: 0px 0px 20px 1px $boxShadow;
+  background-color: $white;
+  border-radius: 6px;
+
+  .searchBox {
+    position: relative;
+    width: 50%;
+
+    .ant-input-affix-wrapper {
+      padding: 0;
+    }
+
+    .close {
+      position: absolute;
+      top: 12px;
+      right: 5px;
+      font-size: 16px;
+    }
+  }
+
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+    &.create-new {
+      span,
+      i {
+        color: $white;
+        margin: 0 !important;
+      }
+    }
+  }
+}
+.save-btn {
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+  color: #fff;
+  background: #117a8b;
+  border-color: #117a8b;
+  transition: all .5s;
+  &:hover{
+    opacity: .7;
+  }
+}
+.mr-100{
+  margin-right:111px ;
+}
+.ml-100 {
+  margin-left: 180px;
+}

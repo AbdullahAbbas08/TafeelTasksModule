@@ -1,0 +1,90 @@
+<div class="required-activities p-3">
+    <div class="meetingBox-title pb-1 d-flex align-item-center justify-content-between">
+        <div class="d-flex align-item-center pt-2">
+            <i class="fas fa-tasks"></i>
+            <h6 class="font-weight-bold mx-1">{{'RequiredActivities' | translate}}</h6>
+        </div>
+        <div class="d-flex align-item-center justify-content-between" style="width: 206px;">
+            <div style="width: 100%;height: 41px;" class="mx-2">
+                <nz-form-item>
+                    <nz-form-control>
+                      <nz-select [(ngModel)]="selectedValue" nzPlaceHolder="{{'choice' | translate}}" (ngModelChange)="filterVoting($event)">
+                          <nz-option  [nzValue]="1" nzLabel="{{'allVotes'| translate}}"></nz-option>
+                          <nz-option  [nzValue]="2" nzLabel="{{'ExpiredVotes'| translate}}"></nz-option>
+                          <nz-option  [nzValue]="3" nzLabel="{{'NonExpiredVotes'| translate}}"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div class="pt-2">
+                <a class="btn-reload" (click)="refresh()"
+                  ><i class="fa fa-sync-alt"></i
+                ></a>
+            </div>
+        </div>
+    </div>
+    <div class="activities-details mt-3">
+        <div class="activities-head d-flex align-item-center">
+            <div style="width: 30%;">
+                <span class="font-weight-bold">{{'meetingtime' | translate}}</span>
+            </div>
+            <div style="width: 50%;">
+                <span class="font-weight-bold"> {{'meetingaddress' | translate}}</span>
+            </div>
+            <div style="width: 20%;">
+                <span class="font-weight-bold">{{'neededaction' | translate}}</span>
+            </div>
+        </div>
+        <div class="activities" *ngIf="meetingActivites.length">
+            <ng-container *ngFor="let activity of meetingActivites;let i = index">
+                <div class="activities-content mt-3 mb-1 px-2 mx-1" *ngIf="!(!activity.isCoordinator && !activity.isStarted)">
+                    <div class="d-flex align-item-center">
+                        <div style="width: 30%; margin-top: 5px;" (click)="surveyToggle[i] = !surveyToggle[i]">
+                            <span class="font-weight-bold">{{this.translateService.currentLang === "ar" ? (activity?.meettingDate | customDate) : (activity?.meettingDate | date:'yyy/MM/dd')}}</span>
+                        </div>
+                        <div style="width: 50%; margin-top: 5px;" (click)="surveyToggle[i] = !surveyToggle[i]">
+                            <span class="font-weight-bold">{{activity?.meetingTitle}}</span>
+                        </div>
+                        <div class="d-flex align-item-center" style="width: 20%;">
+                            <button type="submit" nz-button nzType="primary" [disabled]="activity.surveyId == null"
+                            (click)="openModel(activity.surveyId,activity.isCoordinator,activity.isCreator,activity.isClosed,activity.isStarted)">
+                            {{'Voting' | translate}}  <i class="far fa-thumbs-up mx-1"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div *ngIf="activity?.meetingTopicSurveys.length" class="mt-2 mx-4 survies" [(ngbCollapse)]="!surveyToggle[i]">
+                        <div class="survies-head d-flex align-item-center">
+                            <div style="width: 40%;">
+                                <span class="font-weight-bold">{{'topicaddress' | translate}}</span>
+                            </div>
+                            <div style="width: 40%;">
+                                <span class="font-weight-bold"> {{'surveyaddress' | translate}}</span>
+                            </div>
+                            <div style="width: 20%;">
+                                <span class="font-weight-bold">{{'neededaction' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="survies-content mt-1 d-flex align-item-center"
+                            *ngFor="let survey of activity?.meetingTopicSurveys">
+                            <div style="width: 40%;">
+                                <span class="font-weight-bold">{{survey?.topicTitle}}</span>
+                            </div>
+                            <div style="width: 40%;">
+                                <span class="font-weight-bold">{{survey?.surveyTitle}}</span>
+                            </div>
+                            <div class="d-inline-block" style="width: 20%;">
+                                 <button type="submit" nz-button nzType="primary"
+                                 (click)="openModel(survey?.surveyId,activity.isCoordinator,activity.isCreator,activity.isClosed,activity.isStarted)">
+                                 {{'Voting' | translate}}  <i class="far fa-thumbs-up mx-1"></i>
+                             </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="text-center no-data" *ngIf="!meetingActivites.length">
+            <p class="m-2">{{'No Required Activities' | translate}} </p>
+        </div>
+    </div>
+</div>

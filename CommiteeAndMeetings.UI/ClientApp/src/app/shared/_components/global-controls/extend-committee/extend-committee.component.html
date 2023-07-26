@@ -1,0 +1,51 @@
+<div class="current-date" [ngClass]="{ rtl: currentLang === 'ar' }">
+  <nz-tag class="box" [nzColor]="'cyan'"
+    >{{ "CommitteeEndDate" | translate }} &nbsp;
+    <strong>
+      {{
+        currentLang === "ar"
+          ? (committeeEndDate | customDate)
+          : (committeeEndDate | date)
+      }}</strong
+    ></nz-tag
+  >
+</div>
+
+<!-- <p>{{ "SelectDateToExtend" | translate }}</p> -->
+<nz-form-item>
+  <nz-form-control>
+    <div>
+      <hijri-gregorian-datepicker
+        [ngClass]="{ rtl: currentLang === 'ar' }"
+        [placeHolder]="'dd/mm/yyyy' | translate"
+        [label]=""
+        [isRequired]="true"
+        [GregLabel]="'Greg' | translate"
+        [hijriLabel]="'Hijri' | translate"
+        [selectedDateType]="selectedDateType"
+        #datePicker
+        (select)="dateSelected($event)"
+        (selectedDateChange)="dateSelected($event)"
+        [readonly]="true"
+        [minHijri]="minHijri"
+        [minGreg]="minGreg"
+      >
+      </hijri-gregorian-datepicker>
+    </div>
+  </nz-form-control>
+</nz-form-item>
+
+<div [ngClass]="{ rtl: currentLang === 'ar' }" class="text-center mt-4">
+  <button type="button" class="mx-2" nz-button (click)="close()">
+    {{ "Cancel" | translate }}
+  </button>
+  <button
+    type="submit"
+    nz-button
+    nzType="primary"
+    [disabled]="!newDate"
+    (click)="submitNewExtendDate()"
+  >
+    {{ "Confirm" | translate }}
+  </button>
+</div>

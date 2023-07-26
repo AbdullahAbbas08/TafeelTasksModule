@@ -1,0 +1,34 @@
+<app-add-comment
+  [id]="topic.id"
+  (commentAdded)="addRecommendation($event)"
+  [count]="count"
+  [recommendation]="true"
+  class="px-2"
+  *ngIf="
+    (isCoordinator || isCreator) &&
+    !meetingClosed &&
+    topic.topicState !== topicState._5
+  "
+  [ngStyle]="{ direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }"
+></app-add-comment>
+
+<div class="comments" [ngStyle]="{ direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }">
+  <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+    <nz-timeline-item
+      [nzDot]="recommendIcon"
+      *ngFor="let recommendation of recommendations"
+    >
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="recommend-item"
+      >
+        <app-comment-item [item]="recommendation"></app-comment-item>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>
+<ng-template #recommendIcon>
+  <svg class="recommend-icon"  nz-tooltip [nzTooltipTitle]="translateService.currentLang == 'ar'? 'توصية' : 'recommendation'">
+    <use xlink:href="assets\images\sprite-2.svg#icon-paste"></use>
+  </svg>
+</ng-template>

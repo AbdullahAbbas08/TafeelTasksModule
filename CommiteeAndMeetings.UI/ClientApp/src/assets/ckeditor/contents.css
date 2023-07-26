@@ -1,0 +1,771 @@
+/*
+Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+*/
+/*{Fonts Modified}*/
+/* Fonts */
+@font-face {
+  font-family: 'AL-Mohanad';
+  src: url('../fonts/AL-Mohanad.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AL-Mohanad-Bold';
+  src: url('../fonts/AL-Mohanad-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DIN-Next-LT-Ar';
+  src: url('../fonts/DIN_Next_LT_Arabic_Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DIN-Next-LT-Ar-Light';
+  src: url('../fonts/DIN_Next_LT_Arabic_Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Al-Mateen';
+  src: url('../fonts/Al-Mateen.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Kufyan-Ar-Bold';
+  src: url('../fonts/Kufyan_Arabic_Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE-SS-Two-Medium';
+  src: url('../fonts/GE_SS_Two_Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GE-Dinar-Two';
+  src: url('../fonts/GE_Dinar_Two.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GE-Dinar-Two-Light';
+  src: url('../fonts/GEDinar-Two-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Swis721-Cn-BT';
+  src: url('../fonts/Swis721_Cn_BT.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'JF-Flat-Regular';
+  src: url('../fonts/JF-Flat-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sakkal-Majalla';
+  src: url('../fonts/majalla.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Shorooq_N1';
+  src: url('../fonts/Shorooq_N1.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Apex-Sans-Bold';
+  src: url('../fonts/Apex_Sans_Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Apex-Sans-Book';
+  src: url('../fonts/Apex_Sans_Book.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Apex-Sans-Medium';
+  src: url('../fonts/Apex_Sans_Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Frutiger-LT-Ar-45-Light';
+  src: url('../fonts/Frutiger_LT_Arabic_45_Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Frutiger-LT-Ar-55-Roman';
+  src: url('../fonts/Frutiger_LT_Arabic_55_Roman.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Frutiger-LT-Ar-65-Bold';
+  src: url('../fonts/Frutiger_LT_Arabic_65_Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Frutiger-LT-Ar-75-Black';
+  src: url('../fonts/Frutiger_LT_Arabic_75_Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Hacen-Liner-Print-out';
+  src: url('../fonts/Hacen_Liner_Print-out.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Hacen-Liner-Print-out-Light';
+  src: url('../fonts/Hacen_Liner_Print-out_Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Hacen-Liner-XL';
+  src: url('../fonts/Hacen_Liner_XL.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Hacen-Liner-XXL';
+  src: url('../fonts/Hacen_Liner_XXL.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Segoe-UI';
+  src: url('../fonts/Segoe_UI.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Semilight';
+  src: url('../fonts/SegoeUI-Semilight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Semibold';
+  src: url('../fonts/Segoe_UI_Semibold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Bold';
+  src: url('../fonts/SegoeUI-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AGENCYB';
+  src: url('../fonts/AGENCYB.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AGENCYR';
+  src: url('../fonts/AGENCYR.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ahronbd';
+  src: url('../fonts/ahronbd.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsaub';
+  src: url('../fonts/angsaub.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ALGER';
+  src: url('../fonts/ALGER.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'andlso';
+  src: url('../fonts/andlso.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsa';
+  src: url('../fonts/angsa.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsab';
+  src: url('../fonts/angsab.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsai';
+  src: url('../fonts/angsai.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsau';
+  src: url('../fonts/angsau.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsaui';
+  src: url('../fonts/angsaui.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsauz';
+  src: url('../fonts/angsauz.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'angsaz';
+  src: url('../fonts/angsaz.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ANTQUAB';
+  src: url('../fonts/ANTQUAB.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ANTQUABI';
+  src: url('../fonts/ANTQUABI.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'ANTQUAI';
+  src: url('../fonts/ANTQUAI.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sultan bold';
+  src: url('../fonts/Sultan bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sultan normal';
+  src: url('../fonts/Sultan normal.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Tajawal-Bold';
+  src: url('../fonts/Tajawal-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Tajawal-Medium';
+  src: url('../fonts/Tajawal-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Tajawal-Regular';
+  src: url('../fonts/Tajawal-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Cairo-Regular';
+  src: url('../fonts/Cairo-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Cairo-SemiBold';
+  src: url('../fonts/Cairo-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ae_Khalid';
+  src: url('../fonts/ae_Khalid.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ae_Khalid-Bold';
+  src: url('../fonts/ae_Khalid-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'ge-ss-2-light';
+  src: url('../fonts/GE-SS-Two.otf') format('opentype');
+}
+
+body {
+  /* Font */
+  /* Emoji fonts are added to visualise them nicely in Internet Explorer. */
+  font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 12px;
+  /* Text color */
+  color: #333;
+  /* Remove the background color to make it transparent. */
+  background-color: #fff;
+  margin: 20px;
+}
+
+body {
+  direction: rtl;
+  /*width: 21cm !important;
+  min-width: 21cm !important;*/
+  max-width: 21cm !important;
+  margin: 0 auto;
+  font-size: 13px;
+  line-height: 1.6;
+  position: relative;
+}
+
+  body > section {
+    direction: rtl;
+    display: block;
+    height: 29.7cm !important;
+    min-height: 29.7cm !important;
+    max-height: 29.7cm !important;
+    margin: .5cm auto 1cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: content-box;
+    padding: 1cm;
+    position: relative;
+    width: auto !important;
+    min-width: auto !important;
+    overflow: hidden;
+  }
+
+    body > section:after {
+      direction: rtl;
+      content: attr(data-page);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 5px;
+      display: block;
+      background: #2b579a;
+      line-height: 1;
+      min-width: 50px;
+      text-align: center;
+      color: white;
+      border-bottom-left-radius: 5px;
+    }
+
+    body > section.gaddaUni:before {
+      content: '';
+      background-image: url("../images/gadda-university-watermark.png") !important;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: block;
+      width: 400px;
+      height: 200px;
+      transform: rotate(-40deg) scale(1.3);
+      opacity: 0.1;
+      position: absolute;
+      left: 60%;
+      top: 75.5%;
+    }
+
+  body section header,
+  body section footer {
+    cursor: not-allowed;
+    pointer-events: none;
+    height: auto !important;
+    /* width: auto !important; */
+    max-width: 100% !important;
+    max-height: auto !important;
+  }
+
+  body > section.noBorderClass  {
+    border: none !important;
+  }
+  body > section.noBorderClass::after  {
+    background: none !important;
+  }
+
+.cke_panel_listItem {
+  /*width: 150px;
+  float: left;
+  text-align: left;*/
+}
+
+.cke_editable {
+  font-size: 13px;
+  line-height: 1.6;
+  /* Fix for missing scrollbars with RTL texts. (#10488) */
+  word-wrap: break-word;
+}
+
+blockquote {
+  font-style: italic;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  padding: 2px 0;
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 0;
+}
+
+.cke_contents_ltr blockquote {
+  padding-left: 20px;
+  padding-right: 8px;
+  border-left-width: 5px;
+}
+
+.cke_contents_rtl blockquote {
+  padding-left: 8px;
+  padding-right: 20px;
+  border-right-width: 5px;
+}
+
+a {
+  color: #0782C1;
+}
+
+ol, ul, dl {
+  /* IE7: reset rtl list margin. (#7334) */
+  *margin-right: 0px;
+  /* Preserved spaces for list items with text direction different than the list. (#6249,#8049)*/
+  padding: 0 40px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+hr {
+  border: 0px;
+  border-top: 1px solid #ccc;
+}
+
+img.right {
+  border: 1px solid #ccc;
+  float: right;
+  margin-left: 15px;
+  padding: 5px;
+}
+
+img.left {
+  border: 1px solid #ccc;
+  float: left;
+  margin-right: 15px;
+  padding: 5px;
+}
+
+pre {
+  white-space: pre-wrap; /* CSS 2.1 */
+  word-wrap: break-word; /* IE7 */
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+.marker {
+  background-color: Yellow;
+}
+
+span[lang] {
+  font-style: italic;
+}
+
+figure {
+  text-align: center;
+  outline: solid 1px #ccc;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  margin: 10px 20px;
+  display: inline-block;
+}
+
+  figure > figcaption {
+    text-align: center;
+    display: block; /* For IE8 */
+  }
+
+a > img {
+  padding: 1px;
+  margin: 1px;
+  border: none;
+  outline: 1px solid #0782C1;
+}
+
+/* Widget Styles */
+.code-featured {
+  border: 5px solid red;
+}
+
+.math-featured {
+  padding: 20px;
+  box-shadow: 0 0 2px rgba(200, 0, 0, 1);
+  background-color: rgba(255, 0, 0, 0.05);
+  margin: 10px;
+}
+
+.image-clean {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+  .image-clean > figcaption {
+    font-size: .9em;
+    text-align: right;
+  }
+
+.image-grayscale {
+  background-color: white;
+  color: #666;
+}
+
+  .image-grayscale img, img.image-grayscale {
+    filter: grayscale(100%);
+  }
+
+.embed-240p {
+  max-width: 426px;
+  max-height: 240px;
+  margin: 0 auto;
+}
+
+.embed-360p {
+  max-width: 640px;
+  max-height: 360px;
+  margin: 0 auto;
+}
+
+.embed-480p {
+  max-width: 854px;
+  max-height: 480px;
+  margin: 0 auto;
+}
+
+.embed-720p {
+  max-width: 1280px;
+  max-height: 720px;
+  margin: 0 auto;
+}
+
+.embed-1080p {
+  max-width: 1920px;
+  max-height: 1080px;
+  margin: 0 auto;
+}
+
+header > img#JADAH-logo {
+  height: 340px;
+  background-color: white;
+  bottom: 80px;
+  opacity: 0.1;
+  position: absolute;
+  right: -200px;
+  transform: rotate(-40deg);
+  width: 600px;
+}
+.special-sgs {
+  border: 2px solid #576fb3;
+  height: 100%;
+  padding: 15px 5px;
+  direction: rtl;
+}
+.d-inblock {
+    display: inline-block;
+}
+.w-69 {
+    width: 69%;
+}
+.w-25 {
+    width: 25%;
+}
+.special-sgs-en {
+  border: 2px solid #576fb3;
+  height: 100%;
+  padding: 15px 5px;
+  direction: ltr;
+}
+.special-Mhaj, .special-Mhaj2 {
+  height: 100%;
+  padding: 0 5px;
+  direction: rtl;
+}
+.special-Mhaj p, .special-Mhaj2 p {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 20px;
+  color:#499d56
+}
+.special-Mhaj2 p {
+  color: #21553a;
+  font-size: 15px;
+} 
+.special-abdellatef {
+  align-items:center;
+  display:flex;
+  justify-content:space-around;
+}
+.special-abdellatef2 {
+  align-items:center;
+  display:flex;
+  justify-content:space-between;
+}
+.body-border {
+  border: 3px solid #21553a;
+  height: 22cm;
+  position: absolute;
+  border-radius: 12px;
+  width: 90%;
+  padding: 5px;
+  overflow: hidden;
+}
+section footer {
+  border-top: none !important;
+}
+.footer-head p {
+  color: #919B9C;
+  font-size: 20px;
+  font-weight: 500;
+}
+.footer-head.haj-url p {
+  color: #499d56;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+.footer-head.haj-url2 p {
+  color: #21553a;
+  font-size: 22px;
+  font-weight: 500;
+  text-align: center;
+}
+.footer-head.haj-url p:first-of-type {
+  font-size: 22px;
+}
+.footer-body {
+  display: inline-block;
+  width: 50%;
+  color: #A4ACAD;
+  font-size: 8px;
+}
+.text-body {
+  border: 2px solid #499d56;
+  height: 710px;
+  border-radius: 4%;
+  padding: 20px 15px;
+}
+.sgs_table > tbody > tr > td {
+    border: none !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.w-6 {
+    width: 6%;
+}
+.w-40 {
+  width: 40%;
+}
+.w-24 {
+  width: 24%;
+}
+.w-30 {
+  width: 30%;
+}
+.bg-header-table tbody tr:first-of-type td {
+  background: #93b2d099;
+}
+.bg-header-table-li {
+  background: #93b2d066;
+}
+#bg-border {
+  padding: 15px;
+  border: 1px solid #000;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+.mr-35 {
+  margin-right: 35px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+.m-010 {
+  margin: 0 10px;
+}
+.bd-light {
+  border: 0.7px solid #a4cee3;
+  height: 0;
+}
+.text-right {
+    text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.float-left {
+  float: left;
+}
+.font-arial-20 {
+  font-family: Arial;
+  font-size: 20px;
+  font-weight: 500;
+}
+.bd-double {
+  margin: 0 10px;
+  border: 1px solid #bbb;
+  border-left: none;
+  border-right: none;
+  height: 4px;
+}
+
+.aklesha-header {
+  margin: -1cm;
+}
+
+.new_data {
+  width: 25%;
+  position: absolute;
+  left: 5%;
+  top: 9%;
+}
+.remove-page {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #dc3545;
+  text-align: center;
+  border-radius: 100%;
+  color: #fff;
+  font-size: 18px;
+  line-height: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 7px 2px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+
+.str-table {
+  border-radius:8px;
+  border:none;
+  margin-top:10px;
+  overflow:hidden;
+}
+header .str-table td {
+  background-color:#ababab;
+  border-color:#d6d6d6;
+  text-align:center;
+  padding: 10px 0;
+  border-radius: 8px;
+  direction: rtl;
+}
+.str-table td {
+  background-color:#ababab;
+  border-color:#d6d6d6;
+  text-align:center;
+  padding: 5px 0;
+  border-radius: 8px;
+  direction: rtl;
+}
+footer .str-table td {
+  padding: 5px 0;
+  border-radius: 8px;
+  direction: rtl;
+}
+.footer-img {
+  width: calc(100% + 2cm);
+  margin: -.4cm -1cm;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+.d-flex {
+  display: flex !important;
+}
+.justify-content-SB {
+  justify-content: space-between;
+}
+.text-center {
+  text-align: center;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}

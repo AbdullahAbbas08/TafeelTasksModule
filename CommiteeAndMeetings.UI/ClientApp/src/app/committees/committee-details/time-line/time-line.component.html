@@ -1,0 +1,27 @@
+<div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <div *ngIf="!loadingData">
+    <div *ngFor="let item of timeLineItems">
+      <app-attachment-item
+        *ngIf="item.type === 'Attachment'"
+        [item]="item"
+        [periodState]="validityPeriod.periodState"
+      ></app-attachment-item>
+      <app-task-item
+        *ngIf="item.type === 'Task'"
+        [task]="item"
+        [periodState]="validityPeriod.periodState"
+      ></app-task-item>
+      <app-voting-item
+        *ngIf="item.type === 'Voting'"
+        [item]="item"
+        [periodState]="validityPeriod.periodState"
+      ></app-voting-item>
+    </div>
+  </div>
+</div>

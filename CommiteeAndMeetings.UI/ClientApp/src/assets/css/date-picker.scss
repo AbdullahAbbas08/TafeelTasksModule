@@ -1,0 +1,357 @@
+@import "../../variables";
+
+//SART:: Gllobal style foreach calendar in app
+.bg-primary .btn-light {
+  color: $white !important;
+}
+input.form-control + ngbd-datepicker-islamicumalqura,
+input.form-control + ngbd-datepicker-islamicumalqura + ngb-datepicker,
+input.form-control + app-both-calendars {
+  .ngb-dp-navigation-chevron {
+    color: $black !important;
+  }
+}
+
+// START:: Calendar ICON
+.__calendar-icon {
+  width: 17px;
+  height: 17px;
+  left: auto;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 1rem !important;
+  &:after {
+    padding: 0.3rem;
+  }
+}
+
+.rtl {
+  .__calendar-icon {
+    left: 6px;
+    right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.__clear_date_input_value {
+  width: 17px;
+  height: 17px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 26px;
+  left: auto;
+  font-size: 9px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($aliceBlue, 57%);
+  }
+}
+
+.rtl {
+  .__clear_date_input_value {
+    right: auto;
+    left: 26px;
+  }
+}
+// END:: Calendar ICON
+
+.ngb-dp-arrow {
+  .btn {
+    background: unset !important;
+  }
+}
+
+//START:: Arrows for language [en - ar]
+
+ngb-datepicker-navigation {
+  position: relative;
+
+  ngb-datepicker-navigation-select {
+    max-width: 75%;
+    margin: 0 auto;
+    flex: 1 1 75% !important;
+  }
+  & > div {
+    position: absolute;
+  }
+}
+
+body.rtl {
+  .ngb-dp-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+
+    .btn {
+      min-width: auto !important; // cause of some components css styles override arrows width with min-width prop.
+    }
+    &:not(.right) {
+      left: 0%;
+      right: auto;
+      button {
+        // transform: rotate(180deg);
+        margin: 0rem;
+        outline: none;
+      }
+    }
+    &.right {
+      right: 0%;
+      left: auto;
+      button {
+        // transform: rotate(-180deg);
+        margin: 0rem;
+        outline: none;
+      }
+    }
+  }
+}
+
+.ngb-dp-arrow {
+  .btn {
+    min-width: auto !important; // cause of some components css styles override arrows width with min-width prop.
+  }
+  &:not(.right) {
+    left: 0%;
+    right: auto;
+    button {
+      // transform: rotate(180deg);
+      margin: 0rem;
+      outline: none;
+    }
+  }
+  &.right {
+    right: 0%;
+    left: auto;
+    button {
+      // transform: rotate(-180deg);
+      margin: 0rem;
+      outline: none;
+    }
+  }
+}
+//END:: Arrows for language [en - ar]
+//END:: Gllobal style foreach calendar in app
+
+.__main-calendar {
+  ngb-datepicker {
+    // min-height: 377px;
+    display: flex;
+    flex-direction: column;
+
+    &.rtl {
+      direction: ltr;
+    }
+  }
+
+  .ngb-dp-months {
+    overflow: hidden;
+    flex-grow: 2;
+    min-height: 321px;
+
+    .ngb-dp-week.ngb-dp-weekdays {
+      margin-top: -6px !important;
+    }
+  }
+  .ngb-dp-month {
+    width: 100%;
+  }
+  .ngb-dp-week {
+    display: flex;
+    justify-content: space-around;
+  }
+  .ngb-dp-day {
+    width: 2rem !important;
+    height: 2rem !important;
+    // margin: .3rem .74rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+  .ngb-dp-weekday {
+    width: 2.5rem !important;
+    margin: 0.485rem;
+  }
+
+  .ngb-dp-day {
+    .btn-light {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dotted $selected;
+      border-radius: 50%;
+    }
+  }
+  .ngb-dp-day .bg-primary {
+    background-color: $selected !important;
+    border: unset !important;
+  }
+
+  ngb-datepicker {
+    width: 100%;
+    box-shadow: 0 0 5px 1px rgba(50, 50, 50, 0.2);
+
+    & * {
+      &:focus {
+        outline: none !important;
+      }
+    }
+
+    .ngb-dp-header {
+      padding-top: 0rem !important;
+    }
+
+    ngb-datepicker-navigation {
+      position: relative;
+      background-color: $selected;
+      padding: 12px 0rem;
+
+      & > div {
+        position: absolute;
+      }
+      .ngb-dp-arrow {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .ngb-dp-arrow:not(.right) {
+        left: 10%;
+        button {
+          color: $white;
+        }
+      }
+      ngb-datepicker-navigation-select {
+        max-width: 50% !important;
+        margin: 0 auto;
+
+        select {
+          margin: 0rem 0rem;
+          background-color: transparent !important;
+          border: transparent !important;
+          color: $white !important;
+          font-weight: bold;
+          option {
+            background-color: unset !important;
+            color: $black !important;
+          }
+        }
+      }
+      .ngb-dp-arrow.right {
+        right: 10%;
+        button {
+          color: $white;
+        }
+      }
+    }
+
+    .ngb-dp-month {
+      ngb-datepicker-month-view {
+        background-color: white;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+    }
+  }
+}
+
+.__datepicker-container {
+  position: relative;
+
+  ngbd-datepicker-islamicumalqura.__reminder-datepicker {
+    position: absolute !important;
+    background-color: $white;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+// Main Georgian Calendar
+.__main-calendar-g {
+  width: 100%;
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+
+  .ngb-dp-header {
+    background-color: $selected !important;
+    padding-top: unset !important;
+    padding: 10px !important;
+
+    ngb-datepicker-navigation {
+      display: flex;
+      align-items: center;
+
+      ngb-datepicker-navigation-select {
+        select {
+          margin: 0rem 0.4rem;
+        }
+      }
+
+      .ngb-dp-arrow {
+        display: flex;
+        align-items: center;
+
+        button {
+          color: $white !important;
+        }
+      }
+    }
+  }
+
+  .ngb-dp-months {
+    flex-grow: 1;
+
+    .ngb-dp-month {
+      width: 100%;
+      ngb-datepicker-month-view {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+
+        .ngb-dp-week {
+          justify-content: space-between;
+
+          .ngb-dp-day {
+            border-radius: 50%;
+            border: 1px dotted $selected;
+            outline: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0rem 0.3rem;
+            overflow: hidden;
+
+            &[tabindex="0"] {
+              border: 1px solid $selected !important;
+            }
+          }
+        }
+      }
+    }
+  }
+  .bg-primary {
+    background-color: $selected !important;
+  }
+}
+
+ngb-datepicker-navigation-select {
+    & > .custom-select {
+        padding: 0 1.5rem !important;
+    }
+}

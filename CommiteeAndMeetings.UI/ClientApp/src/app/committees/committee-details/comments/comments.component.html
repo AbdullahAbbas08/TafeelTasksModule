@@ -1,0 +1,22 @@
+<div *ngIf="count > 1">
+  <nz-tag
+    nzMode="checkable"
+    [nzChecked]="true"
+    [nzColor]="'#117a8b'"
+    (nzCheckedChange)="toggleDisplay($event)"
+    >{{ "PreviousComments" | translate }}</nz-tag
+  >
+</div>
+
+<div class="comment" *ngIf="!showPrevious && !checkComponent">
+  <app-comment-item [item]="comments[comments.length - 1]"></app-comment-item>
+</div>
+<div class="comment" *ngIf="!showPrevious && checkComponent">
+  <app-comment-item [item]="comments[comments.length - 1]"></app-comment-item>
+</div>
+
+<div *ngIf="showPrevious">
+  <div *ngFor="let comment of comments">
+    <app-comment-item [item]="comment"></app-comment-item>
+  </div>
+</div>

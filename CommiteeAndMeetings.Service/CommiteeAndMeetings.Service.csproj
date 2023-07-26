@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
+    <PackageReference Include="EFCore.BulkExtensions" Version="5.0.2" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.29" />
+    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="5.0.3" />
+  
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.46.0" />
+  
+    <PackageReference Include="PuppeteerSharp" Version="6.2.0" />
+  
+    <PackageReference Include="Syncfusion.HtmlToPdfConverter.AspNet" Version="20.3.0.61" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ActiveDirectoryHandling\ActiveDirectoryHandling.csproj" />
+    <ProjectReference Include="..\CommiteeAndMeetings.BLL\CommiteeAndMeetings.BLL.csproj" />
+    <ProjectReference Include="..\GhostFactory\GhostFactory.csproj" />
+    <ProjectReference Include="..\HelperServices\HelperServices.csproj" />
+    <ProjectReference Include="..\IHelperServices\IHelperServices.csproj" />
+  </ItemGroup>
+
+</Project>

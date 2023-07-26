@@ -1,0 +1,187 @@
+@import "../../../../variables";
+.meetings-calender{
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 16%);
+    padding: 10px;
+    background-color: #fff;
+    margin-bottom: 14px;
+    .calender-heading {
+        i {
+            font-size: 21px;
+            color: $lochmara;
+        }
+        .calender-title{
+            h6 {
+                color: $lochmara;
+            }
+            span {
+                color: #b3abab;
+                font-size: 13px;
+                margin-bottom: 3px;
+            }
+        }
+    }
+    .date-headline{
+        i {
+            margin-top: 2px;
+            font-size: 15px;
+            color: #67b5ec;
+            cursor: pointer;
+        }
+        .day-date {
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+
+}
+.event-template{
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgb(0 0 0 / 16%);
+    padding: 10px;
+    background-color: #fff;
+    width: 100% !important;
+    .finished-headline {
+    background-color: $lochmara;
+    text-align: center;
+    border-radius: 3px;
+    text-transform: uppercase;
+    padding: 3px 0px;
+    margin: -21px 0px 7px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    }
+    .closed-headline {
+    background-color: green;
+    text-align: center;
+    border-radius: 3px;
+    text-transform: uppercase;
+    padding: 3px 0px;
+    margin: -21px 0px 7px;
+    color: #fff;
+    font-weight: 500;
+    }
+    .canceled-headline {
+        background-color: #C50000;
+        text-align: center;
+        border-radius: 3px;
+        text-transform: uppercase;
+        padding: 3px 0px;
+        margin: -21px 0px 7px;
+        color: #fff;
+        font-weight: 500;
+        }
+    .border-green-div {
+        border-right: 3px solid green;
+    }
+    .border-red-div{
+        border-right: 3px solid #C50000;
+    }
+    .border-blue-div {
+        border-right: 3px solid $lochmara;
+    }
+    .event-details{
+        margin: 0px  2px;
+        font-weight: 600;
+        font-size: 11px;
+        .members-imgs {
+            img {
+                width: 20px;
+                height: 20px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+        }
+        .attende-length {
+            background-color: #e1f0fe;
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 12px;
+            color: $lochmara;
+            margin: 0px 2px;
+        }
+    }
+}
+.event-content{
+    height: auto;
+    max-height: 300px;
+    margin: 0px 7px !important;
+}
+.meeting-content {
+    border-bottom: 2px dotted #EEEE;
+    p{
+        font-size: 11px;
+    }
+}
+.meeting-time{
+    border-bottom: 2px dotted #EEEE;
+    .meeting-time-details {
+        span{
+            font-size: 11px;
+            font-weight: bold;
+        }
+    }
+    p {
+        font-size: 11px;
+        font-weight: bold;
+    }
+}
+.meeting-coordinators:not(:last-child) {
+    border-bottom: 2px dotted #EEEE;
+}
+.meeting-coordinators {
+   .meeting-coordinators-details {
+        img {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        p {
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+    }
+    i {
+        font-size: 13px !important;
+    }
+    .confirmed{
+        color: #3CCBC6;
+    }
+    .closed {
+        color: #D02F2F;
+    }
+    .pending{
+        color: #FFAB72;
+    }
+    .new {
+        color: $lochmara;
+    }
+}
+.meetings-details-button{
+    .btn-details:hover {
+        background-color: #fff !important;
+        color: #117a8b!important;
+    }
+    .btn-exit:hover {
+        color: #ff7875 !important;
+        background-color: #fff !important;
+    }
+
+}
+.meetings-list {
+    button {
+        color: #117a8b !important;
+        background-color: #Fff;
+        border: 1px solid #117a8b;
+    }
+}
+.user-state i {
+    margin-top: 7px;
+}
+.activeBtn {
+    opacity: .8;
+}

@@ -1,0 +1,84 @@
+@import "../../../variables";
+.committee-item {
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px 0px $boxShadow;
+  padding: 10px;
+  height: 190px;
+
+  .comm-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $dodgerBlue;
+    img {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+  .comm-name {
+    font-family: $font-family-medium;
+  }
+
+  .admin-image {
+    img {
+      width: 25px;
+      height: 25px;
+      border-radius: 25px;
+    }
+  }
+
+  .status-desc {
+    font-size: $fs13;
+    color: $persianGreen;
+    i {
+      color: $persianGreen;
+      font-size: $fs13;
+    }
+    .ant-divider-dashed {
+      border-color: $persianGreen;
+      margin: 0 5px;
+    }
+  }
+
+  .committee-date {
+    color: $mediumShaft;
+    i {
+      color: $mediumShaft;
+      vertical-align: unset;
+    }
+  }
+
+  .committee-status {
+    i {
+      background-color: $aliceBlue;
+      border-radius: 25px;
+      margin: 0 5px;
+    }
+  }
+
+  .online-user-img {
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 25px;
+    }
+  }
+}
+.users-number {
+  background-color: $lightBlue;
+  color: $lochmara;
+  border-radius: 50%;
+  padding: 5px;
+  padding: 3px 9px;
+  font-size: 14px;
+}
+nz-select::-webkit-input-placeholder {
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+.activebg {
+  background-color: #fcfdf2;
+}
+.disactive {
+  background-color: rgba(201, 201, 201, 0.856);
+}

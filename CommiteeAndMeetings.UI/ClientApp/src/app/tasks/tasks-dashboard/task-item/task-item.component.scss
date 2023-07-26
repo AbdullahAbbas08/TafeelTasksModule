@@ -1,0 +1,224 @@
+@import "../../../../variables";
+
+.item-container {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .user-data {
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        img {
+          height: 2.2rem;
+          width: 2.2rem;
+          border-radius: 50%;
+          vertical-align: middle;
+          object-fit: cover;
+          margin: 0 0.3rem;
+        }
+        .active-state {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $persianGreen;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs14;
+          color: $dodgerBlue;
+        }
+        h6 {
+          color: $black;
+          font-size: $fs14;
+        }
+      }
+    }
+    .main-user,.task-enddate,.classification,.attachment {
+      text-align: center;
+      h5 {
+        font-size: $fs14;
+        color: $dodgerBlue;
+      }
+      h6 {
+        color: $black;
+        font-size: $fs14;
+      }
+    }
+    .item-control-options {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .item-content {
+    padding: 15px 0;
+    .item-title {
+      // display: flex;
+      // flex-wrap: wrap;
+      font-size: 15px;
+      align-items: center;
+      color: rgb(82, 81, 81);
+      // width: 96%;
+      .item {
+        // display: flex;
+        // flex: 1 auto;
+        // flex-direction: column;
+        // align-items: center;
+        // margin: 0.3rem 1rem 0.3rem;
+        // width: 15rem;
+        background-color: $solitude;
+        padding: 0.5rem 0.4rem 0;
+        margin-bottom: 10px;
+        min-height: 5.3rem;
+        border-radius: 0.4rem;
+        width: 100%;
+        text-align: center;
+        strong {
+          color: $dodgerBlue;
+        }
+      }
+    }
+
+    .attachment-thumb {
+      width: 48px;
+      height: 57px;
+      margin: 0 10px;
+      border-radius: 5px;
+      border: 1px solid $doveGray;
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .item-footer {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .item-button {
+      button {
+        border: 1px solid $dodgerBlue;
+        border-radius: 5px;
+        color: $dodgerBlue;
+        font-weight: bold;
+      }
+    }
+
+    .item-comment {
+      flex: 1;
+      margin: 0 10px;
+      .ant-input-affix-wrapper {
+        width: 98%;
+        background-color: $wildSand;
+        border-radius: 5px;
+        input {
+          background-color: $wildSand;
+        }
+      }
+      .user-comment-img {
+        width: 30px;
+        height: 30px;
+        margin: 0 5px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .comment-icon {
+      .anticon {
+        color: $mediumShaft;
+        padding: 0;
+        font-size: $fs20;
+      }
+    }
+  }
+}
+
+.completed-icon {
+  color: rgb(22, 175, 22);
+  font-size: $fs20;
+}
+
+.non-completed-icon {
+  color: $doveGray;
+  font-size: $fs20;
+}
+
+.task-title {
+  font-size: $fs16;
+  margin: 0 12px 10px;
+  font-weight: 600;
+  border-radius: 0.4rem;
+  color: $dodgerBlue;
+}
+
+.multiTasks {
+  display: flex;
+  flex-direction: column;
+  padding: .2rem 0;
+}
+
+.sub-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: $doveGray;
+  margin-right: 8px;
+  margin-bottom: 20px;
+}
+
+#time {
+  direction: ltr;
+  color: $doveGray;
+  font-weight: 600;
+  font-size: 14px;
+  font-style: italic;
+}
+.item-head {
+  font-weight: bold;
+}
+.att-date {
+  font-size: 15px;
+
+  margin: 7px
+}
+.with-border {
+  border: 1px solid #e3306f;
+}
+.withoutBorder {
+  border:none
+}
+.created-head {
+  color: #359afe;
+  font-size: 14px;
+}
+.created-date {
+  p{
+    color: #000000;
+    font-size: 14px;
+  }
+}
+.task-details {
+  margin: 0 12px 10px;
+}
+.with-bor {
+  border-bottom: 2px dotted #dad7d7;
+  padding-bottom: 10px;
+}

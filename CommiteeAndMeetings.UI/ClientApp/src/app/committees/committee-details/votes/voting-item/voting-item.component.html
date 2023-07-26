@@ -1,0 +1,236 @@
+<div
+  class="item-container"
+  [ngStyle]="{
+    'background-color':
+      periodState !== 2 && committeeActive ? 'white' : '#f7f7f7'
+  }"
+>
+  <header class="item-header">
+    <div class="user-data">
+      <div class="img-wrapper">
+        <img
+          *ngIf="createdUserImage"
+          [src]="'data:image/png;base64,' + createdUserImage"
+          [alt]=""
+        />
+        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
+        <span class="active-state"></span>
+      </div>
+      <div class="user-name">
+        <h5 class="m-0">
+          {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
+        </h5>
+        <h6 class="m-0">
+          {{ createdUserTitle ? createdUserTitle : ("member" | translate) }}
+        </h6>
+      </div>
+    </div>
+    <div class="item-control-options">
+      <div class="mx-1">
+        <ng-container>
+          <svg width="28" height="28" viewBox="0 0 28 28">
+            <defs>
+              <style>
+                .vote-a {
+                  fill: #ffffff;
+                }
+
+                .vote-b,
+                .vote-c {
+                  fill: none;
+                  stroke: #0075c9;
+                  stroke-linejoin: round;
+                }
+
+                .vote-b {
+                  fill-rule: evenodd;
+                }
+              </style>
+            </defs>
+            <g transform="translate(-633 -160)">
+              <rect
+                class="vote-a"
+                width="28"
+                height="28"
+                transform="translate(633 160)"
+              />
+              <g transform="translate(-451.092 -16)">
+                <path
+                  class="vote-b"
+                  d="M1112.578,202.671l-1.035-1.792a1.093,1.093,0,0,1,.4-1.5h0a1.093,1.093,0,0,1,1.5.4l2.233,3.867,1.186,2.055"
+                  transform="translate(-13.079 -10.351)"
+                />
+                <path
+                  class="vote-b"
+                  d="M1108.475,205.04l-1.035-1.792a1.093,1.093,0,0,1,.4-1.5h0a1.092,1.092,0,0,1,1.5.4l1.035,1.792"
+                  transform="translate(-10.871 -11.626)"
+                />
+                <path
+                  class="vote-b"
+                  d="M1104.371,207.409l-1.035-1.792a1.092,1.092,0,0,1,.4-1.5h0a1.093,1.093,0,0,1,1.5.4l1.035,1.792"
+                  transform="translate(-8.663 -12.901)"
+                />
+                <path
+                  class="vote-b"
+                  d="M1100.207,209.313l-4.391-1.18a1.1,1.1,0,0,1-.775-1.343h0a1.091,1.091,0,0,1,1.34-.774l2.03.546-4.011-6.947a1.092,1.092,0,0,1,.4-1.5h0a1.092,1.092,0,0,1,1.5.4l3.267,5.658"
+                  transform="translate(-3.854 -9.672)"
+                />
+                <rect
+                  class="vote-c"
+                  width="9.814"
+                  height="3.52"
+                  transform="translate(1095.816 199.951) rotate(-30)"
+                />
+                <rect
+                  class="vote-c"
+                  width="6.124"
+                  height="6.124"
+                  transform="translate(1087.091 180)"
+                />
+                <rect
+                  class="vote-c"
+                  width="6.124"
+                  height="6.124"
+                  transform="translate(1095.176 180)"
+                />
+                <rect
+                  class="vote-c"
+                  width="6.124"
+                  height="6.124"
+                  transform="translate(1103.26 180)"
+                />
+                <path
+                  class="vote-b"
+                  d="M1090.252,185.283l1.068,1.068,2.136-2.136"
+                  transform="translate(-1.701 -2.268)"
+                />
+              </g>
+            </g>
+          </svg>
+        </ng-container>
+      </div>
+      <!-- <div class="mx-1">
+        <i
+          class="control-icon"
+          nz-icon
+          nzType="ellipsis"
+          nz-popover
+          [nzPopoverContent]="controlTmp"
+          nzPopoverPlacement="bottom"
+        ></i>
+        <ng-template #controlTmp>
+          <ul class="list-unstyled p-0- m-0 dashboard-filter-list"></ul>
+        </ng-template>
+      </div> -->
+    </div>
+  </header>
+  <nz-divider nzDashed></nz-divider>
+  <section class="item-content">
+    <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
+  </section>
+  <nz-divider nzDashed *ngIf="commentCount > 0"></nz-divider>
+  <div *ngIf="commentCount > 0" class="mt-4" style="width: 95%">
+    <app-comments
+      [comments]="votingComments"
+      [count]="commentCount"
+    ></app-comments>
+  </div>
+  <footer class="item-footer" *ngIf="showCommentComponent">
+    <app-add-comment
+      [id]="item.surveyId"
+      (commentAdded)="addComment($event)"
+      [count]="commentCount"
+    ></app-add-comment>
+  </footer>
+</div>
+
+<ng-template #itemContentTpl>
+  <div class="d-flex justify-content-between">
+    <h6 class="item-subject">
+      <strong>{{ item?.subject }}</strong>
+    </h6>
+    <div>
+      <p>
+        <span class="mx-1 font-weight-bold">{{'votingEndDate' | translate}} : </span>
+        <span style="font-size:14px">{{
+          currentLang === "ar"
+            ? (voteEndDate | customDate)
+            : (voteEndDate | date)
+        }}</span>
+      </p>
+
+    </div>
+  </div>
+  <!-- Vote Content Data  -->
+  <div *ngIf="item?.surveyAnswers.length > 0">
+    <ng-container>
+      <div *ngIf="!item.multi" class="voting-wrapper">
+        <nz-radio-group [(ngModel)]="voteAnswer[0]">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="
+                  periodState === 2 || userParticipated || !committeeActive || checkEndDate || checkUserPermissions
+                "
+                nz-radio
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}
+              </label>
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0 && checkEndDate"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-radio-group>
+      </div>
+      <div *ngIf="item.multi" class="voting-wrapper">
+        <nz-checkbox-wrapper (nzOnChange)="voteAnswer = $event">
+          <div nz-row *ngFor="let opt of item?.surveyAnswers">
+            <div nz-col nzSpan="24" class="option">
+              <label
+                [nzDisabled]="
+                  periodState === 2 || userParticipated || !committeeActive || checkEndDate || checkUserPermissions
+                "
+                nz-checkbox
+                [nzValue]="opt?.surveyAnswerId"
+                >{{ opt.answer }}</label
+              >
+              <app-vote-users
+                class="vote-users"
+                [answerId]="opt?.surveyAnswerId"
+                [surveyAnswerUsers]="opt?.surveyAnswerUsers"
+                [userCount]="opt?.surveyAnswerUsers?.length"
+                *ngIf="opt?.surveyAnswerUsers?.length > 0 && checkEndDate"
+              ></app-vote-users>
+            </div>
+          </div>
+        </nz-checkbox-wrapper>
+      </div>
+      <div *ngIf="item?.surveyAnswers.length > 0" class="item-button">
+        <button
+          nz-button
+          nzType="default"
+          [disabled]="voteAnswer.length === 0"
+          (click)="sendVote()"
+          [disabled]="userParticipated || checkUserPermissions"
+        >
+          {{ "SendVote" | translate }}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Attachments  -->
+  <div class="attachments" *ngIf="attachments?.length > 0">
+    <ng-container>
+      <app-attachment-item-files
+        [attachments]="attachments"
+      ></app-attachment-item-files>
+    </ng-container>
+    <br />
+  </div>
+</ng-template>

@@ -1,0 +1,28 @@
+#sources {
+  width: 100%;
+  height: 2rem;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  margin-bottom: 0.4rem;
+}
+
+#scan-label {
+  margin-bottom: 0.5rem;
+}
+
+#scan-btn {
+  margin-bottom: 0.4rem;
+  width: 100%;
+}
+
+.scan {
+  position: relative;
+  &__file-name {
+    margin-bottom: 0.5rem;
+  }
+}
+
+#dwtcontrolContainer {
+  position: absolute;
+  top: -1300px;
+}

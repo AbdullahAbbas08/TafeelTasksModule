@@ -1,0 +1,112 @@
+@import "../../../../../variables";
+
+.item-container {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+
+    .user-data {
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        .active-state {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          display: block;
+          background-color: $persianGreen;
+          border-radius: 25px;
+          left: 2px;
+          bottom: 0;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs16;
+          color: $dodgerBlue;
+        }
+        h6 {
+          font-size: $fs14;
+        }
+      }
+    }
+
+    .item-control-options {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .item-content {
+    padding: 15px 0;
+    .item-title {
+      font-size: $fs14;
+    }
+
+    .attachment-thumb {
+      width: 48px;
+      height: 57px;
+      margin: 0 10px;
+      border-radius: 5px;
+      border: 1px solid $doveGray;
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .item-footer {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .item-button {
+      button {
+        border: 1px solid $dodgerBlue;
+        border-radius: 5px;
+        color: $dodgerBlue;
+        font-weight: bold;
+      }
+    }
+
+    .item-comment {
+      flex: 1;
+      margin: 0 10px;
+      .ant-input-affix-wrapper {
+        width: 98%;
+        background-color: $wildSand;
+        border-radius: 5px;
+        input {
+          background-color: $wildSand;
+        }
+      }
+      .user-comment-img {
+        width: 30px;
+        height: 30px;
+        margin: 0 5px;
+        img {
+          width: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .comment-icon {
+      .anticon {
+        color: $mediumShaft;
+        padding: 0;
+        font-size: $fs20;
+      }
+    }
+  }
+}

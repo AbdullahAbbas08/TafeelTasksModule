@@ -1,0 +1,136 @@
+<div class="profile">
+    <div class="container">
+        <div class="profile-details" *ngIf="user">
+            <div class="quick-info d-flex align-items-center">
+                <div class="user-image">
+               
+                    <img 
+                    [src]="tempImageData ? tempImageData : (user.profileImage ? 'data:image/png;base64,'+user.profileImage : '../../../assets/images/unknown.png')"
+                    [alt]="user.fullNameEn"
+                    class="img-fluid" />
+                    <span class="custom-upload-input">
+                        {{'ChangePic' | translate}}
+                        <input #imageFile (change)="changeProfileImage(imageFile.files)" type="file" accept=".jpg,.jpeg,.png,.gif">
+                    </span>
+                </div>
+                <div class="user-data mr-2">
+                    <p class="user-name">{{this.translateService.currentLang === 'ar' ? user?.fullNameAr : user?.fullNameEn}}</p>
+                </div>
+            </div>
+            <div class="profile-content">
+                <div class="content-details">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'userName' | translate}}</label>
+                                <div><p>{{user.userName}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'Email' | translate}}</label>
+                                <div><p>{{user.email}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'jobName' | translate}}</label>
+                                <div><p>{{user.jobTitle}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'employeeNumber' | translate}}</label>
+                                <div><p>{{user.employeeNumber}}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+
+                    </div>
+                </div>
+                <div class="content-details">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'fullnameinarabic' | translate}}</label>
+                                <div><p>{{user.fullNameAr}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'fullnameinenlish' | translate}}</label>
+                                <div><p>{{user.fullNameEn}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'gender' | translate}}</label>
+                                <div><p>{{user.gender}}</p></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="details">
+                                <label>{{'nationality' | translate}}</label>
+                                <div><p>{{user.nationality}}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="changePassword">
+                <div class="passwordExpanded d-flex align-items-center justify-content-between"
+                    (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                    aria-controls="collapseExample">
+                    <p class="mb-0 mr-2 font-weight-bold">
+                        {{'changePassword' | translate}}
+                    </p>
+                    <i nz-icon nzType="caret-up" *ngIf="!isCollapsed" nzTheme="outline"></i>
+                    <i nz-icon nzType="caret-down" *ngIf="isCollapsed" nzTheme="outline"></i>
+                </div>
+                <div [(ngbCollapse)]="isCollapsed">
+                    <div class="custom-form mt-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form nz-form nzLayout="vertical" [formGroup]="passForm">
+                                    <nz-form-item>
+                                        <nz-form-label nzRequired>{{'CurrentPassword'|translate}}</nz-form-label>
+                                        <nz-form-control [nzErrorTip]="cpass">
+                                          <input nz-input type="password" formControlName="OldPassword" placeholder="" autocomplete="off" />
+                                          <ng-template #cpass let-control>
+                                            <ng-container *ngIf="control.hasError('required')">
+                                              {{'PleaseInputCurrentPassword'|translate}}
+                                            </ng-container>
+                                          </ng-template>
+                                        </nz-form-control>
+                                      </nz-form-item>
+                                      <nz-form-item>
+                                        <nz-form-label nzRequired>{{'NewPassword'|translate}}</nz-form-label>
+                                        <nz-form-control [nzErrorTip]="Npass">
+                                          <input nz-input type="password" formControlName="NewPassword" placeholder="" autocomplete="off" />
+                                          <ng-template #Npass let-control>
+                                            <ng-container *ngIf="control.hasError('required')">
+                                              {{'PleaseInputNewPassword'|translate}}
+                                            </ng-container>
+                                          </ng-template>
+                                        </nz-form-control>
+                                      </nz-form-item>
+                                      <nz-form-item>
+                                        <nz-form-label nzRequired>{{'ConfirmPassword'|translate}}</nz-form-label>
+                                        <nz-form-control>
+                                          <input nz-input type="password" formControlName="ConfirmPassword" placeholder="" autocomplete="off" />
+                                          <ng-container *ngIf="passForm.hasError('notSame')">
+                                              {{'Not The same'|translate}}
+                                          </ng-container>
+                                        </nz-form-control>
+                                      </nz-form-item>
+                                    <button type="submit" (click)="changePassword()" [disabled]="!passForm.valid" class="ant-btn ant-btn-primary">تغير كلمة المرور</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

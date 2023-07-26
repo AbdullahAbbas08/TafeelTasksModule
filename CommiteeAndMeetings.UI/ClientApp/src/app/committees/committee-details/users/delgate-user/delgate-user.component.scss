@@ -1,0 +1,54 @@
+.custom-control {
+    span {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+}
+.container1 {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+    .checkmark {
+        position: absolute;
+        top: 4px;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+    }
+    .checkmarkright{
+        right:43px
+    }
+    .checkmarkleft{
+        left:107px
+    }
+    input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+      input:checked ~ .checkmark:after {
+        display: block;
+      }
+  }

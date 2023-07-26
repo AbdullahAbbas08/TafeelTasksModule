@@ -1,0 +1,45 @@
+<form nz-form nzLayout="vertical" [formGroup]="delegateForm">
+  <div class="mt-3">
+     <div class="">
+       <label class="container1">{{'permenant' | translate}}
+        <input type="checkbox" id="delegateCheck" (change)="isChecked =! isChecked" [checked]=true>
+        <span class="checkmark" [ngClass]="this.translate.currentLang === 'ar' ? 'checkmarkright':'checkmarkleft'"></span>
+      </label>
+     </div>
+     <nz-form-item *ngIf="isChecked">
+      <nz-form-control>
+        <div>
+          <hijri-gregorian-datepicker
+            [ngClass]="{ rtl: currentLang === 'ar' }"
+            [placeHolder]="'dd/mm/yyyy' | translate"
+            [label]="'To' | translate"
+            [GregLabel]="'Greg' | translate"
+            [hijriLabel]="'Hijri' | translate"
+            [selectedDateType]="selectedDateType"
+            #datePicker
+            (select)="dateSelected($event)"
+            (selectedDateChange)="dateSelected($event)"
+            [readonly]="true"
+            [minHijri]="mindateHijiri"
+            [minGreg]="minDateGorge"
+          >
+          </hijri-gregorian-datepicker>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired>{{'DelegateReason'|translate}}</nz-form-label>
+        <nz-form-control [nzErrorTip]="reasonTpl">
+          <input nz-input type="text" formControlName="delegateReason" placeholder="" autocomplete="off" />
+          <ng-template #reasonTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{'inform the reason of delegation'|translate}}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <button type="button" class="mx-2" nz-button (click)="close()">{{'Close'|translate}}</button>
+      <button type="submit" (click)="delegateUser()" [disabled]="!delegateForm.valid" nz-button nzType="primary"
+        >{{'Delegate'|translate}}</button>
+  </div>
+</form>

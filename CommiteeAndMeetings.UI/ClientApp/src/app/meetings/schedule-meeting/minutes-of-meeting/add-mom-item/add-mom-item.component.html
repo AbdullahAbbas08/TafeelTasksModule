@@ -1,0 +1,123 @@
+<div class="add-topic">
+  <div class="add-topic__header">
+    <h3 class="add-topic__text">{{ "AddMOM" | translate }}</h3>
+  </div>
+
+  <div class="add-topic__content">
+    <nz-radio-group [(ngModel)]="selectedType" #momTypeSelected>
+      <!-- <label nz-radio [nzValue]="momType.NEW">{{
+        momType.NEW | translate
+      }}</label> -->
+      <ng-container *ngIf="!hideFromTopic">
+        <label nz-radio [nzValue]="momType.FROMTOPIC">{{
+          momType.FROMTOPIC | translate
+        }}</label> 
+      </ng-container>
+    </nz-radio-group>
+    <nz-select
+      [(ngModel)]="selectedTopicId"
+      nzShowSearch
+      nzPlaceHolder="{{ 'SelectTopic' | translate }}"
+      (ngModelChange)="onSelectPreviousTopic()"
+      *ngIf="momTypeSelected.value === momType.FROMTOPIC"
+      class="select"
+    >
+      <nz-option
+        *ngFor="let option of topicList"
+        [nzLabel]="option?.title"
+        [nzValue]="option?.id"
+      ></nz-option>
+    </nz-select>
+    <form
+      class="add-topic__form"
+      nz-form
+      [formGroup]="momForm"
+      class="popup-form"
+      nzLayout="vertical"
+    >
+      <!-- MOM Title -->
+      <nz-form-item>
+        <nz-form-label>{{ "Title" | translate }}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group nzRequired>
+            <input
+              type="text"
+              nz-input
+              formControlName="title"
+              [placeholder]="'Title' | translate"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- MOM Subject -->
+      <nz-form-label>{{ "TopicPoints" | translate }}</nz-form-label>
+      <ejs-richtexteditor
+        #toolsRTE
+        id="defaultRTE"
+        [toolbarSettings]="tools"
+        [(value)]="pointsHTML"
+        *ngIf="showRichTextEditor"
+      >
+      </ejs-richtexteditor>
+
+      <!-- Referred Topics -->
+      <div class="topics-list mt-2" *ngIf="!hideFromTopic">
+        <div class="search-container">
+          <nz-form-item class="item">
+            <nz-form-label>{{ "ReferringTo" | translate }}</nz-form-label>
+            <nz-form-control>
+              <nz-select
+                nzShowSearch
+                nzPlaceHolder="{{ 'SelectTopic' | translate }}"
+                #referredTopic
+              >
+                <nz-option
+                  *ngFor="let option of topicList"
+                  [nzLabel]="option?.title"
+                  [nzValue]="option?.id"
+                ></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="addReferredTopic(referredTopic.value)"
+            class="btn-add"
+            type="button"
+          >
+            {{ "Add" | translate }}
+          </button>
+        </div>
+        <div class="selected-topics">
+          <div
+            class="topic-name"
+            *ngFor="let topic of referredTopics; let i = index"
+          >
+            {{ topic.title }}
+            <i
+              class="delete-topic"
+              nz-icon
+              nzType="close"
+              (click)="removeSelectedTopic(i)"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div class="action-btns">
+        <button
+          nz-button
+          class="save-btn"
+          (click)="submitMOM()"
+          [disabled]="momForm.invalid"
+        >
+          {{ "Save" | translate }}
+        </button>
+        <button nz-button class="cancel-btn" (click)="closeAddMom()">
+          <span>{{ "Cancel" | translate }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

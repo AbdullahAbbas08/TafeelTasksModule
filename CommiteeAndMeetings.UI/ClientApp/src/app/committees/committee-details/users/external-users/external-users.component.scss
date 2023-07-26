@@ -1,0 +1,48 @@
+@import "../../../../../variables";
+.card {
+    background-color: transparent!important;
+    padding: 0px;
+    border: 0px;
+}
+.card-body {
+    padding: 0px;
+}
+.img-wrapper{
+    width: 37px;
+    img {
+        border-radius: 50%;
+    }
+}
+.delegate-info {
+    font-size: 14px;
+    font-weight: bold;
+    i {
+        color: $lochmara;
+        font-size: 14px;
+    }
+}
+.delegate-name {
+    font-size: 14px;
+    font-weight: bold;
+    span , i{
+        color: $lochmara;
+        font-size: 14px !important;
+    }
+}
+.delegate-time {
+    font-size: 14px;
+    font-weight: bold;
+    i {
+        color: $lochmara;
+        font-size: 14px !important;
+    }
+}
+.pending {
+    color: #FFC24C !important;
+}
+.refused{
+    color: #F77381 !important;
+}
+.user-details {
+    width: 22% ;
+}

@@ -1,0 +1,26 @@
+<div class="__datepickers-container">
+  <ngbd-datepicker-islamicumalqura
+  *ngIf="hijri"
+  #Hijdp
+  (select)="makeDateObject($event)"
+  [footerTemplate]="datepickerFooter"
+
+  (navigate)="navigate.emit($event)"
+  [minDate]="minDate"
+  >
+  </ngbd-datepicker-islamicumalqura>
+
+<ngb-datepicker
+  *ngIf="gregorian"
+  (select)="makeDateObject($event)"
+  (navigate)="navigate.emit($event)"
+  #Geodp [(ngModel)]="georgianModel"
+  [firstDayOfWeek]="7"
+  [footerTemplate]="datepickerFooter"
+  [minDate]="minDate"
+></ngb-datepicker>
+</div>
+
+<ng-template #datepickerFooter>
+  <ng-content></ng-content>
+</ng-template>

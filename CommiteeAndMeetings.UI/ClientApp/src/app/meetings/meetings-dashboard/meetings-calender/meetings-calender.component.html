@@ -1,0 +1,229 @@
+<div class="meetings-calender">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="calender-heading d-flex align-item-center mt-2">
+        <i class="far fa-calendar-check"></i>
+        <div class="calender-title mx-2">
+          <h6 class="font-weight-bold mb-1">{{'calender' | translate}}</h6>
+          <span>{{'Allavailablemeetingsperweek' | translate}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="mt-3 date-headline  d-flex align-item-center justify-content-around">
+        <i [ngClass]="this.translate.currentLang === 'ar' ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"
+          mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()"></i>
+        <h3 *ngIf="view == CalendarView.Week" mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" class="day-date">{{
+        this.translate.currentLang === "ar" ? ( (viewDate | customDate).split('/')[2] +  ','  + dateInHijri) :   viewDate | date:'EEEE, MMMM d, y' }}</h3>
+        <h3 *ngIf="view == CalendarView.Month" mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()" class="day-date">{{
+          this.translate.currentLang === "ar" ?  dateInHijri :   viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+        <i [ngClass]="this.translate.currentLang === 'ar' ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"
+          mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()"></i>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="d-flex justify-content-end mt-2">
+        <div class="btn ant-btn-primary mx-2" (click)="setView(CalendarView.Week)" [class.activeBtn]="view === CalendarView.Week">
+          {{'Weekly' | translate}}
+        </div>
+        <div class="btn ant-btn-primary" (click)="setView(CalendarView.Month)" [class.activeBtn]="view === CalendarView.Month">
+        {{'Monthly' | translate}}
+      </div>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div [ngSwitch]="view">
+    <mwl-calendar-week-view 
+    *ngSwitchCase="CalendarView.Week" 
+    [viewDate]="viewDate" 
+    [eventTemplate]="eventTemplate"
+    [headerTemplate]="headerTemplate" 
+    [events]="events" 
+    [refresh]="refresh" 
+    (beforeViewRender)="beforeWeeklyViewRender($event)" 
+    (hourSegmentClicked)="hourSegmentClicked($event.date)">
+   </mwl-calendar-week-view>
+    <mwl-calendar-month-view
+    [activeDay]="activeDay"
+    *ngSwitchCase="CalendarView.Month"
+    [viewDate]="viewDate"
+    [headerTemplate]="monthheaderTemplate"
+    (beforeViewRender)="beforeMonthlyViewRender($event)"
+    [events]="events"
+    [refresh]="refresh"
+    [activeDayIsOpen]="activeDayIsOpen"
+    (dayClicked)="dayClicked($event.day)"
+    [cellTemplate]="customCellTemplate">
+  </mwl-calendar-month-view>
+  </div>
+</div>
+<ng-template #monthheaderTemplate let-days="days" let-locale="locale" let-dayClicked="dayClicked"
+  let-eventDropped="eventDropped">
+  <div class="cal-day-headers d-flex align-item-center justify-content-around cursor-default" dir="{{this.translate.currentLang === 'ar' ? 'rtl': 'ltr' }}">
+    <div class="cal-header" *ngFor="let day of days">
+      <div class="d-flex align-item-center justify-content-around">
+        <div class="top">
+          <div class="day-label text-uppercase">
+            <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">
+              {{ day.badgeTotal }}</span>
+            <b>{{ (day.date | calendarDate:'weekViewColumnHeader':locale) | translate}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #customCellTemplate let-day="day" let-locale="locale" 
+    let-tooltipPlacement="tooltipPlacement"
+    let-highlightDay="highlightDay" let-unhighlightDay="unhighlightDay" 
+    let-eventClicked="eventClicked"
+    let-tooltipTemplate="tooltipTemplate" 
+    let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDelay="tooltipDelay">
+    <div class="cal-cell-top" >
+      <div class="d-flex justify-content-between">
+          <span class="cal-day-number">
+            {{this.translate.currentLang === 'ar' ? ((day.date | customDate).split('/')[2]) : (day.date | calendarDate:'monthViewDayNumber':locale)}}
+        </span>
+        <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">
+          {{ day.badgeTotal }}</span>
+      </div>
+    </div>
+</ng-template>
+<ng-template #eventTemplate let-weekEvent="weekEvent">
+  <div class="event-template mt-3" nz-popover nzType="primary" [nzPopoverContent]="custom" nzPopoverPlacement="left">
+    <div class="finished-headline" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 2">
+      {{'meetingFinished' | translate}}
+    </div>
+    <div class="closed-headline" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 3">
+      {{'meetingClosed' | translate}}
+    </div>
+    <div class="canceled-headline" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 4">
+      {{'meetingCanceled' | translate}}
+    </div>
+    <div class="d-flex align-item-center">
+      <div
+        [ngClass]="[weekEvent.event.meta.meetingDetails?.meetingState === 1 ? 'border-green-div' : '',weekEvent.event.meta.meetingDetails?.meetingState === 2 ? 'border-blue-div' : '' , weekEvent.event.meta.meetingDetails?.meetingState === 3 ? 'border-green-div' : '',weekEvent.event.meta.meetingDetails?.meetingState === 4 ? 'border-red-div' : '']">
+      </div>
+      <div class="event-details">
+        <div class="event-date d-flex align-item-center"
+          *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 1">
+          <span> {{weekEvent.event.meta.meetingDetails?.meetingFromTime | date:'shortTime':"+0000" }} </span>
+          <span class="mx-1">- {{weekEvent.event.meta.meetingDetails?.meetingToTime | date:'shortTime':"+0000" }}</span>
+        </div>
+        <div class="event-details">
+          <p class="mb-0 font-weight-bold" 
+          [nzTooltipTitle]="weekEvent.event.meta.meetingDetails?.title"
+          nzTooltipPlacement="bottom"
+          nz-tooltip>
+          {{weekEvent.event.meta.meetingDetails?.title | maxLenth: 20}}
+        </p>
+          <div class="members-imgs mt-2">
+            <ng-container *ngFor="let attendes of weekEvent.event.meta.meetingDetails?.meetingAttendees | slice:0:3">
+              <img
+                [src]="attendes.attendee?.profileImage ? 'data:image/png;base64,'+attendes.attendee?.profileImage:'../../../assets/images/unknown.png'" />
+            </ng-container>
+            <span class="attende-length">{{weekEvent.event.meta.meetingDetails?.meetingAttendees.length}}</span>
+          </div>
+        </div>
+      </div>
+      <ng-template #custom>
+        <perfect-scrollbar [autoPropagation]="true">
+          <div class="p-1 event-content">
+            <div class="meeting-content pb-2">
+              <p class="mb-0 font-weight-bold" 
+              [nzTooltipTitle]="weekEvent.event.meta.meetingDetails?.title"
+              nzTooltipPlacement="bottom"
+              nz-tooltip>
+              {{weekEvent.event.meta.meetingDetails?.title | maxLenth: 20}}
+            </p>
+            </div>
+            <div class="meeting-time pb-2">
+              <div class="meeting-time-details p-1 d-flex justify-content-between">
+                <span>{{this.translate.currentLang === 'ar' ? (weekEvent.event.meta.meetingDetails?.meetingFromTime |
+                  customDate) : (weekEvent.event.meta.meetingDetails?.meetingFromTime | date:'d/MM/yy') }}</span>
+                <span class="d-flex align-item-center">
+                  <span class="mx-1"> {{weekEvent.event.meta.meetingDetails?.meetingFromTime | date:'shortTime':"+0000" }}
+                  </span>
+                  <span> - {{weekEvent.event.meta.meetingDetails?.meetingToTime | date:'shortTime':"+0000" }}</span>
+                </span>
+              </div>
+              <p class="mb-0" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 3">{{'meetingClosed' |
+                translate}}</p>
+              <p class="mb-0" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 2">{{'meetingFinished' |
+                translate}}</p>
+              <p class="mb-0" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 1">{{'Warning before the meeting begins' | translate}} {{weekEvent.event.meta.meetingDetails?.reminderBeforeMinutes}} {{'mins' |
+                translate}}</p>
+              <p class="mb-0" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 4">{{'meetingCanceled' | translate}}</p>
+            </div>
+            <div>
+              <div class="meeting-coordinators py-1 d-flex justify-content-between"
+                *ngFor="let attendes of weekEvent.event.meta.meetingDetails?.meetingAttendees">
+                <div class="meeting-coordinators-details d-flex align-item-center">
+                  <img
+                    [src]="attendes.attendee?.profileImage ? 'data:image/png;base64,'+attendes.attendee?.profileImage:'../../../assets/images/unknown.png'" />
+                  <p class="mb-0 mx-1">{{this.translate.currentLang === 'ar' ? attendes.attendee?.fullNameAr :
+                    attendes.attendee?.fullNameEn}}</p>
+                </div>
+                <div class="user-state" nz-tooltip [nzTooltipTitle]="userState">
+                  <i *ngIf="attendes.state == 3" class="far fa-check-circle confirmed"></i>
+                  <i *ngIf="attendes.state == 2 || attendes.state == 1" class="far fa-clock pending"></i>
+                  <i *ngIf="attendes.state == 4" class="far fa-times-circle closed"></i>
+                  <ng-template #userState>
+                    <span *ngIf="attendes.state == 2 || attendes.state == 1">{{'pending' | translate}}</span>
+                    <span *ngIf="attendes.state == 3">{{'Confirm' | translate}}</span>
+                    <span *ngIf="attendes.state == 4">{{'Refuse' | translate}}</span>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="meetings-details-button mt-2">
+              <!--*ngIf="weekEvent.event.meta.meetingDetails?.meetingState !== 4"-->
+              <ng-container>
+                <button class="btn-details" nzBlock nz-button nzType="primary"
+                [routerLink]="['schedule-meeting', weekEvent.event.meta.meetingDetails?.id]">
+                <span class="mx-2"> {{'details'|translate}} </span>
+              </button>
+              </ng-container>
+              <ng-conatiner *appHasAuthUserViewPermission="['exitMeeting']">
+                <button (click)="showDeleteMeeting(weekEvent.event.meta.meetingDetails?.id)" *ngIf="weekEvent.event.meta.meetingDetails?.meetingState === 1"  class="mt-2 btn-exit" nzBlock nz-button nz-button nzType="primary" nzDanger>
+                  <span class="mx-2"> {{'exitMeeting'|translate}} </span>
+                </button>
+              </ng-conatiner>
+            </div>
+            <div *ngIf="weekEvent.event.meta.meetingDetails?.repated == true"
+              class="meeting-details-button meetings-list mt-1">
+              <button nzBlock nz-button nzType="primary"
+                [routerLink]="['multiple-meeting', weekEvent.event.meta.meetingDetails?.referenceNumber]">
+                <span class="mx-2"> {{'list of meeting'|translate}} </span>
+              </button>
+            </div>
+          </div>
+        </perfect-scrollbar>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #headerTemplate let-days="days" let-locale="locale" let-dayClicked="dayClicked"
+  let-eventDropped="eventDropped">
+  <div class="cal-day-headers cursor-default" dir="{{this.translate.currentLang === 'ar' ? 'rtl': 'ltr' }}">
+    <div class="cal-header"  *ngFor="let day of days"
+    (drop)="day.dragOver = false; eventDropped.emit({event: $event.dropData.event})"
+    >
+      <div class="d-flex align-item-center justify-content-around">
+        <div class="top">
+          <div class="day-label text-uppercase">
+            <b>{{ (day.date | calendarDate:'weekViewColumnHeader':locale) | translate}}</b>
+          </div>
+          <p class="mb-0 mt-1">{{'noofmeetings' | translate}} </p>
+        </div>
+        <div class="day-number" [class.today]="day.isToday">
+          <span *ngIf="this.translate.currentLang == 'ar'">{{(day.date | customDate).split('/')[2]}}</span>
+          <span *ngIf="this.translate.currentLang == 'en'">{{ (day.date | date:'M/d/yy').split('/')[1] }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

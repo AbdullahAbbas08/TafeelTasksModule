@@ -1,0 +1,33 @@
+@import "./../../../variables";
+
+.main-container {
+  padding: 1.5rem 2rem;
+}
+
+.single-schedule {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 1rem 0.5rem;
+  min-height: 80vh;
+}
+
+::ng-deep .ant-tabs-tab {
+  margin: 0 1.5rem 0 1.5rem;
+}
+::ng-deep .ant-tabs-tab-btn {
+  font-weight: 500;
+}
+
+::ng-deep .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: 700;
+}
+
+::ng-deep .ant-input-prefix,
+.ant-input-suffix {
+  display: inline-block;
+}
+
+::ng-deep .ant-input-affix-wrapper {
+  border-radius: 0.3rem;
+}

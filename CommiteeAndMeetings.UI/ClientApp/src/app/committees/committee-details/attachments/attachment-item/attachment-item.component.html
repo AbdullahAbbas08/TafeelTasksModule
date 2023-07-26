@@ -1,0 +1,94 @@
+<div
+  class="item-container"
+  [ngStyle]="{
+    'background-color':
+      periodState !== 2 && committeeActive ? 'white' : '#f7f7f7'
+  }"
+>
+  <header class="item-header">
+    <div class="user-data">
+      <div class="img-wrapper">
+        <img
+          *ngIf="createdUserImage"
+          [src]="'data:image/png;base64,' + createdUserImage"
+          [alt]=""
+        />
+        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
+        <span class="active-state"></span>
+      </div>
+      <div class="user-name">
+        <h5 class="m-0">
+          {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
+        </h5>
+        <h6 class="m-0">
+          {{ createdUserTitle ? createdUserTitle : ("member" | translate) }}
+        </h6>
+      </div>
+    </div>
+    <div class="item-control-options">
+      <div class="mx-1 att-date">
+        <ng-container>
+          <i class="att-date">{{
+            currentLang === "ar"
+              ? (item?.createdOn | customDate)
+              : (item?.createdOn | date)
+          }}</i>
+          <i
+            nz-icon
+            [nzType]="'paper-clip'"
+            nz-tooltip
+            [nzTooltipTitle]="'Attachment' | translate"
+          ></i>
+        </ng-container>
+      </div>
+      <!-- <div class="mx-1">
+        <i
+          class="control-icon"
+          nz-icon
+          nzType="ellipsis"
+          nz-popover
+          nzPopoverPlacement="bottom"
+        ></i>
+        <ng-template #controlTmp>
+          <ul class="list-unstyled p-0- m-0 dashboard-filter-list"></ul>
+        </ng-template>
+      </div> -->
+    </div>
+  </header>
+  <nz-divider nzDashed></nz-divider>
+  <section class="item-content">
+    <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
+  </section>
+  <br *ngIf="count > 0" />
+  <nz-divider nzDashed *ngIf="count > 0"></nz-divider>
+  <br *ngIf="count > 0" />
+  <div *ngIf="count > 0" style="width: 95%">
+    <app-comments
+      [comments]="attachmentComments"
+      [count]="count"
+    ></app-comments>
+  </div>
+  <footer class="item-footer" *ngIf="showCommentComponent">
+    <app-add-comment
+      [id]="item.commiteeAttachmentId"
+      (commentAdded)="addComment($event)"
+      [count]="count"
+    ></app-add-comment>
+  </footer>
+</div>
+<!-- Attachment Files  -->
+<ng-template #itemContentTpl>
+  <div class="file-data">
+    <div>
+      <i class="file-data__icon icon-basic-folder-multiple"></i>
+    </div>
+    <div class="file-desc">
+      <h5 class="mx-2">{{ item?.description }}</h5>
+    </div>
+  </div>
+  <ng-container *ngIf="item?.attachments.length > 0">
+    <app-attachment-item-files
+      [attachments]="item?.attachments"
+    ></app-attachment-item-files>
+  </ng-container>
+</ng-template>

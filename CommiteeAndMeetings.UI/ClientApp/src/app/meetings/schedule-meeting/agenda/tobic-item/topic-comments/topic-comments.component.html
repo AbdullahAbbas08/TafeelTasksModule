@@ -1,0 +1,31 @@
+<app-add-comment
+  class="px-2"
+  [id]="topic.id"
+  (commentAdded)="addComment($event)"
+  [count]="count"
+  [isMeetingCanceled]="isMeetingCanceled"
+  *ngIf="
+    topic.topicState !== topicState._3 && topic.topicState !== topicState._5
+  "
+  [ngStyle]="{ direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }"
+></app-add-comment>
+<div class="comments" [ngStyle]="{ direction: translateService.currentLang === 'ar' ? 'rtl' : 'ltr' }">
+  <nz-timeline [nzMode]="currentLang === 'ar' ? 'right' : 'left'">
+    <nz-timeline-item
+      [nzDot]="commentIcon"
+      *ngFor="let comment of topicComments"
+    >
+      <div
+        [ngClass]="{ 'padding-rtl': currentLang === 'ar' }"
+        class="comment-item"
+      >
+        <app-comment-item [item]="comment"></app-comment-item>
+      </div>
+    </nz-timeline-item>
+  </nz-timeline>
+</div>
+<ng-template #commentIcon>
+  <svg class="comment-icon" nz-tooltip [nzTooltipTitle]="translateService.currentLang == 'ar'? 'تعليق' : 'Comment'">
+    <use xlink:href="assets\images\sprite-2.svg#icon-commenting-o"></use>
+  </svg>
+</ng-template>

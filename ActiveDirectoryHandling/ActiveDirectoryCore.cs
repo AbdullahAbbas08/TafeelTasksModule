@@ -1,0 +1,9 @@
+﻿namespace ActiveDirectoryHandling
+{
+    class ActiveDirectoryCore
+    {
+
+
+
+    }
+}

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EmailTemplates>
+  <notification>
+    <msg>&lt;table style='width:100%;text-align:right;padding-right:6%;line-height:20px;font-size:15px;direction:rtl;'&gt;&lt;tbody&gt;&lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt; &lt;span &gt; رقم القيد&lt;/span&gt;&lt;/th&gt;  &lt;td style='border-bottom: 1px solid #EEE;'&gt;160201147&lt;/td&gt;  &lt;/tr&gt;&lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt;&lt;span &gt;  موضوع المعاملة&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt; hhhhhhhhhh&lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt; &lt;span &gt; نوع المعاملة&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt;قيد داخلي&lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt; &lt;span &gt; تاريخ المعاملة&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt;1437/08/10   &lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt;&lt;span &gt;  الإدارة المحيلة&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt;  ادارة الاتصالات الادارية والارشيف &lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt;&lt;span &gt;  مستوى الأهمية&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt;  عادي &lt;/td&gt;&lt;/tr&gt; &lt;tr&gt;&lt;th style='border-bottom: 1px solid #EEE;direction:rtl;'&gt;&lt;span &gt;  مستوى السرية&lt;/span&gt;&lt;/th&gt;&lt;td style='border-bottom: 1px solid #EEE;'&gt;  غير سرية &lt;/td&gt;&lt;/tr&gt; &lt;/tbody&gt;&lt;/table&gt; </msg>
+    <transNumber>
+    </transNumber>
+  </notification>
+  <transMessage>
+    <msgBody>77</msgBody>
+  </transMessage>
+</EmailTemplates>

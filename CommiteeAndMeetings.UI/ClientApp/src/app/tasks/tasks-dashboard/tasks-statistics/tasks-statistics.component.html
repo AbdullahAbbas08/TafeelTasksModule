@@ -1,0 +1,514 @@
+<div class="task-statisticus">
+  <div class="tasks-container">
+    <div
+      class="statisticus-controls d-flex justify-content-between align-items-center"
+    >
+      <nz-select
+        [ngClass]="{ rtl: currentLang === 'ar' }"
+        nzPlaceHolder=""
+        nzShowSearch
+        nzServerSearch
+        (nzOnSearch)="onSearch(lookupTypes.ALLORGANIZATION, $event)"
+        style="width: 26%; margin: 5px"
+        [(ngModel)]="selectedOrganization"
+        (ngModelChange)="changeOrganization($event)"
+      >
+        <ng-container *ngFor="let opt of organizations">
+          <nz-option [nzValue]="opt.id" [nzLabel]="opt.name"></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i>
+          {{ "LoadingData" | translate }}
+        </nz-option>
+      </nz-select>
+      <nz-select
+        [ngClass]="{ rtl: currentLang === 'ar' }"
+        nzPlaceHolder=""
+        nzShowSearch
+        nzServerSearch
+        (nzOnSearch)="onSearch(lookupTypes.USERS, $event)"
+        style="width: 26%; margin: 5px"
+        [(ngModel)]="selectedUser"
+      >
+        <ng-container *ngFor="let opt of users">
+          <nz-option [nzValue]="opt.id" [nzLabel]="opt.name"></nz-option>
+        </ng-container>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" class="loading-icon"></i>
+          {{ "LoadingData" | translate }}
+        </nz-option>
+      </nz-select>
+      <button
+        (click)="getStatisticsForUser()"
+        class="ant-btn rtl ant-btn-primary mx-2"
+      >
+        {{ "applicate" | translate }}
+      </button>
+      <button
+        (click)="getAllTasksForPrint()"
+        [disabled]="isLoadingStats || showStats"
+        class="ant-btn rtl ant-btn-primary mx-2"
+      >
+        {{ "print" | translate }}
+      </button>
+      <button
+        (click)="exportDocument(2)"
+        [disabled]="isLoadingStats || showStats"
+        class="ant-btn rtl ant-btn-primary mx-2"
+      >
+        {{ "exportAsWord" | translate }}
+      </button>
+      <button
+        (click)="exportDocument(1)"
+        [disabled]="isLoadingStats || showStats"
+        class="ant-btn rtl ant-btn-primary mx-2"
+      >
+        {{ "exportAsExcel" | translate }}
+      </button>
+    </div>
+    <div *ngIf="!showStats">
+      <div class="user-statisticus">
+        <div class="row">
+          <div class="col-10">
+            <p style="font-size: 18px; margin-bottom: 20px; font-weight: bold">
+              {{ "userStatistics" | translate }}
+            </p>
+            <div class="user-stats-num">
+              <div class="d-flex justify-content-around">
+                <div style="margin-left: 9px">
+                  <div class="stats-num" style="padding: 10px">
+                    <div style="margin-top: 19px">
+                      <ngx-gauge
+                        size="120"
+                        type="semi"
+                        thick="11"
+                        [value]="gaugeValue"
+                        [label]="
+                          this.translateService.currentLang === 'ar'
+                            ? 'المهام المتاخرة'
+                            : 'Late Tasks'
+                        "
+                        append="%"
+                        foregroundColor="#EC407A"
+                      >
+                      </ngx-gauge>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="margin-left: 9px"
+                  *appHasAuthUserViewPermission="['allTasks']"
+                >
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab1' }"
+                  >
+                    <span class="nmber-span cyan-bg">
+                      {{ statisticsCount[0]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "AllTasks" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(1)"
+                      class="ant-btn rtl bg-blue"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style="margin-left: 9px"
+                  *appHasAuthUserViewPermission="['lateTasks']"
+                >
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab2' }"
+                  >
+                    <span class="nmber-span red-bg">
+                      {{ statisticsCount[1]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "LateTasks" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(2)"
+                      class="ant-btn rtl bg-red"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+                <div style="margin-left: 9px">
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab7' }"
+                  >
+                    <span class="nmber-span yellow-bg">
+                      {{ statisticsCount[2]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "ToBeImplementdTasks" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(7)"
+                      class="ant-btn rtl bg-yellow"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style="margin-left: 9px"
+                  *appHasAuthUserViewPermission="['closedTasks']"
+                >
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab9' }"
+                  >
+                    <span class="nmber-span green-bg">
+                      {{ statisticsCount[3]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "ClosedTasks" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(9)"
+                      class="ant-btn rtl bg-green"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style="margin-left: 9px"
+                  *appHasAuthUserViewPermission="['assisstantTasks']"
+                >
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab8' }"
+                  >
+                    <span class="nmber-span black-bg">
+                      {{ statisticsCount[4]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "AssistantUserTasks" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(8)"
+                      class="ant-btn rtl bg-black"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style="margin-left: 9px"
+                  *appHasAuthUserViewPermission="['taskToView']"
+                >
+                  <div
+                    class="stats-num text-center"
+                    [ngClass]="{ active: tab === 'tab10' }"
+                  >
+                    <span class="nmber-span gray-bg">
+                      {{ statisticsCount[5]?.count }}
+                    </span>
+                    <p class="stats-text w-font font-weight-bold mb-2 mt-3">
+                      {{ "Taskstoview" | translate }}
+                    </p>
+                    <button
+                      (click)="filterWithClick(10)"
+                      class="ant-btn rtl bg-black"
+                    >
+                      {{ "displayAll" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2" *ngIf="!isLoadingTable">
+            <div class="d-flex justify-content-center">
+              <div id="main" style="width: 1000px; height: 220px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="loader" *ngIf="isLoadingStats">
+        <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+      </div>
+      <ng-container *ngIf="!isLoadingStats">
+        <div>
+          <ng-container *ngFor="let task of tasks; let i = index">
+            <div class="user-task" *ngIf="tasks.length > 0">
+              <div
+                class="d-flex align-items-center justify-content-between"
+                (click)="collapse[i] = !collapse[i]; $event.stopPropagation()"
+              >
+                <div
+                  [ngClass]="
+                    task.endDate < dateNow && task.completed === false
+                      ? 'redBorder'
+                      : task.endDate > dateNow && task.completed === false
+                      ? 'yellowBorder'
+                      : 'greenBorder'
+                  "
+                ></div>
+                <div
+                  class="main-user d-flex justify-content-between align-items-center"
+                >
+                  <div class="img-wrapper">
+                    <img
+                      *ngIf="task?.createdByUser.profileImage"
+                      [src]="
+                        'data:image/png;base64,' +
+                        task?.createdByUser.profileImage
+                      "
+                      [alt]=""
+                    />
+                    <img
+                      *ngIf="!task?.createdByUser.profileImage"
+                      [src]="'assets/images/unknown.png'"
+                    />
+                    <span class="active-state"></span>
+                  </div>
+                  <div>
+                    <h5>{{ "TaskMainUser" | translate }}</h5>
+                    <h6>
+                      <strong *ngIf="currentLang === 'ar'">
+                        {{ task?.mainAssinedUser.fullNameAr }}</strong
+                      >
+                      <strong *ngIf="currentLang === 'en'">
+                        {{ task?.mainAssinedUser.fullNameEn }}</strong
+                      >
+                    </h6>
+                  </div>
+                </div>
+                <div class="title">
+                  <h5>{{ "TaskTitle" | translate }}</h5>
+                  <h6
+                    [nzTooltipTitle]="task?.title"
+                    nzTooltipPlacement="bottom"
+                    nz-tooltip
+                  >
+                    <strong>
+                      {{ task?.title | maxLenth : 15 }}
+                    </strong>
+                  </h6>
+                </div>
+                <div class="task-enddate">
+                  <h5>{{ "TaskStartDate" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      {{
+                        currentLang === "ar"
+                          ? (task.startDate | HijriDate)
+                          : (task.startDate | date : "dd/MM/yyyy" : "+0000")
+                      }}</strong
+                    >
+                  </h6>
+                </div>
+                <div class="task-enddate">
+                  <h5>{{ "TaskEndDate" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      {{
+                        currentLang === "ar"
+                          ? (task.endDate | HijriDate)
+                          : (task.endDate | date : "dd/MM/yyyy" : "+0000")
+                      }}</strong
+                    >
+                  </h6>
+                </div>
+                <div class="classification">
+                  <h5>{{ "Classification" | translate }}</h5>
+                  <h6>
+                    <strong *ngIf="currentLang === 'ar'">
+                      {{ task?.comiteeTaskCategory?.categoryNameAr }}</strong
+                    >
+                    <strong *ngIf="currentLang === 'en'">
+                      {{ task?.comiteeTaskCategory?.categoryNameEn }}</strong
+                    >
+                  </h6>
+                </div>
+
+                <div class="multiTasks">
+                  <h5>{{ "MultiTasks" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      {{ task?.multiMission.length ? "يوجد" : " لا يوجد" }}
+                    </strong>
+                  </h6>
+                </div>
+                <div class="attachment">
+                  <h5>{{ "Attachments" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      {{ task?.taskAttachments.length ? "نعم" : " لا" }}
+                    </strong>
+                  </h6>
+                </div>
+                <div class="completed">
+                  <h5>{{ "isCompleted" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      {{ task?.completed ? "نعم" : "لا" }}
+                    </strong>
+                  </h6>
+                </div>
+                <div class="edit-history">
+                  <h5>{{ "editHistory" | translate }}</h5>
+                  <h6>
+                    <strong>
+                      <a
+                        (click)="
+                          editHistory(
+                            task?.commiteeId,
+                            task?.commiteeTaskId,
+                            $event
+                          )
+                        "
+                        style="
+                          font-size: 12px;
+                          text-decoration: underline;
+                          color: #1e6e48;
+                        "
+                        >{{ "displayeditHistory" | translate }} ></a
+                      >
+                    </strong>
+                  </h6>
+                </div>
+              </div>
+              <nz-divider nzDashed [(ngbCollapse)]="!collapse[i]"></nz-divider>
+              <div class="text-center mt-2" [(ngbCollapse)]="!collapse[i]">
+                <ng-container *ngIf="task?.taskComments.length">
+                  <ng-container *ngFor="let comment of task?.taskComments">
+                    <div class="comment mt-2">
+                      <div class="comment__header">
+                        <div class="comment__user">
+                          <img
+                            class="comment__user-img"
+                            *ngIf="comment.createdByUser?.profileImage"
+                            [src]="
+                              'data:image/png;base64,' +
+                              comment.createdByUser?.profileImage
+                            "
+                            [alt]=""
+                          />
+                          <img
+                            class="comment__user-img"
+                            *ngIf="!comment.createdByUser?.profileImage"
+                            [src]="'assets/images/unknown.png'"
+                          />
+                          <span class="comment__user-name">
+                            {{
+                              this.translateService.currentLang == "ar"
+                                ? comment.createdByUser?.fullNameAr
+                                : comment.createdByUser?.fullNameEn
+                            }}</span
+                          >
+                        </div>
+
+                        <div class="comment__date" dir="rtl">
+                          <div class="d-flex align-items-center mt-1">
+                            <p
+                              *ngIf="translateService.currentLang === 'ar'"
+                              class="mb-0 mx-1"
+                              style="
+                                direction: ltr;
+                                font-size: 13px;
+                                padding-top: 2px;
+                              "
+                            >
+                              {{
+                                this.dateService.getTasksDateInArabic(
+                                  comment?.createdOn
+                                )
+                              }}
+                            </p>
+                            <p class="mb-0">
+                              -
+                              {{
+                                this.translateService.currentLang == "ar"
+                                  ? (comment?.createdOn | customDate)
+                                  : (comment?.createdOn | date : "shortDate")
+                              }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="comment__text">
+                        <p class="mb-0">{{ comment?.comment.text }}</p>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="!task?.taskComments.length">
+                  <p style="font-size: 17px" class="mb-0 font-weight-bold">
+                    {{ "thereisnocomments" | translate }}
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="tasks.length <= 0">
+            <p style="text-align: center; font-size: 29px; margin-top: 35px">
+              {{
+                this.translateService.currentLang === "ar"
+                  ? "لايوجد بيانات"
+                  : "No Data"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="padination" *ngIf="tasks.length > 0">
+          <nz-pagination
+            [(nzPageIndex)]="pageIndex"
+            [nzPageSize]="pageSize"
+            [nzTotal]="filterCount"
+            [nzSize]="'small'"
+            [nzShowTotal]="totalTemplate"
+            [nzItemRender]="renderDataTemplate"
+            (nzPageIndexChange)="currentPageIndexChange($event)"
+            (nzPageSizeChange)="currentPageSizeChange($event)"
+          ></nz-pagination>
+          <ng-template #totalTemplate let-total
+            ><span style="font-size: 17px; color: #1e6e48"
+              >{{ "AllTasks" | translate }} : {{ total }}
+            </span></ng-template
+          >
+          <ng-template #renderDataTemplate let-type let-page="page">
+            <a *ngIf="type === 'prev'"
+              ><i
+                class="mt-2"
+                [ngClass]="
+                  this.translateService.currentLang === 'ar'
+                    ? 'fas fa-chevron-right'
+                    : 'fas fa-chevron-left'
+                "
+              ></i
+            ></a>
+            <a *ngIf="type === 'next'"
+              ><i
+                class="mt-2"
+                [ngClass]="
+                  this.translateService.currentLang === 'ar'
+                    ? 'fas fa-chevron-left'
+                    : 'fas fa-chevron-right'
+                "
+              ></i
+            ></a>
+            <a *ngIf="type === 'page'">{{ page }}</a>
+          </ng-template>
+        </div>
+      </ng-container>
+    </div>
+    <div class="loader" *ngIf="showStats">
+      <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+    </div>
+  </div>
+</div>
+
+<div style="height: 0; overflow: hidden" id="main-print-section-id">
+  <app-print-task [tasksSummary]="tasksSummary"></app-print-task>
+</div>

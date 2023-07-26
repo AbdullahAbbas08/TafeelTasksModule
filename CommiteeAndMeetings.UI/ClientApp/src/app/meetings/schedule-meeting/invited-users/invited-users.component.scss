@@ -1,0 +1,118 @@
+@import "./../../../../variables";
+
+.participants {
+  height: 23rem;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  .title {
+    font-size: $fs17;
+    color: $lochmara;
+    font-weight: 600;
+  }
+  .item-container {
+    background-color: $white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px $boxShadow;
+    padding: 10px 20px;
+    margin: 0.1rem 0 0.4rem;
+
+    .item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .user-data {
+        display: flex;
+        align-items: center;
+        .img-wrapper {
+          position: relative;
+          img {
+            height: 2.2rem;
+            width: 2.2rem;
+            border-radius: 50%;
+            vertical-align: middle;
+            object-fit: cover;
+            margin: 0 0.3rem;
+          }
+          .active-state {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            display: block;
+            background-color: $persianGreen;
+            border-radius: 25px;
+            left: 2px;
+            bottom: 0;
+          }
+        }
+        .user-name {
+          margin: 0 5px;
+          h5 {
+            font-size: $fs14;
+            font-weight: 600;
+            color: $black;
+          }
+          h6 {
+            color: $mediumShaft;
+            font-size: $fs13;
+          }
+        }
+      }
+    }
+  }
+}
+.title {
+  font-size: $fs17;
+  color: $lochmara;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+.item-container {
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px $boxShadow;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+
+  .item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .user-data {
+      display: flex;
+      align-items: center;
+      .img-wrapper {
+        position: relative;
+        img {
+          height: 2.2rem;
+          width: 2.2rem;
+          border-radius: 50%;
+          vertical-align: middle;
+          object-fit: cover;
+          margin: 0 0.3rem;
+        }
+      }
+      .user-name {
+        margin: 0 5px;
+        h5 {
+          font-size: $fs14;
+          font-weight: 600;
+          color: $black;
+        }
+        h6 {
+          color: $mediumShaft;
+          font-size: $fs13;
+        }
+      }
+    }
+  }
+}
+
+.participants::-webkit-scrollbar {
+  display: none;
+}
+.no-data {
+  font-size: 16px;
+}

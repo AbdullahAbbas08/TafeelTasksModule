@@ -1,0 +1,234 @@
+
+@import "../../../../variables";
+
+.tasks-container {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1300px;
+  .statisticus-controls,.user-statisticus,.user-task,.padination{
+    border-radius: 6px;
+    background-color: $white;
+    box-shadow: 0px 3px 6px $boxShadow;
+    padding: 20px;
+    margin-bottom: 20px;
+    .user-stats-num {
+        .stats-num{
+          border-radius: 6px;
+          background-color: $white;
+          box-shadow: 0px 3px 6px $boxShadow;
+          padding: 20px;
+          .nmber-span {
+            border-radius: 2px;
+            box-shadow: 0px 3px 6px $boxShadow;
+            padding: 6px 35px;
+            color:white;
+            font-size: 16px;
+            font-weight: 600;
+          }
+          button {
+            border-radius: 10px;
+            padding: 0px 16px;
+            margin-top: 3px;
+            color: black;
+            font-size: 12px;
+            font-weight: 600;
+          }
+        }
+    }
+  }
+}
+.user-task{
+  padding: 14px 23px !important;
+  cursor: pointer;
+}
+.bg-blue {
+  border-color: #7FB1F2;
+  background-color: #E2EFFF;
+}
+.bg-red{
+  background-color: #FFEDED;
+  border-color: #DF9494;
+}
+.bg-yellow {
+  background-color: #feffe6;
+  border-color: #fbed9f;
+}
+.bg-green {
+  background-color: #dbf4e8;
+  border-color: #39815f;
+}
+.bg-black {
+  background-color: #EFEFEF;
+  border-color: #707070;
+}
+.tasks-stats {
+    padding: 20px;
+    .stats-content{
+        border-radius: 10px;
+        background-color: $white;
+        box-shadow: 0px 3px 6px $boxShadow;
+        padding: 20px;
+        h6{
+            font-size: 19px !important;
+            color: #0075c9;
+            font-weight: bold;
+        }
+    }
+}
+.stats-with-bg{
+  width: 53px;
+    margin: 0 8px;
+    border-radius: 17px;
+    color: #fff;
+    padding: 2px;
+    font-size: 12px;
+    margin-top: 2px;
+    text-align: center;
+    max-height: 28px;
+}
+.stats-text {
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+.cyan-bg {
+    background-image: linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+}
+.green-bg{
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+}
+.red-bg {
+    background-image: linear-gradient(195deg, #EC407A 0%, #D81B60 100%);
+}
+.yellow-bg {
+    background-image: linear-gradient(195deg, #f7e35e 0%, #f7cd00 100%);
+}
+.black-bg{
+    background-image: linear-gradient(195deg, #42424a 0%, #191919 100%);
+}
+.gray-bg {
+    background-image: linear-gradient(195deg, #6d7475 0%, #454949 100%);
+}
+.main-design{
+  width: 280px;
+  height: 280px;
+}
+.not-main{
+    width: 180px;
+    height: 180px;
+}
+.w-font {
+    font-size: 17px !important;
+}
+.activeTab {
+    cursor: pointer;
+    background-color: #eef0f8;
+    padding: 6px;
+    border-radius: 14px;
+    line-height: 1.5;
+}
+.comment {
+    background: $lightgray 0% 0% no-repeat padding-box;
+    margin: 0.5rem 0.6rem 0rem;
+    width: 100%;
+    border-radius: 0.6rem;
+    padding: 0.3rem 0.3rem 0.1rem;
+    box-shadow: 0px 1px 2px $boxShadow;
+    color: #404254;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    &__user {
+      display: flex;
+      align-items: center;
+      margin: 0 5px;
+      &-img {
+        height: 2rem;
+        width: 2rem;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin: 0 0.3rem;
+        object-fit: cover;
+      }
+      &-name {
+        font-size: $fs14;
+        font-weight: 600;
+      }
+    }
+  
+    &__date {
+      margin: 0 0.4rem;
+    }
+  
+    &__text {
+      text-align: right;
+      margin: 10px;
+      p {
+        width: 100%;
+        font-size: 16px;
+        padding: 0 3px;
+      }
+    }
+  }
+:host ::ng-deep .loader{
+    text-align: center !important;
+    padding: 30px 50px !important;
+    margin: 70px 0 !important;
+  }
+
+  .redBorder {
+    border-right: 4px solid #e3306f;
+    min-height: 34px;
+  
+  }
+  .greenBorder {
+    border-right:4px solid green;
+    min-height: 34px;
+  }
+  .yellowBorder{
+    border-right:4px solid #f7df4d;
+    min-height: 34px;
+  }
+  .main-user,.task-enddate,.classification,.attachment,.multiTasks,.title,.completed,.edit-history {
+    text-align: center;
+    h5 {
+      font-size: $fs14;
+      color: $dodgerBlue;
+    }
+    h6 {
+      color: $black;
+      font-size: $fs14;
+    }
+  }
+  .img-wrapper {
+    position: relative;
+    img {
+      height: 2.2rem;
+      width: 2.2rem;
+      border-radius: 50%;
+      vertical-align: middle;
+      object-fit: cover;
+      margin: 0 0.3rem;
+    }
+    .active-state {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      display: block;
+      background-color: $persianGreen;
+      border-radius: 25px;
+      left: 2px;
+      bottom: 0;
+    }
+  }
+  .active {
+    background-color: rgba(201, 201, 201, 0.856) !important;
+  }
+  .export-icon {
+    width: 1.07rem;
+    height: 1.07rem;
+    fill: rgb(150, 4, 4);
+  }

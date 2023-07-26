@@ -1,0 +1,49 @@
+@import "../../../../variables";
+.create-meeting{
+    h6{
+        font-size: 16px;
+    }
+    p{
+        font-size: 13px;
+    }
+    .multiple-meetings {
+        background-color: #fff !important;
+        color: #117a8b!important;
+        font-weight: bold;
+    }
+
+}
+
+::ng-deep .my-modal .ant-modal-header {
+  background: lightgray;
+}
+
+::ng-deep .my-modal .ant-modal-title {
+  font-weight: 600;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item .anticon {
+  color: #97949462;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+::ng-deep .my-modal .ant-select-multiple .ant-select-selection-item {
+  align-items: center;
+}
+
+::ng-deep .my-modal .ant-select-arrow .anticon {
+  color: #97949462;
+  font-size: 13px;
+}
+
+::ng-deep .my-modal .ant-radio-wrapper {
+  margin: 0;
+}
+
+::ng-deep .my-modal .ant-radio-wrapper {
+  display: flex;
+  align-items: center;
+}
+
