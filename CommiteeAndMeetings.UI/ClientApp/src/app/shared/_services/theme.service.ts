@@ -49,7 +49,7 @@ export class ThemeService {
 
   get primaryBackground() {
     // return { backgroundColor: this.primary, color: '#ffffff' };
-    return { 'background-image': `linear-gradient(to left, ${this.secondary}, ${this.accent})` };
+    return { 'background-image': `linear-gradient(to right, ${this.secondary}, ${this.accent})` };
   }
 
   get secondaryBackground() {
