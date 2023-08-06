@@ -36,6 +36,7 @@ export class TaskItemComponent implements OnInit {
   @Input() periodState: number;
   @Input() CommitteName: string;
   @Input() isForGeneralTasks = false;
+  @Input() requiredTaskEnum:number;
   checkComponent: boolean = false
   commentText = '';
   taskComments = [];
@@ -64,6 +65,7 @@ export class TaskItemComponent implements OnInit {
   userId: any;
   permittedShowComments: boolean = false;
   committeeId: any
+  taskViewOnly:boolean=false;
   constructor(
     private commentService: CommentsService,
     private swagger: SwaggerClient,
@@ -108,11 +110,16 @@ export class TaskItemComponent implements OnInit {
       this.multiTasks = this.mapMultiMissionsToMultiTasks(
         this.task.multiMission
       );
-    if (this.task.completeReasonDate.getFullYear() < 1900) {
+    if (this.task.completed === false) {
       this.taskCompleteFlag = false
     } else {
       this.taskCompleteFlag = true
     }
+
+    if(this.requiredTaskEnum === 10){
+      this.taskViewOnly = true
+    }
+
   }
   addComment(commentObj: { comment: CommentDTO; id: number, attachmentFiles: File[] }) {
     this.checkComponent = true;

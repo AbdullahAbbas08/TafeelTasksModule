@@ -51,6 +51,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   userId: any;
   showTasksWithCommittePermission:boolean = true
   permissionsValues:string[]=['allTasks','lateTasks',undefined,'closedTasks','assisstantTasks','taskToView']
+  requiredTaskEnum:number=7;
   constructor(
     private taskservice: TasksService,
     private storeService: StoreService,
@@ -428,31 +429,37 @@ export class TasksComponent implements OnInit, OnDestroy {
         case 1 :
           this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.all},this.committeeId,dateFrom,dateTo);
           this.selectedFilterObject = {typeId:this.TasksFilterEnum.all}
+          this.requiredTaskEnum = 1;
           this.tab = 'tab0';
          break;
         case 2 :
          this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.late},this.committeeId,dateFrom,dateTo)
          this.selectedFilterObject = {typeId:this.TasksFilterEnum.late}
+         this.requiredTaskEnum = 2;
          this.tab = 'tab1';
          break;
         case 3 :
          this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.Underprocedure},this.committeeId,dateFrom,dateTo);
          this.selectedFilterObject = {typeId:this.TasksFilterEnum.Underprocedure}
+         this.requiredTaskEnum = 7;
          this.tab = 'tab2';
          break;
         case 4 :
           this.getfilteredTasks(false,{typeId:9},this.committeeId,dateFrom,dateTo);
           this.selectedFilterObject = {typeId:9}
+          this.requiredTaskEnum = 9;
           this.tab = 'tab3';
          break;
         case 5 : 
           this.getfilteredTasks(false,{typeId:8},this.committeeId,dateFrom,dateTo);
           this.selectedFilterObject = {typeId:8}
+          this.requiredTaskEnum = 8;
           this.tab = 'tab4'
          break ;
          case 6 : 
          this.getfilteredTasks(false,{typeId:10},this.committeeId,dateFrom,dateTo);
          this.selectedFilterObject = {typeId:10}
+         this.requiredTaskEnum = 10;
          this.tab = 'tab5'
         break ;
        }
