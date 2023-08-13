@@ -214,6 +214,7 @@ export class TasksStatisticsComponent implements OnInit {
           setTimeout(() => { this.drawCharts() }, 500)
         }
         this.showStats = false;
+        this.isLoadingTable = false
       });
   }
 
@@ -301,7 +302,7 @@ export class TasksStatisticsComponent implements OnInit {
           this.filterCount = res.count;
         }
         this.isLoadingStats = false;
-        this.isLoadingTable = false
+
       });
   }
 

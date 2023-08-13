@@ -9,5 +9,6 @@ namespace CommiteeAndMeetings.Service.ISevices
         CommitteeMeetingSystemSettingDTO GetByCode(string code);
         ThemeDTO DefaultTheme();
         ThemeDTO DefaultTheme(string themeCode);
+        string isGradientTheme();
     }
 }

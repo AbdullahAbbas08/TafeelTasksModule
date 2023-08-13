@@ -53,7 +53,13 @@ namespace CommiteeAndMeetings.Service.Sevices
                 }
             }
             var res =  _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().Where(theme => theme.Name == SystemSettingValue).FirstOrDefault());
+            res.IsGradientTheme = isGradientTheme();
             return res;
+        }
+        
+        public string isGradientTheme()
+        {
+            return _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "AllowGradientTheme").FirstOrDefault()?.SystemSettingValue;
         }
 
         //override GetAll

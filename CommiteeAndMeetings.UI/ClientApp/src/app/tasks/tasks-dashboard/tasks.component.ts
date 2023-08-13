@@ -37,21 +37,21 @@ export class TasksComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   stateSubscription: Subscription;
   tasksSubscription: Subscription;
-  toggleCompeleteSubs:Subscription;
-  fromNotification:Subscription
+  toggleCompeleteSubs: Subscription;
+  fromNotification: Subscription
   validityPeriod: ValidityPeriodDTO;
   currentCount = 0;
   CommitteName: string;
   statisticsCount: ExtendedCountDTO[] = [];
-  togglebetweenTasks: boolean ;
+  togglebetweenTasks: boolean;
   selectedFilterObject: TaskFilters;
-  tab : any = 'tab2';
+  tab: any = 'tab3';
   TasksFilterEnum = TasksFilterEnum;
-  userTaskPermissions:boolean;
+  userTaskPermissions: boolean;
   userId: any;
-  showTasksWithCommittePermission:boolean = true
-  permissionsValues:string[]=['allTasks','lateTasks',undefined,'closedTasks','assisstantTasks','taskToView']
-  requiredTaskEnum:number=7;
+  showTasksWithCommittePermission: boolean = true
+  permissionsValues: string[] = ['allTasks', 'lateTasks', undefined, 'closedTasks', 'assisstantTasks', 'taskToView']
+  requiredTaskEnum: number = 7;
   constructor(
     private taskservice: TasksService,
     private storeService: StoreService,
@@ -59,10 +59,10 @@ export class TasksComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private committeeService: CommitteeService,
     private route: ActivatedRoute,
-    private authService:AuthService,
-    private BrowserService:BrowserStorageService
+    private authService: AuthService,
+    private BrowserService: BrowserStorageService
   ) {
- 
+
   }
 
   ngOnInit(): void {
@@ -77,30 +77,30 @@ export class TasksComponent implements OnInit, OnDestroy {
       }
     });
     this.subscription = this.searchService.searchcriteria.subscribe((word) => {
-      if(!word){
-      
-          if(this.committeeId){
-            if(this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)){
-              this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.Underprocedure},this.committeeId,this.validityPeriod.validityPeriodFrom,this.validityPeriod.validityPeriodTo);
-              this.getTasksStatisticsNum();
-              this.tab = 'tab2';
-            } else {
-              this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.all},this.committeeId,this.validityPeriod.validityPeriodFrom,this.validityPeriod.validityPeriodTo);
-              this.getTasksStatisticsNum();
-              this.tab = 'tab2';
-            }
-          } else {
-            this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.Underprocedure},this.committeeId);
+      if (!word) {
+
+        if (this.committeeId) {
+          if (this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)) {
+            this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.Underprocedure }, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo);
             this.getTasksStatisticsNum();
-            this.tab = 'tab2';
+            this.tab = 'tab3';
+          } else {
+            this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.all }, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo);
+            this.getTasksStatisticsNum();
+            this.tab = 'tab3';
           }
+        } else {
+          this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.Underprocedure }, this.committeeId);
+          this.getTasksStatisticsNum();
+          this.tab = 'tab3';
+        }
       }
     });
     this.toggleCompeleteSubs = this.taskservice.toggleCompeleteTask.subscribe((res) => {
-      if(res) {
-        this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.Underprocedure},this.committeeId);
+      if (res) {
+        this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.Underprocedure }, this.committeeId);
         this.getTasksStatisticsNum();
-        this.tab = 'tab2';
+        this.tab = 'tab3';
       }
     })
     this.taskservice.toggleTasksFilter.subscribe((value) => {
@@ -110,9 +110,27 @@ export class TasksComponent implements OnInit, OnDestroy {
       (res) => {
         if (res) {
           this.selectedFilterObject = res;
-          this.tab = 'tab0';
-          if(this.committeeId){
-            this.getfilteredTasks(false, res,this.committeeId,this.validityPeriod.validityPeriodFrom,this.validityPeriod.validityPeriodTo);
+          // this.tab = 'tab0' ;
+          this.tab = `tab${res.typeId}`;
+          switch (res.typeId) {
+            case 1:
+              this.tab = 'tab1';
+              break;
+            case 2:
+              this.tab = 'tab2'
+              break;
+            case 6:
+              this.tab = 'tab4'
+              break;
+            case 7:
+              this.tab = 'tab3'
+              break;
+            default:
+              this.tab = 'tab0'
+              break;
+          }
+          if (this.committeeId) {
+            this.getfilteredTasks(false, res, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo);
           } else {
             this.getfilteredTasks(false, res);
           }
@@ -120,13 +138,13 @@ export class TasksComponent implements OnInit, OnDestroy {
       }
     );
     this.fromNotification = this.taskservice.fromNotifications.subscribe((res) => {
-      if(res) {
+      if (res) {
         this.filterWzClick(2)
       }
     })
     this.subscribeToPeriodChangeForCommittee();
-    if(this.committeeId){
-       this.CommitteName = this.committeeService.CommitteName;
+    if (this.committeeId) {
+      this.CommitteName = this.committeeService.CommitteName;
     }
   }
 
@@ -134,7 +152,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     if (this.subscription) this.subscription.unsubscribe();
     if (this.stateSubscription) this.stateSubscription.unsubscribe();
     if (this.tasksSubscription) this.tasksSubscription.unsubscribe();
-    if(this.toggleCompeleteSubs) this.toggleCompeleteSubs.unsubscribe();
+    if (this.toggleCompeleteSubs) this.toggleCompeleteSubs.unsubscribe();
     this.taskservice.toggleCompeleteTask.next(undefined);
     this.taskservice.fromNotifications.next(undefined)
 
@@ -150,27 +168,27 @@ export class TasksComponent implements OnInit, OnDestroy {
   onFilterScroll() {
     if (this.currentfilterCount < this.filterCount) {
       this.filterskip += this.filterTake;
-        if(this.committeeId){
-          this.getfilteredTasks(true, this.selectedFilterObject,this.committeeId);
-         } else {
-          this.getfilteredTasks(true, this.selectedFilterObject);
-         }
+      if (this.committeeId) {
+        this.getfilteredTasks(true, this.selectedFilterObject, this.committeeId);
+      } else {
+        this.getfilteredTasks(true, this.selectedFilterObject);
+      }
     }
   }
   subscribeToPeriodChangeForCommittee() {
     this.stateSubscription =
       this.committeeService.committeePeriodChange$.subscribe((period) => {
-        if(period && this.committeeId){
-          if(this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)){
-            this.selectedFilterObject = {typeId:7}
+        if (period && this.committeeId) {
+          if (this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)) {
+            this.selectedFilterObject = { typeId: 7 }
           } else {
-            this.selectedFilterObject = {typeId:1}
+            this.selectedFilterObject = { typeId: 1 }
           }
           this.validityPeriod = period;
-          this.getfilteredTasks(false,this.selectedFilterObject,this.committeeId,this.validityPeriod.validityPeriodFrom,this.validityPeriod.validityPeriodTo)
+          this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo)
         } else {
-          this.selectedFilterObject = {typeId:7}
-          this.getfilteredTasks(false,this.selectedFilterObject,this.committeeId)
+          this.selectedFilterObject = { typeId: 7 }
+          this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId)
         }
         this.getTasksStatisticsNum();
       });
@@ -186,7 +204,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   //   if(this.committeeId){
   //     let dateFromString = this.validityPeriod.validityPeriodFrom.getTime();
   //     let dateToString = this.validityPeriod.validityPeriodTo.getTime();
-  
+
   //     let dateFrom = new Date(dateFromString).toISOString();
   //     let dateTo = new Date(dateToString).toISOString();
   //     if (searchWord) {
@@ -257,14 +275,14 @@ export class TasksComponent implements OnInit, OnDestroy {
 
 
 
-  getfilteredTasks(scroll: boolean = false, result: TaskFilters,commiteeId?:number,validityPeriodFrom?,validityPeriodTo?) {
+  getfilteredTasks(scroll: boolean = false, result: TaskFilters, commiteeId?: number, validityPeriodFrom?, validityPeriodTo?) {
     if (!scroll) {
       this.loadingData = true;
       this.layoutService.toggleSpinner(true);
       this.filterskip = 0;
     }
     this.togglebetweenTasks = false;
-    if(commiteeId){
+    if (commiteeId) {
       if (result.classificationId && result.searchtxt) {
         this.tasksFilter = [
           {
@@ -275,14 +293,14 @@ export class TasksComponent implements OnInit, OnDestroy {
           { field: 'title', operator: 'contains', value: result.searchtxt },
           { field: 'commiteeId', operator: 'eq', value: commiteeId },
         ];
-      } else if (result.searchtxt && !result.classificationId){
+      } else if (result.searchtxt && !result.classificationId) {
         {
           this.tasksFilter = [
-            { field: 'title', operator: 'contains', value: result.searchtxt},
+            { field: 'title', operator: 'contains', value: result.searchtxt },
             { field: 'commiteeId', operator: 'eq', value: commiteeId },
           ];
         }
-      } else if(result.classificationId && !result.searchtxt){
+      } else if (result.classificationId && !result.searchtxt) {
         this.tasksFilter = [
           {
             field: 'ComiteeTaskCategoryId',
@@ -305,17 +323,15 @@ export class TasksComponent implements OnInit, OnDestroy {
             operator: 'eq',
             value: result.classificationId,
           },
-          { field: 'title', operator: 'contains', value: result.searchtxt},
-        ];
-      } 
-      else if (result.searchtxt && !result.classificationId)
-      {
-        this.tasksFilter = [
-          { field: 'title', operator: 'contains', value: result.searchtxt},
+          { field: 'title', operator: 'contains', value: result.searchtxt },
         ];
       }
-       else if (result.classificationId && !result.searchtxt)
-      {
+      else if (result.searchtxt && !result.classificationId) {
+        this.tasksFilter = [
+          { field: 'title', operator: 'contains', value: result.searchtxt },
+        ];
+      }
+      else if (result.classificationId && !result.searchtxt) {
         this.tasksFilter = [
           {
             field: 'ComiteeTaskCategoryId',
@@ -323,154 +339,154 @@ export class TasksComponent implements OnInit, OnDestroy {
             value: result.classificationId,
           },
         ];
-      } 
+      }
       else {
         this.tasksFilter = [];
       }
     }
-    if(result.body){
+    if (result.body) {
       this.taskservice
-      .getFilteredTasks(
-        this.filterTake,
-        this.filterskip,
-        this.committeeId,
-        this.tasksFilter,
-        'and',
-        result.typeId,
-        undefined,
-        undefined,
-        result.body.fromDate,
-        result.body.toDate,
-        result.body.mainUserId,
-        result.body.mainAssinedUserId,
-        validityPeriodFrom,
-        validityPeriodTo,
-        result.body.committeId,
-        result.body.meetingId
-      )
-      .subscribe((res) => {
-        if (res && res.data) {
-          this.tasks = scroll ? [...this.tasks, ...res.data] : res.data;
-          this.filterCount = res.count;
-          if (scroll) {
-            this.currentfilterCount += res.data.length;
-          } else {
-            this.currentfilterCount = res.data.length;
+        .getFilteredTasks(
+          this.filterTake,
+          this.filterskip,
+          this.committeeId,
+          this.tasksFilter,
+          'and',
+          result.typeId,
+          undefined,
+          undefined,
+          result.body.fromDate,
+          result.body.toDate,
+          result.body.mainUserId,
+          result.body.mainAssinedUserId,
+          validityPeriodFrom,
+          validityPeriodTo,
+          result.body.committeId,
+          result.body.meetingId
+        )
+        .subscribe((res) => {
+          if (res && res.data) {
+            this.tasks = scroll ? [...this.tasks, ...res.data] : res.data;
+            this.filterCount = res.count;
+            if (scroll) {
+              this.currentfilterCount += res.data.length;
+            } else {
+              this.currentfilterCount = res.data.length;
+            }
           }
-        }
-        this.layoutService.toggleSpinner(false);
-        this.loadingData = false;
-      });
+          this.layoutService.toggleSpinner(false);
+          this.loadingData = false;
+        });
     } else {
       this.taskservice
-      .getFilteredTasks(
-        this.filterTake,this.filterskip,this.committeeId,this.tasksFilter,'and',result.typeId,undefined,undefined,undefined,
-        undefined,undefined,undefined,validityPeriodFrom,
-        validityPeriodTo
-      )
-      .subscribe((res) => {
-        if (res && res.data) {
-          this.tasks = scroll ? [...this.tasks, ...res.data] : res.data;
-          this.filterCount = res.count;
-          if (scroll) {
-            this.currentfilterCount += res.data.length;
-          } else {
-            this.currentfilterCount = res.data.length;
+        .getFilteredTasks(
+          this.filterTake, this.filterskip, this.committeeId, this.tasksFilter, 'and', result.typeId, undefined, undefined, undefined,
+          undefined, undefined, undefined, validityPeriodFrom,
+          validityPeriodTo
+        )
+        .subscribe((res) => {
+          if (res && res.data) {
+            this.tasks = scroll ? [...this.tasks, ...res.data] : res.data;
+            this.filterCount = res.count;
+            if (scroll) {
+              this.currentfilterCount += res.data.length;
+            } else {
+              this.currentfilterCount = res.data.length;
+            }
           }
-        }
-        this.layoutService.toggleSpinner(false);
-        this.loadingData = false;
-      });
+          this.layoutService.toggleSpinner(false);
+          this.loadingData = false;
+        });
     }
   }
 
   getTasksStatisticsNum() {
     this.loadingTaskCount = true;
-    if(this.committeeId){
+    if (this.committeeId) {
       this.taskservice
-      .getStatistisTasksNumber(undefined,undefined,this.BrowserService.encryptCommitteId(this.committeeId),this.validityPeriod.validityPeriodFrom,this.validityPeriod.validityPeriodTo)
-      .subscribe((result) => {
-        if (result) {
-          this.taskservice.shareTaskStats.next(result)
-          this.loadingTaskCount = false;
-          this.statisticsCount = result;
-          this.permissionsValues.map((x,index) => {
-            this.statisticsCount.map((z,y) => {
-              if(index === y){
-                z.permissionValue = x
-              }
+        .getStatistisTasksNumber(undefined, undefined, this.BrowserService.encryptCommitteId(this.committeeId), this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo)
+        .subscribe((result) => {
+          if (result) {
+            this.taskservice.shareTaskStats.next(result)
+            this.loadingTaskCount = false;
+            this.statisticsCount = result;
+            this.permissionsValues.map((x, index) => {
+              this.statisticsCount.map((z, y) => {
+                if (index === y) {
+                  z.permissionValue = x
+                }
+              })
             })
-          })
-        }
-      });
+          }
+        });
     } else {
       this.taskservice
-      .getStatistisTasksNumber(undefined,undefined)
-      .subscribe((result) => {
-        if (result) {
-          this.taskservice.shareTaskStats.next(result)
-          this.loadingTaskCount = false;
-          this.statisticsCount = result;
-          this.permissionsValues.map((x,index) => {
-            this.statisticsCount.map((z,y) => {
-              if(index === y){
-                z.permissionValue = x
-              }
+        .getStatistisTasksNumber(undefined, undefined)
+        .subscribe((result) => {
+          if (result) {
+            this.taskservice.shareTaskStats.next(result)
+            this.loadingTaskCount = false;
+            this.statisticsCount = result;
+            this.permissionsValues.map((x, index) => {
+              this.statisticsCount.map((z, y) => {
+                if (index === y) {
+                  z.permissionValue = x
+                }
+              })
             })
-          })
-        }
-      });
+          }
+        });
     }
   }
-  filterWzClick(i:number){
-   let dateFrom =  this.validityPeriod ? this.validityPeriod.validityPeriodFrom : undefined;
-   let dateTo = this.validityPeriod ? this.validityPeriod.validityPeriodTo : undefined 
-      switch (i) {
-        case 1 :
-          this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.all},this.committeeId,dateFrom,dateTo);
-          this.selectedFilterObject = {typeId:this.TasksFilterEnum.all}
-          this.requiredTaskEnum = 1;
-          this.tab = 'tab0';
-         break;
-        case 2 :
-         this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.late},this.committeeId,dateFrom,dateTo)
-         this.selectedFilterObject = {typeId:this.TasksFilterEnum.late}
-         this.requiredTaskEnum = 2;
-         this.tab = 'tab1';
-         break;
-        case 3 :
-         this.getfilteredTasks(false,{typeId:this.TasksFilterEnum.Underprocedure},this.committeeId,dateFrom,dateTo);
-         this.selectedFilterObject = {typeId:this.TasksFilterEnum.Underprocedure}
-         this.requiredTaskEnum = 7;
-         this.tab = 'tab2';
-         break;
-        case 4 :
-          this.getfilteredTasks(false,{typeId:9},this.committeeId,dateFrom,dateTo);
-          this.selectedFilterObject = {typeId:9}
-          this.requiredTaskEnum = 9;
-          this.tab = 'tab3';
-         break;
-        case 5 : 
-          this.getfilteredTasks(false,{typeId:8},this.committeeId,dateFrom,dateTo);
-          this.selectedFilterObject = {typeId:8}
-          this.requiredTaskEnum = 8;
-          this.tab = 'tab4'
-         break ;
-         case 6 : 
-         this.getfilteredTasks(false,{typeId:10},this.committeeId,dateFrom,dateTo);
-         this.selectedFilterObject = {typeId:10}
-         this.requiredTaskEnum = 10;
-         this.tab = 'tab5'
-        break ;
-       }
-      this.togglebetweenTasks = false;
+  filterWzClick(i: number) {
+    let dateFrom = this.validityPeriod ? this.validityPeriod.validityPeriodFrom : undefined;
+    let dateTo = this.validityPeriod ? this.validityPeriod.validityPeriodTo : undefined
+    switch (i) {
+      case 1:
+        this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.all }, this.committeeId, dateFrom, dateTo);
+        this.selectedFilterObject = { typeId: this.TasksFilterEnum.all }
+        this.requiredTaskEnum = 1;
+        this.tab = 'tab1';
+        break;
+      case 2:
+        this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.late }, this.committeeId, dateFrom, dateTo)
+        this.selectedFilterObject = { typeId: this.TasksFilterEnum.late }
+        this.requiredTaskEnum = 2;
+        this.tab = 'tab2';
+        break;
+      case 3:
+        this.getfilteredTasks(false, { typeId: this.TasksFilterEnum.Underprocedure }, this.committeeId, dateFrom, dateTo);
+        this.selectedFilterObject = { typeId: this.TasksFilterEnum.Underprocedure }
+        this.requiredTaskEnum = 7;
+        this.tab = 'tab3';
+        break;
+      case 4:
+        this.getfilteredTasks(false, { typeId: 9 }, this.committeeId, dateFrom, dateTo);
+        this.selectedFilterObject = { typeId: 9 }
+        this.requiredTaskEnum = 9;
+        this.tab = 'tab4';
+        break;
+      case 5:
+        this.getfilteredTasks(false, { typeId: 8 }, this.committeeId, dateFrom, dateTo);
+        this.selectedFilterObject = { typeId: 8 }
+        this.requiredTaskEnum = 8;
+        this.tab = 'tab5'
+        break;
+      case 6:
+        this.getfilteredTasks(false, { typeId: 10 }, this.committeeId, dateFrom, dateTo);
+        this.selectedFilterObject = { typeId: 10 }
+        this.requiredTaskEnum = 10;
+        this.tab = 'tab6'
+        break;
+    }
+    this.togglebetweenTasks = false;
     this.taskservice.filterWithClick.next(i)
   }
-  checkTasksPermissions(permission:string){
-   if(this.committeeId){
-      if(this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)){
-        if(this.committeeService.checkPermission(permission) && permission !== 'taskToView'){
-          return true 
+  checkTasksPermissions(permission: string) {
+    if (this.committeeId) {
+      if (this.committeeService.CommitteHeadUnitId === +this.userId || this.committeeService.committeMembers.some((el) => el.userId === +this.userId)) {
+        if (this.committeeService.checkPermission(permission) && permission !== 'taskToView') {
+          return true
         } else {
           return false
         }
@@ -478,13 +494,13 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.showTasksWithCommittePermission = false
       }
 
-   } else {
-    if(this.authService.isAuthUserHasPermissions([permission])){
-      return true
     } else {
-      return false 
+      if (this.authService.isAuthUserHasPermissions([permission])) {
+        return true
+      } else {
+        return false
+      }
     }
-   }
 
-   }
+  }
 }

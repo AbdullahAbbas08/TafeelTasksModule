@@ -38,6 +38,13 @@ namespace CommiteeAndMeetings.UI.Controllers
         {
             return _committeeMeetingSystemSettingService.DefaultTheme(themeCode);
         }
+        
+
+        [HttpGet("isGradientTheme")]
+        public string isGradientTheme()
+        {
+            return _committeeMeetingSystemSettingService.isGradientTheme();
+        }
 
         [HttpPost, Route("SetSystemUsers")]
         public bool SetSystemUsers([FromBody] int NumberOfUsers)
