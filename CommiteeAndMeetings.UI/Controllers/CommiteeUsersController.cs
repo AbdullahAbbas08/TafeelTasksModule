@@ -218,7 +218,7 @@ namespace CommiteeAndMeetings.UI.Controllers
         }
         [HttpPost]
         [Route("ChangeUserPassword")]
-        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordViewModel model)
+        public async Task<ActionResult<bool>> ChangeUserPassword([FromBody] ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {

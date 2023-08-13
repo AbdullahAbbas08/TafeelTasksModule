@@ -781,6 +781,7 @@ namespace CommiteeAndMeetings.UI
                 endpoints.MapControllers();
                 endpoints.MapHub<SignalRHub>("/api/SignalR");
             });
+           
             if (Convert.ToString(Configuration["HangFireSettings:IsEnabled"]).Equals("1"))
             {
                 app.UseHangfireServer();

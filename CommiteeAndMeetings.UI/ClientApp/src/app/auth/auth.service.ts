@@ -2,7 +2,7 @@ import { SharedModalService } from 'src/app/core/_services/modal.service';
 import { LayoutService } from './../shared/_services/layout.service';
 import { Injectable } from '@angular/core';
 // import { SwaggerClient, LoginViewModel, LoginCridentialResponse, RegistrationViewModel, RegisterationDTOObjectSourceResult } from '../core/_services/swagger/SwaggerClient.service';
-import { BehaviorSubject, Observable, Subject,throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { BrowserStorageService } from '../shared/_services/browser-storage.service';
 import {
   AccessToken,
@@ -17,7 +17,7 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { StoreService } from '../shared/_services/store.service';
 import { NavigationEnd, Router } from '@angular/router';
-import {catchError, finalize, map,takeLast } from 'rxjs/operators';
+import { catchError, finalize, map, takeLast } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -30,8 +30,8 @@ export class AuthService {
   private authStatus: boolean = false;
   authStatusListener = new BehaviorSubject<boolean>(null);
   private authTimer;
-  checkTaskModule:boolean = false;
-  isFactorAuth:boolean;
+  checkTaskModule: boolean = false;
+  isFactorAuth: boolean;
   constructor(
     private router: Router,
     private swaggerService: SwaggerClient,
@@ -39,8 +39,8 @@ export class AuthService {
     private layoutService: LayoutService,
     private modal: SharedModalService,
     private model: NzModalService,
-    private store:StoreService
-  ) {}
+    private store: StoreService
+  ) { }
 
   getToken() {
     return this.token;
@@ -62,7 +62,7 @@ export class AuthService {
     return this.authStatus;
   }
   submitAfterVerification(factorAuthCode: string, userName: string, applicationType: string, culture: string) {
-    return this.swaggerService.apiAccountCheckVerfCodePost(factorAuthCode,this.browserStorageService.encrypteString(userName), applicationType, culture)
+    return this.swaggerService.apiAccountCheckVerfCodePost(factorAuthCode, this.browserStorageService.encrypteString(userName), applicationType, culture)
       .pipe(
         map((response: AccessToken) => {
           if (response.access_token && response.is_factor_auth) {
@@ -72,10 +72,10 @@ export class AuthService {
             return false;
           }
         }),
-        )
+      )
   }
   loginUser(culture: string, body: UserLoginModel) {
-  return  this.swaggerService.apiAccountLoginPost(culture, body).pipe(map((res: AccessToken) => {
+    return this.swaggerService.apiAccountLoginPost(culture, body).pipe(map((res: AccessToken) => {
       this.token = res.access_token;
       if (!this.token) {
         this.authStatus = false;
@@ -84,64 +84,64 @@ export class AuthService {
         this.user$.next(undefined);
         this.layoutService.toggleSpinner(false);
         this.isFactorAuth = res.is_factor_auth;
-        return false ;
-      } else{
+        return false;
+      } else {
         return true
       }
     },
-    (e) => this.logoutUser())
-   
+      (e) => this.logoutUser())
+
     );
   }
   getUserAuthData() {
     this.swaggerService
-    .apiAccountGetUserAuthTicketGet(undefined, undefined, false)
-    .subscribe(
-      (value: EncriptedAuthTicketDTO) => {
-        if (value) {
-          const decryptedUser =
-            this.browserStorageService.decryptUser(value);
-          this.user$.next(decryptedUser);
-          this.user = decryptedUser;
+      .apiAccountGetUserAuthTicketGet(undefined, undefined, false)
+      .subscribe(
+        (value: EncriptedAuthTicketDTO) => {
+          if (value) {
+            const decryptedUser =
+              this.browserStorageService.decryptUser(value);
+            this.user$.next(decryptedUser);
+            this.user = decryptedUser;
 
-          this.authStatus = true;
-          this.authStatusListener.next(true);
+            this.authStatus = true;
+            this.authStatusListener.next(true);
 
-          const authDuration =
-            +decryptedUser.accessTokenExpirationMinutes * 60;
+            const authDuration =
+              +decryptedUser.accessTokenExpirationMinutes * 60;
 
-          const expirationDate = new Date(
-            new Date().getTime() + authDuration * 1000
-          );
-          this.setAuthTimer(authDuration);
-          this.saveAuthData(this.token, value, expirationDate);
-           this.checkCurrentModule();
-          this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("ShowHideCommiteeMeetingModule").subscribe((res) => {
-            if(res.systemSettingValue == '0'){
-              this.router.navigate(['/tasks']);
-            } else {
-              this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("DefaultOpenPage").subscribe((value) => {
-                if(value.systemSettingValue == '1'){
-                  this.router.navigate(['/']);
-                } else if (value.systemSettingValue == '2'){
-                  this.router.navigate(['/meetings']);
-                } else if(value.systemSettingValue == '3'){
-                  this.router.navigate(['/tasks']);
-                }else {
-                  this.router.navigate(['/']);
-                }
-              })
-            }
-          })
+            const expirationDate = new Date(
+              new Date().getTime() + authDuration * 1000
+            );
+            this.setAuthTimer(authDuration);
+            this.saveAuthData(this.token, value, expirationDate);
+            this.checkCurrentModule();
+            this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("ShowHideCommiteeMeetingModule").subscribe((res) => {
+              if (res.systemSettingValue == '0') {
+                this.router.navigate(['/tasks']);
+              } else {
+                this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("DefaultOpenPage").subscribe((value) => {
+                  if (value.systemSettingValue == '1') {
+                    this.router.navigate(['/']);
+                  } else if (value.systemSettingValue == '2') {
+                    this.router.navigate(['/meetings']);
+                  } else if (value.systemSettingValue == '3') {
+                    this.router.navigate(['/tasks']);
+                  } else {
+                    this.router.navigate(['/']);
+                  }
+                })
+              }
+            })
+          }
+        },
+        (e) => {
+          this.authStatus = false;
+          this.authStatusListener.next(false);
+          this.user = undefined;
+          this.user$.next(undefined);
         }
-      },
-      (e) => {
-        this.authStatus = false;
-        this.authStatusListener.next(false);
-        this.user = undefined;
-        this.user$.next(undefined);
-      }
-    );
+      );
   }
   resendUserVerificationCode(userName) {
     return this.swaggerService.apiAccountResendVerfCodePost(this.browserStorageService.encrypteString(userName)).pipe(map((res: any) => {
@@ -210,20 +210,20 @@ export class AuthService {
     this.model.closeAll();
     this.router.navigate(['/auth/login']);
   }
-  logoutUser(){
+  logoutUser() {
     this.swaggerService.apiAccountLogoutGet(this.token).pipe(map(response => response || {}),
-    catchError((error: HttpErrorResponse) => throwError(error)),
-    finalize(async() =>{
-      this.token = undefined;
-      this.user = undefined;
-      this.authStatus = false;
-      this.authStatusListener.next(false);
-      this.user$.next(undefined);
-      clearTimeout(this.authTimer);
-      this.clearAuthData();
-      this.model.closeAll();
-      this.router.navigate(['/auth/login']);
-    }) 
+      catchError((error: HttpErrorResponse) => throwError(error)),
+      finalize(async () => {
+        this.token = undefined;
+        this.user = undefined;
+        this.authStatus = false;
+        this.authStatusListener.next(false);
+        this.user$.next(undefined);
+        clearTimeout(this.authTimer);
+        this.clearAuthData();
+        this.model.closeAll();
+        this.router.navigate(['/auth/login']);
+      })
     ).subscribe();
   }
   setAuthTimer(authDuration) {
@@ -253,7 +253,7 @@ export class AuthService {
     return this.swaggerService.apiCommiteeUsersGetUserProfileGet();
   }
 
-  changeUserPassword(body: ChangePasswordViewModel): Observable<void> {
+  changeUserPassword(body: ChangePasswordViewModel): Observable<boolean> {
     return this.swaggerService.apiCommiteeUsersChangeUserPasswordPost(body);
   }
 
@@ -265,40 +265,40 @@ export class AuthService {
     headers = headers.append('Authorization', `Bearer ${accessToken}`);
     return headers;
   }
-  checkCurrentModule(){
+  checkCurrentModule() {
     this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("ShowHideCommiteeMeetingModule").subscribe((res) => {
-      if(res.systemSettingValue == '0'){
+      if (res.systemSettingValue == '0') {
         this.checkTaskModule = true;
         localStorage.setItem('defaultModule', res.systemSettingValue);
         this.router.navigate(['/tasks']);
-        this.router.events.subscribe((env) =>{
-          if(env instanceof NavigationEnd){
+        this.router.events.subscribe((env) => {
+          if (env instanceof NavigationEnd) {
             let currentModule = localStorage.getItem('defaultModule');
-            if(currentModule == '0'){
-              if((env.url.includes('/committees') || env.url.includes('/meetings') || env.urlAfterRedirects.includes('/committees') || env.urlAfterRedirects.includes('/meetings'))){
+            if (currentModule == '0') {
+              if ((env.url.includes('/committees') || env.url.includes('/meetings') || env.urlAfterRedirects.includes('/committees') || env.urlAfterRedirects.includes('/meetings'))) {
                 this.router.navigate(['/tasks']);
-               }
+              }
             }
           }
         })
       } else {
         this.checkTaskModule = false;
-        
+
         this.swaggerService.apiCommitteeMeetingSystemSettingGetByCodeGet("DefaultOpenPage").subscribe((value) => {
-          if(value.systemSettingValue == '1'){
+          if (value.systemSettingValue == '1') {
             this.router.navigate(['/']);
-          } else if (value.systemSettingValue == '2'){
+          } else if (value.systemSettingValue == '2') {
             this.router.navigate(['/meetings']);
-          } else if(value.systemSettingValue == '3'){
+          } else if (value.systemSettingValue == '3') {
             this.router.navigate(['/tasks']);
-          }else {
+          } else {
             this.router.navigate(['/']);
           }
         })
       }
     })
   }
-  checkModule(){
+  checkModule() {
     return this.checkTaskModule
   }
 }

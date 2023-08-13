@@ -59,7 +59,9 @@ namespace CommiteeAndMeetings.Service.Sevices
         
         public string isGradientTheme()
         {
-            return _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "AllowGradientTheme").FirstOrDefault()?.SystemSettingValue;
+            var res =  _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "AllowGradientTheme").FirstOrDefault()?.SystemSettingValue;
+            if (string.IsNullOrEmpty(res)) res = "0";
+            return res;
         }
 
         //override GetAll
