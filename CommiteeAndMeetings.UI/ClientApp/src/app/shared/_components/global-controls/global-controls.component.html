@@ -10,10 +10,11 @@
         nz-button
         nzBlock
         nzType="text"
-        class="btn dashboard-btn"
         (click)="addNewTimeLineItem(actionTypes?.CreateAttachment)"
-        [ngStyle]="themeService.primaryBackground"
+        [ngStyle]="themeService.primaryTextColor"
       >
+        <!-- class="btn dashboard-btn" -->
+        <!-- [ngStyle]="themeService.primaryBackground" -->
         <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
         <strong class="mx-1"> {{ "AddAttachment" | translate }} </strong>
       </button>
@@ -29,10 +30,11 @@
         nz-button
         nzBlock
         nzType="text"
-        class="btn dashboard-btn"
         (click)="addNewTimeLineItem(actionTypes?.CreateTask)"
-        [ngStyle]="themeService.primaryBackground"
+        [ngStyle]="themeService.primaryTextColor"
       >
+        <!-- class="btn dashboard-btn"
+        [ngStyle]="themeService.primaryBackground" -->
         <i nz-icon nzType="solution" nzTheme="outline"></i>
         <strong class="mx-1"> {{ "CreateTask" | translate }} </strong>
       </button>
@@ -48,10 +50,11 @@
         nz-button
         nzBlock
         nzType="text"
-        class="btn dashboard-btn"
         (click)="addNewTimeLineItem(actionTypes?.CreateVote)"
-        [ngStyle]="themeService.primaryBackground"
+        [ngStyle]="themeService.primaryTextColor"
       >
+        <!-- class="btn dashboard-btn"
+        [ngStyle]="themeService.primaryBackground" -->
         <svg class="meet-icon">
           <use xlink:href="assets\images\sprite-4.svg#icon-how_to_vote"></use>
         </svg>
@@ -76,10 +79,11 @@
           nz-button
           nzBlock
           nzType="text"
-          class="btn dashboard-btn"
           (click)="createTplModal(tplTitle, tplContent)"
-          [ngStyle]="themeService.primaryBackground"
+          [ngStyle]="themeService.primaryTextColor"
         >
+          <!-- class="btn dashboard-btn"
+          [ngStyle]="themeService.primaryBackground" -->
           <svg class="meet-icon">
             <use xlink:href="assets\images\sprite-4.svg#icon-news-paper"></use>
           </svg>
@@ -99,10 +103,11 @@
         nz-button
         nzBlock
         nzType="text"
-        class="btn dashboard-btn"
         (click)="addNewMeeting()"
-        [ngStyle]="themeService.primaryBackground"
+        [ngStyle]="themeService.primaryTextColor"
       >
+        <!-- class="btn dashboard-btn"
+        [ngStyle]="themeService.primaryBackground" -->
         <svg class="meet-icon">
           <use xlink:href="assets\images\sprite-3.svg#icon-calendar"></use>
         </svg>
@@ -127,10 +132,11 @@
         nz-button
         nzBlock
         nzType="text"
-        class="btn dashboard-btn"
         (click)="showCommitteMinutes()"
-        [ngStyle]="themeService.primaryBackground"
+        [ngStyle]="themeService.primaryTextColor"
       >
+        <!-- class="btn dashboard-btn"
+        [ngStyle]="themeService.primaryBackground" -->
         <span nz-icon nzType="printer" nzTheme="outline"></span>
         <strong class="mx-1"> {{ "CommitteMinutes" | translate }} </strong>
       </button>
@@ -151,10 +157,11 @@
           nz-button
           nzBlock
           nzType="text"
-          class="btn dashboard-btn"
           (click)="addNewTimeLineItem(actionTypes?.CreateTask)"
           [ngStyle]="themeService.primaryTextColor"
         >
+          <!-- class="btn dashboard-btn"
+          [ngStyle]="themeService.primaryTextColor" -->
           <!-- [ngStyle]="themeService.primaryBackground" -->
           <i nz-icon nzType="solution" nzTheme="outline"></i>
           <strong class="mx-1"> {{ "CreateTask" | translate }} </strong>

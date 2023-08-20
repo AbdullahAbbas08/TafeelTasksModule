@@ -716,8 +716,150 @@ namespace CommiteeAndMeetings.Service.Sevices
                 return returned;
             }
         }
-        public List<CommiteeTaskDTO> GetAllForPrint(TaskFilterEnum requiredTasks, int? CommiteeId, int? ComiteeTaskCategoryId, string SearchText, int? userId = null, ParamsSearchFilterDTO paramsSearchFilterDTO = null)
+        public List<CommiteeTaskDTO> GetAllForPrint(TaskFilterEnum requiredTasks, int? CommiteeId, int? ComiteeTaskCategoryId, string SearchText, int? userId = null, ParamsSearchFilterDTO paramsSearchFilterDTO = null, int? organizationId = null)
         {
+            if (organizationId != null)
+            {
+                var returnFromStoredEnumerable = _context.vm_EmpInOrgaHierarchies.FromSqlInterpolated($"exec [dbo].[sp_GetEmployeesByOrganizationHierarchyToReport] {organizationId}").ToList();
+                // var res = returnFromStoredEnumerable.AsEnumerable().ToDataSourceResult(dataSourceRequest, true).Data.ToList();
+
+                //var x = returnFromStoredEnumerable.AsQueryable();
+                List<LookUpDTO> lookupUser = returnFromStoredEnumerable.AsQueryable().Select(x => new LookUpDTO
+                {
+                    Id = x.Id,
+                    Name = _sessionServices.CultureIsArabic ? x.FullNameAr : x.FullNameEn
+                }).ToList();
+
+                CommiteeTaskDTOAndCount commiteeTaskDTOAndCount = new CommiteeTaskDTOAndCount()
+                {
+
+                    tasks = new List<CommiteeTaskDTO>(),
+                    CountTasks = 0
+                };
+
+                foreach (var item in lookupUser)
+                {
+                    IQueryable<CommiteeTask> query = this._UnitOfWork.GetRepository<CommiteeTask>().GetAll(true).OrderByDescending(x => x.CreatedOn)
+                    .Where(x => (paramsSearchFilterDTO.ValiditayPeriodFrom == null || x.CreatedOn >= paramsSearchFilterDTO.ValiditayPeriodFrom.Value) &&
+                                (paramsSearchFilterDTO.ValidatiyPeriodTo == null || x.CreatedOn <= paramsSearchFilterDTO.ValidatiyPeriodTo.Value) &&
+                                (x.MeetingId == paramsSearchFilterDTO.MeetingId || paramsSearchFilterDTO.MeetingId == null) &&
+                                (x.CommiteeId == paramsSearchFilterDTO.CommiteeId || paramsSearchFilterDTO.CommiteeId == null))
+                   .Where(x =>
+               ((x.IsShared) || x.MainAssinedUserId == item.Id || x.AssistantUsers.Any(z => z.UserId == item.Id)
+               || x.TaskGroups.Any(a => a.Group.GroupUsers.Any(w => w.UserId == item.Id))
+               || x.MultiMission.Any(a => a.CommiteeTaskMultiMissionUsers.Any(w => w.UserId == item.Id)) ||
+                 // ((paramsSearchFilterDTO.ValiditayPeriodFrom == null || x.CreatedOn >= paramsSearchFilterDTO.ValiditayPeriodFrom) && (paramsSearchFilterDTO.ValidatiyPeriodTo == null || x.CreatedOn <= paramsSearchFilterDTO.ValidatiyPeriodTo)) ||
+                 x.CreatedBy == item.Id));
+                    switch (requiredTasks)
+                    {
+                        case TaskFilterEnum.All:
+                            break;
+                        case TaskFilterEnum.late:
+                            query = query.Where(x => x.EndDate <= DateTimeOffset.Now && x.MainAssinedUserId == item.Id && !x.Completed);
+                            break;
+                        case TaskFilterEnum.closedLate:
+                            query = query.Where(x => x.MainAssinedUserId == item.Id && x.Completed && x.CompleteDate >= x.EndDate);
+                            break;
+                        case TaskFilterEnum.sentlate:
+                            query = query.Where(x => x.EndDate < DateTimeOffset.Now && x.CreatedBy == item.Id && !x.Completed);
+                            break;
+                        case TaskFilterEnum.sent:
+                            query = query.Where(x => x.CreatedBy == item.Id && !x.Completed);
+                            break;
+                        case TaskFilterEnum.closed:
+                            query = query.Where(x => x.Completed && x.MainAssinedUserId == item.Id && x.CompleteDate < x.EndDate);
+                            break;
+                        case TaskFilterEnum.toBeImplemented:
+                            query = query.Where(x => !x.Completed && x.MainAssinedUser.UserId == item.Id);
+                            break;
+                        case TaskFilterEnum.Helpers:
+                            query = query.Where(x => x.AssistantUsers.Any(z => z.UserId == item.Id) || x.MultiMission.Any(a => a.CommiteeTaskMultiMissionUsers.Any(w => w.UserId == item.Id)));
+
+                            break;
+                        case TaskFilterEnum.AllClosed:
+                            query = query.Where(x => x.Completed && x.MainAssinedUserId == item.Id);
+                            break;
+                        case TaskFilterEnum.TasksToView:
+                            query = query.Where(x => x.MainAssinedUserId != item.Id && x.TaskGroups.Any(a => a.Group.GroupUsers.Any(w => w.UserId == item.Id))
+                              && x.CreatedBy != item.Id);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (paramsSearchFilterDTO.FromDate.HasValue)
+                        query = query.Where(x => x.EndDate >= paramsSearchFilterDTO.FromDate.Value);
+                    if (paramsSearchFilterDTO.ToDate.HasValue)
+                        query = query.Where(x => x.EndDate <= paramsSearchFilterDTO.ToDate.Value);
+                    if (paramsSearchFilterDTO.MainUserId.HasValue)
+                        query = query.Where(x => x.MainAssinedUserId == paramsSearchFilterDTO.MainUserId.Value);
+                    if (paramsSearchFilterDTO.MainAssinedUserId.HasValue)
+                        //query = query.Where(x => x.AssistantUsers.Any(z => z.UserId == paramsSearchFilterDTO.MainAssinedUserId.Value));
+                        query = query.Where(x => x.MultiMission.Any(a => a.CommiteeTaskMultiMissionUsers.Any(z => z.UserId == paramsSearchFilterDTO.MainAssinedUserId.Value)));
+
+
+                    //if (Convert.ToBoolean(dataSourceRequest.Filter?.Filters?.Any(z => z.Field.ToLower() == "comiteetaskcategoryid")))
+                    //{
+                    //    var comiteetaskcategoryid = Convert.ToInt32((dataSourceRequest.Filter.Filters.Where(z => z.Field.ToLower() == "comiteetaskcategoryid").FirstOrDefault()?.Value));
+                    //    query = query.Where(x => x.ComiteeTaskCategoryId == comiteetaskcategoryid);
+                    //}
+                    //if (Convert.ToBoolean(dataSourceRequest.Filter?.Filters?.Any(z => z.Field.ToLower() == "title")))
+                    //{
+                    //    var title = (dataSourceRequest.Filter.Filters.Where(z => z.Field.ToLower() == "title").FirstOrDefault()?.Value).ToString();
+                    //    query = query.Where(x => x.Title.Contains(title));
+                    //}
+                   
+
+                    var dta = _Mapper.Map<List<CommiteeTaskDTO>>(query.ToList()).ToList();
+
+                    foreach (var itemtask in dta)
+                    {
+                        foreach (var itemMission in itemtask.MultiMission)
+                        {
+                            itemMission.CommiteeTaskMultiMissionUserDTOs = _unitOfWork.GetRepository<CommiteeTaskMultiMissionUser>().GetAll().Where(x => x.CommiteeTaskMultiMissionId == itemMission.CommiteeTaskMultiMissionId)
+                                .Select(x => new CommiteeTaskMultiMissionUserDTO
+                                {
+                                    CommiteeTaskMultiMissionId = x.CommiteeTaskMultiMissionId,
+                                    CommiteeTaskMultiMissionUserId = x.CommiteeTaskMultiMissionUserId,
+                                    UserDetailsDto = new UserDetailsDTO()
+                                    {
+                                        UserId = x.UserId,
+                                        UserName = x.User.Username,
+                                        FullNameAr = x.User.FullNameAr,
+                                        FullNameEn = x.User.FullNameEn,
+                                        ProfileImage = x.User.ProfileImage
+                                    },
+                                    UserId = x.UserId
+                                }).ToList();
+
+
+                        }
+                        itemtask.MainAssinedUser = _unitOfWork.GetRepository<User>().GetAll().Where(x => x.UserId == itemtask.MainAssinedUser.UserId)
+                                .Select(x => new UserDetailsDTO()
+                                {
+                                    UserId = x.UserId,
+                                    UserName = x.Username,
+                                    FullNameAr = x.FullNameAr,
+                                    FullNameEn = x.FullNameEn,
+                                    ProfileImage = x.ProfileImage
+                                }).FirstOrDefault();
+                    }
+
+
+                    commiteeTaskDTOAndCount.tasks.AddRange(dta);
+                    commiteeTaskDTOAndCount.CountTasks += query.Count();
+
+                }
+                // return
+                //DataSourceResult<CommiteeTaskDTO> returned = new DataSourceResult<CommiteeTaskDTO>
+                //{
+                //    Count = commiteeTaskDTOAndCount.CountTasks,
+                //    Data = commiteeTaskDTOAndCount.tasks
+                //    //Data = commiteeTaskDTOAndCount.tasks.Skip(dataSourceRequest.Skip).Take(dataSourceRequest.Take)
+                //};
+                List<CommiteeTaskDTO> returned = commiteeTaskDTOAndCount.tasks;
+                return returned;
+
+            }
             if (userId == null)
             {
 
@@ -942,12 +1084,12 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
         }
 
-        public byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted , bool ExportWord = true)
+        public byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted , bool ExportWord = true,int? OrganaizationId=null)
         {
             //count of tasks
          var resultCount = getComitteeTaskStatistics(null,UserIdEncrpted, null, null, null);
             //get all data
-         var gridDataResult = GetAllForPrint(requiredTasks, null, null, string.Empty,UserIdEncrpted , new ParamsSearchFilterDTO());
+         var gridDataResult = GetAllForPrint(requiredTasks, null, null, string.Empty,UserIdEncrpted , new ParamsSearchFilterDTO(), OrganaizationId);
 
             string filePath = "";
             #region word

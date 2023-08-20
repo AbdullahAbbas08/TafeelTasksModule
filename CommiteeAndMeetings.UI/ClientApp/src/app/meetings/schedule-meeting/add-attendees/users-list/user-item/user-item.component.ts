@@ -45,7 +45,7 @@ export class UserItemComponent implements OnInit {
     public translateService: TranslateService,
     public singleMeeting: SingleMeetingService,
     private storeService: StoreService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.langChange();
@@ -144,6 +144,11 @@ export class UserItemComponent implements OnInit {
               this.state = requiredState;
               this.sendDate = res.sendingDate;
               this.attendee.sendingDate = this.sendDate;
+              this.singleMeeting.meeting?.meetingAttendees.map((attende) => {
+                if (attende.attendeeId === this.attendee.attendeeId) {
+                  attende.state = this.state
+                }
+              })
             }
           });
         break;

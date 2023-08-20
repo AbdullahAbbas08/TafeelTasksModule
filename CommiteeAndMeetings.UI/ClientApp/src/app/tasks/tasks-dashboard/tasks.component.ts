@@ -111,24 +111,7 @@ export class TasksComponent implements OnInit, OnDestroy {
         if (res) {
           this.selectedFilterObject = res;
           // this.tab = 'tab0' ;
-          this.tab = `tab${res.typeId}`;
-          switch (res.typeId) {
-            case 1:
-              this.tab = 'tab1';
-              break;
-            case 2:
-              this.tab = 'tab2'
-              break;
-            case 6:
-              this.tab = 'tab4'
-              break;
-            case 7:
-              this.tab = 'tab3'
-              break;
-            default:
-              this.tab = 'tab0'
-              break;
-          }
+
           if (this.committeeId) {
             this.getfilteredTasks(false, res, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo);
           } else {
@@ -344,6 +327,25 @@ export class TasksComponent implements OnInit, OnDestroy {
         this.tasksFilter = [];
       }
     }
+
+    switch (+result.typeId) {
+      case 1:
+        this.tab = 'tab1';
+        break;
+      case 2:
+        this.tab = 'tab2'
+        break;
+      case 6:
+        this.tab = 'tab4'
+        break;
+      case 7:
+        this.tab = 'tab3'
+        break;
+      default:
+        this.tab = 'tab0'
+        break;
+    }
+
     if (result.body) {
       this.taskservice
         .getFilteredTasks(

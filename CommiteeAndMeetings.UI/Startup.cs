@@ -812,8 +812,12 @@ namespace CommiteeAndMeetings.UI
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+                    spa.Options.StartupTimeout = TimeSpan.FromMinutes(10);
                 }
             });
+
+
+
 
             app.UseMvc();
 

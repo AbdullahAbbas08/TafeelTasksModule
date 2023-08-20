@@ -332,7 +332,7 @@ export class TasksStatisticsComponent implements OnInit {
     this.swagger
       .apiCommiteeTasksGetAllForPrintGet(
         this.filterNum, undefined, undefined, undefined, this.selectedUser, undefined, undefined, undefined, undefined, undefined, undefined, undefined
-      )
+        , this.selectedOrganization)
       .subscribe((result) => {
         if (result) {
           this.tasksSummary = result;
@@ -368,7 +368,7 @@ export class TasksStatisticsComponent implements OnInit {
     return x;
   }
   exportDocument(exportType: number) {
-    this.taskservice.exportDocument(this.filterNum, this.selectedUser, exportType)
+    this.taskservice.exportDocument(this.filterNum, this.selectedUser, exportType, this.selectedOrganization)
   }
 }
 

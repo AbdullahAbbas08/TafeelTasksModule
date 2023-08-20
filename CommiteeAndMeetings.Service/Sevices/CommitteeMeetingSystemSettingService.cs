@@ -39,29 +39,41 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
             return _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().Where(theme => theme.Name == x).FirstOrDefault());
 
-        } 
+        }
 
         public ThemeDTO DefaultTheme(string? themeCode)
         {
+            ThemeDTO Result = new();
             var SystemSettingValue = _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == themeCode).FirstOrDefault()?.SystemSettingValue;
             if (string.IsNullOrEmpty(SystemSettingValue))
             {
                 SystemSettingValue = _UnitOfWork.GetRepository<SystemSetting>().GetAll().Where(x => x.SystemSettingCode == "DefaultTheme").FirstOrDefault()?.SystemSettingValue;
                 if (string.IsNullOrEmpty(SystemSettingValue))
-                { 
-                    return _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().FirstOrDefault());
+                {
+                    Result = _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().FirstOrDefault());
+                    Result.IsGradientTheme = isGradientTheme();
+                    Result.GradientType = GradientType();
+                    return Result;
                 }
             }
-            var res =  _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().Where(theme => theme.Name == SystemSettingValue).FirstOrDefault());
-            res.IsGradientTheme = isGradientTheme();
-            return res;
+            Result = _Mapper.Map<ThemeDTO>(_UnitOfWork.GetRepository<CommitteeTheme>().GetAll().Where(theme => theme.Name == SystemSettingValue).FirstOrDefault());
+            Result.IsGradientTheme = isGradientTheme();
+            Result.GradientType = GradientType();
+            return Result;
         }
-        
+
         public string isGradientTheme()
         {
-            var res =  _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "AllowGradientTheme").FirstOrDefault()?.SystemSettingValue;
+            var res = _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "AllowGradientTheme").FirstOrDefault()?.SystemSettingValue;
             if (string.IsNullOrEmpty(res)) res = "0";
             return res;
+        }
+
+        public string GradientType()
+        {
+            var GradientType = _UnitOfWork.GetRepository<CommitteeMeetingSystemSetting>().GetAll().Where(x => x.SystemSettingCode == "GradientType").FirstOrDefault()?.SystemSettingValue;
+            if (string.IsNullOrEmpty(GradientType)) GradientType = "left";
+            return GradientType.ToLower();
         }
 
         //override GetAll

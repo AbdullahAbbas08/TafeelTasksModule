@@ -5,6 +5,7 @@ import { SwaggerClient } from 'src/app/core/_services/swagger/SwaggerClient.serv
   providedIn: 'root',
 })
 export class ThemeService {
+  private GradientType = 'left';
   private primary = '#bdbdbd';
   private secondary = '#444';
   private accent = '#111';
@@ -49,12 +50,13 @@ export class ThemeService {
 
         this.accent = theme?.thirdColorHex ? theme.thirdColorHex : this.accent;
         this.isGradientTheme = theme?.isGradientTheme;
+        this.GradientType = theme?.gradientType;
       });
   }
 
   get primaryBackground() {
     if (this.isGradientTheme == '1')
-      return { 'background-image': `linear-gradient(to left, ${this.secondary}, ${this.accent})` };
+      return { 'background-image': `linear-gradient(to ${this.GradientType}, ${this.secondary}, ${this.accent})` };
     else return { backgroundColor: this.secondary, color: '#ffffff' };
   }
 

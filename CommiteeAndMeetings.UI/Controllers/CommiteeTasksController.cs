@@ -142,7 +142,7 @@ namespace CommiteeAndMeetings.UI.Controllers
         }
 
         [HttpGet("GetAllForPrint")]
-        public List<CommiteeTaskDTO> GetAllForPrint([FromQuery] TaskFilterEnum requiredTasks, string CommiteeId, int? ComiteeTaskCategoryId, string SearchText,string UserIdEncrpted, [FromQuery] ParamsSearchFilterDTO paramsSearchFilterDTO = null)
+        public List<CommiteeTaskDTO> GetAllForPrint([FromQuery] TaskFilterEnum requiredTasks, string CommiteeId, int? ComiteeTaskCategoryId, string SearchText,string UserIdEncrpted, [FromQuery] ParamsSearchFilterDTO paramsSearchFilterDTO = null, int? organizationId = null)
         {
             int userId;
             int? userIdOrNull = null;
@@ -156,19 +156,19 @@ namespace CommiteeAndMeetings.UI.Controllers
 
                 UserIdAndRoleIdAfterDecryptDTO UserIdAndUserRoleId = _SessionServices.UserIdAndRoleIdAfterDecrypt(CommiteeId,true);
 
-                return _commiteeTaskService.GetAllForPrint(requiredTasks, UserIdAndUserRoleId.Id, ComiteeTaskCategoryId, SearchText, userIdOrNull, paramsSearchFilterDTO);
+                return _commiteeTaskService.GetAllForPrint(requiredTasks, UserIdAndUserRoleId.Id, ComiteeTaskCategoryId, SearchText, userIdOrNull, paramsSearchFilterDTO, organizationId);
             }
             int commiteId;
             int? CommitIdNull = null;
             int.TryParse(CommiteeId, out commiteId);
             if (commiteId == 0)
                 CommitIdNull = null;
-            return _commiteeTaskService.GetAllForPrint(requiredTasks, CommitIdNull, ComiteeTaskCategoryId, SearchText, userIdOrNull, paramsSearchFilterDTO);
+            return _commiteeTaskService.GetAllForPrint(requiredTasks, CommitIdNull, ComiteeTaskCategoryId, SearchText, userIdOrNull, paramsSearchFilterDTO, organizationId);
 
         }
 
         [HttpPost("Export")]
-        public FileResult Export([FromQuery] TaskFilterEnum requiredTasks , string UserIdEncrpted, ExportType exportType)
+        public FileResult Export([FromQuery] TaskFilterEnum requiredTasks , string UserIdEncrpted, ExportType exportType,int? OrganizationId=null)
         {
             int? userId = null;
             if (int.TryParse(UserIdEncrpted, out int parsedUserId))
@@ -188,7 +188,7 @@ namespace CommiteeAndMeetings.UI.Controllers
                 default:
                     break;
             }
-            byte[] fileBytes = _commiteeTaskService.Export(requiredTasks , userId, mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? true : false);
+            byte[] fileBytes = _commiteeTaskService.Export(requiredTasks , userId, mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? true : false, OrganizationId);
 
             if (mimeType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {

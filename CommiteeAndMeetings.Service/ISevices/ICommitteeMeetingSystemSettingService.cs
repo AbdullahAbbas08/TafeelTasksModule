@@ -10,5 +10,6 @@ namespace CommiteeAndMeetings.Service.ISevices
         ThemeDTO DefaultTheme();
         ThemeDTO DefaultTheme(string themeCode);
         string isGradientTheme();
+        string GradientType(); 
     }
 }
