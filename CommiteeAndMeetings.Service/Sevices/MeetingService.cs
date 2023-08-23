@@ -234,13 +234,15 @@ namespace CommiteeAndMeetings.Service.Sevices
                     if (!meeting.MeetingCoordinators.Any(x => x.CoordinatorId == attendeeDTO.UserId) &&
                         !meeting.MeetingAttendees.Any(x => x.AttendeeId == attendeeDTO.UserId))
                     {
-                        var attendee = _unitOfWork.GetRepository<MeetingAttendee>().Insert(new MeetingAttendee
+                        MeetingAttendee attendee = new MeetingAttendee();
+                         attendee = _unitOfWork.GetRepository<MeetingAttendee>().Insert(new MeetingAttendee
                         {
                             AttendeeId = attendeeDTO.UserId,
                             Available = UserAvailability.Available,
                             ConfirmeAttendance = false,
                             MeetingId = attendeeDTO.MeetingId,
-                            State = AttendeeState.New
+                            State = AttendeeState.New,
+                            CreatedOn = DateTime.Now
                         });
                         attendee.Attendee = _unitOfWork.GetRepository<User>().GetById(attendeeDTO.UserId);
                         var jobTitleName = _unitOfWork.GetRepository<JobTitle>().GetAll().Where(x => x.JobTitleId == attendee.Attendee.JobTitleId).FirstOrDefault();

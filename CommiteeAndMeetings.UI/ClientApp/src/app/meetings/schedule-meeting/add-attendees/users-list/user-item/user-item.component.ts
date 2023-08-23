@@ -68,7 +68,12 @@ export class UserItemComponent implements OnInit {
         this.userId = this.coordinator.coordinatorId;
         this.sendDate = this.coordinator.sendingDate;
         this.replyDate =
-          this.coordinator.state > 2 ? this.coordinator.updatedOn : null;
+          this.coordinator.state > 2 ? new Date(this.coordinator.updatedOn.getFullYear(),
+            this.coordinator.updatedOn.getMonth(),
+            this.coordinator.updatedOn.getDate(),
+            this.coordinator.updatedOn.getHours() - 1,
+            this.coordinator.updatedOn.getMinutes(),
+            this.coordinator.updatedOn.getSeconds()) : null;
         this.isAttendee = this.coordinator.confirmeAttendance;
         break;
       case UserType._2:
@@ -84,7 +89,13 @@ export class UserItemComponent implements OnInit {
         this.userId = this.attendee.attendeeId;
         this.sendDate = this.attendee.sendingDate;
         this.replyDate =
-          this.attendee.state > 2 ? this.attendee.updatedOn : null;
+          this.attendee.state > 2 ? new Date(this.attendee.updatedOn.getFullYear(),
+            this.attendee.updatedOn.getMonth(),
+            this.attendee.updatedOn.getDate(),
+            this.attendee.updatedOn.getHours() - 1,
+            this.attendee.updatedOn.getMinutes(),
+            this.attendee.updatedOn.getSeconds()) : null;
+
         break;
       default:
         break;

@@ -335,11 +335,17 @@ export class TasksComponent implements OnInit, OnDestroy {
       case 2:
         this.tab = 'tab2'
         break;
-      case 6:
+      case 9:
         this.tab = 'tab4'
         break;
       case 7:
         this.tab = 'tab3'
+        break;
+      case 8:
+        this.tab = 'tab5'
+        break;
+      case 10:
+        this.tab = 'tab6'
         break;
       default:
         this.tab = 'tab0'

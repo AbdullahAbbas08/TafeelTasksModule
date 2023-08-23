@@ -335,7 +335,9 @@ namespace CommiteeAndMeetings.UI
                     options.Queues = HangfireHelper.GetQueues();
                 });
 
-                
+               
+
+
             }
 
 

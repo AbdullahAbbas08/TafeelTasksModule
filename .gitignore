@@ -285,3 +285,4 @@ __pycache__/
 /CommiteeAndMeetings.UI/Documents
 /CommiteeAndMeetings.UI/gsdll64.dll
 /CommiteeAndMeetings.DAL/CommiteeDTO
+/CommiteeAndMeetings.UI/wwwroot/assets/ckeditor
