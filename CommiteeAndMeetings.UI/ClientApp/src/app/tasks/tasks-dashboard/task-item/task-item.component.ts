@@ -17,6 +17,7 @@ import { AttachmentsService } from 'src/app/committees/committee-details/attachm
 import { BrowserStorageService } from 'src/app/shared/_services/browser-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateService } from 'src/app/shared/_services/ngb-date.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
 export class MultiTask {
   constructor(
     public label: string,
@@ -36,7 +37,7 @@ export class TaskItemComponent implements OnInit {
   @Input() periodState: number;
   @Input() CommitteName: string;
   @Input() isForGeneralTasks = false;
-  @Input() requiredTaskEnum:number;
+  @Input() requiredTaskEnum: number;
   checkComponent: boolean = false
   commentText = '';
   taskComments = [];
@@ -65,7 +66,7 @@ export class TaskItemComponent implements OnInit {
   userId: any;
   permittedShowComments: boolean = false;
   committeeId: any
-  taskViewOnly:boolean=false;
+  taskViewOnly: boolean = false;
   constructor(
     private commentService: CommentsService,
     private swagger: SwaggerClient,
@@ -79,6 +80,7 @@ export class TaskItemComponent implements OnInit {
     private router: Router,
     public dateService: NgbDateService,
     private route: ActivatedRoute,
+    private modal: NzModalService,
   ) {
 
   }
@@ -116,7 +118,7 @@ export class TaskItemComponent implements OnInit {
       this.taskCompleteFlag = true
     }
 
-    if(this.requiredTaskEnum === 10){
+    if (this.requiredTaskEnum === 10) {
       this.taskViewOnly = true
     }
 
@@ -267,7 +269,7 @@ export class TaskItemComponent implements OnInit {
     });
   }
 
-  updateMultiTasks(data, multimissionId) {
+  updateMultiTasks(data, multimissionId,mainAssinedUserId,AssistantUserIds) {
     // const missions = this.task.multiMission.map((res) => {
     //   if(res.commiteeTaskMultiMissionId === multimissionId){
     //      return {...res,state:data}
@@ -276,7 +278,9 @@ export class TaskItemComponent implements OnInit {
     //   }
     // })
     // this.task.multiMission = missions;
-    this.taskService.updateMutiTasksForTask(this.BrowserService.encrypteString(multimissionId)).subscribe();
+    this.taskService.updateMutiTasksForTask(this.BrowserService.encrypteString(multimissionId),
+    mainAssinedUserId,AssistantUserIds
+    ).subscribe();
   }
 
   userPermittedToReopenGeneralTask() {
@@ -333,6 +337,19 @@ export class TaskItemComponent implements OnInit {
     return (this.task.createdByUser.userId == this.authService.getUser().userId || this.mainAssinedUser ||
       this.task.multiMission[index].commiteeTaskMultiMissionUserDTOs.some((user) => user.userId == this.authService.getUser().userId))
   }
+
+  ConfirmChangeStatus(data, multimissionId, index, datavalue): void {
+    const AssistantUserIds: number[] = []
+    datavalue.commiteeTaskMultiMissionUserDTOs.map((user) => AssistantUserIds.push(user.userDetailsDto.userId))
+    AssistantUserIds.push(this.task.createdByUser.userId)
+    
+
+    this.modal.confirm({
+      nzTitle: '<i>هل انت متأكد من تغيير حالة المهمة ؟ </i>',
+      nzOnOk: () => this.updateMultiTasks(data, multimissionId,this.task.mainAssinedUserId,AssistantUserIds)
+    });
+  }
+
   isMainOrAssistantOrUser(index: number) {
     return (
       this.mainAssinedUser || this.task.createdByUser.userId == this.authService.getUser().userId || this.task.multiMission[index].commiteeTaskMultiMissionUserDTOs.some((q) => { return q.userId == this.authService.getUser().userId })

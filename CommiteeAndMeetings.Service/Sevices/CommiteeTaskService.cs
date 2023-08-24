@@ -47,7 +47,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CommiteeAndMeetings.Service.Sevices
 {
-    public class CommiteeTaskService : BusinessService<CommiteeTask, CommiteeTaskDTO>,ICommiteeTaskService
+    public class CommiteeTaskService : BusinessService<CommiteeTask, CommiteeTaskDTO>, ICommiteeTaskService
     {
         IUnitOfWork _unitOfWork;
         IHelperServices.ISessionServices _sessionServices;
@@ -807,7 +807,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                     //    var title = (dataSourceRequest.Filter.Filters.Where(z => z.Field.ToLower() == "title").FirstOrDefault()?.Value).ToString();
                     //    query = query.Where(x => x.Title.Contains(title));
                     //}
-                   
+
 
                     var dta = _Mapper.Map<List<CommiteeTaskDTO>>(query.ToList()).ToList();
 
@@ -869,8 +869,8 @@ namespace CommiteeAndMeetings.Service.Sevices
                 (
                  (x.MeetingId == paramsSearchFilterDTO.MeetingId || paramsSearchFilterDTO.MeetingId == null) &&
                  (x.CommiteeId == paramsSearchFilterDTO.CommiteeId || paramsSearchFilterDTO.CommiteeId == null) &&
-                 ((x.IsShared && CommiteeId != null) || 
-                  x.MainAssinedUserId == _sessionServices.UserId || 
+                 ((x.IsShared && CommiteeId != null) ||
+                  x.MainAssinedUserId == _sessionServices.UserId ||
                   x.AssistantUsers.Any(z => z.UserId == _sessionServices.UserId) ||
                   x.TaskGroups.Any(a => a.Group.GroupUsers.Any(w => w.UserId == _sessionServices.UserId)) ||
                   x.MultiMission.Any(a => a.CommiteeTaskMultiMissionUsers.Any(w => w.UserId == _sessionServices.UserId)) ||
@@ -1010,9 +1010,9 @@ namespace CommiteeAndMeetings.Service.Sevices
 
                     (SearchText == "" || SearchText == null || x.Title.Contains(SearchText)));
 
-                
-                   
-               
+
+
+
 
 
                 switch (requiredTasks)
@@ -1084,12 +1084,12 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
         }
 
-        public byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted , bool ExportWord = true,int? OrganaizationId=null)
+        public byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted, bool ExportWord = true, int? OrganaizationId = null)
         {
             //count of tasks
-         var resultCount = getComitteeTaskStatistics(null,UserIdEncrpted, null, null, null);
+            var resultCount = getComitteeTaskStatistics(null, UserIdEncrpted, null, null, null);
             //get all data
-         var gridDataResult = GetAllForPrint(requiredTasks, null, null, string.Empty,UserIdEncrpted , new ParamsSearchFilterDTO(), OrganaizationId);
+            var gridDataResult = GetAllForPrint(requiredTasks, null, null, string.Empty, UserIdEncrpted, new ParamsSearchFilterDTO(), OrganaizationId);
 
             string filePath = "";
             #region word
@@ -1351,7 +1351,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                         TableCell tcStatusNameHeadAttachmentCount = new TableCell();
                         tcStatusNameHeadAttachmentCount.Append(paraStatusNameHeadAttachmentCount);
                         #endregion
-                        
+
 
                         // Add the cells to the row
                         trHead1.Append(tcTransactionNumberFormattedHeadCount, tcSubjectHeadCount, tcFromAnyHeadCount, tcToOrganizationNameHeadCount, tcStatusNameHeadCount, tcStatusNameHeadAttachmentCount);
@@ -1387,7 +1387,7 @@ namespace CommiteeAndMeetings.Service.Sevices
 
                         paraTransactionNumberFormattedHeadCountValue.Append(paraPropertiesTransactionNumberFormattedHeadCountValue);
                         paraTransactionNumberFormattedHeadCountValue.Append(run1HeadCountValue);
-                        
+
                         TableCell tcTransactionNumberFormattedHeadCountValue = new TableCell();
                         tcTransactionNumberFormattedHeadCountValue.Append(paraTransactionNumberFormattedHeadCountValue);
                         #endregion
@@ -1586,7 +1586,7 @@ namespace CommiteeAndMeetings.Service.Sevices
 
                         #endregion
 
-                       
+
 
                         TableRow trHead = new TableRow();
 
@@ -1744,7 +1744,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                         DocumentFormat.OpenXml.Wordprocessing.Run run5HeadAttachment = new DocumentFormat.OpenXml.Wordprocessing.Run();
                         DocumentFormat.OpenXml.Wordprocessing.Text text5HeadAttachment = new DocumentFormat.OpenXml.Wordprocessing.Text();
                         text5HeadAttachment.Text = "المرفقات";
-                        
+
 
                         var run5HeadPropAttachment = new RunProperties()
                         {
@@ -1876,14 +1876,14 @@ namespace CommiteeAndMeetings.Service.Sevices
                         }
 
 
-                            //Change Page Margin
-                            SectionProperties sectionProps = new SectionProperties();
-                            PageMargin pageMargin = new PageMargin() { Top = 1008, Right = (UInt32Value)500U, Bottom = 1008, Left = (UInt32Value)500U, Header = (UInt32Value)720U, Footer = (UInt32Value)120U, Gutter = (UInt32Value)0U };
-                            sectionProps.Append(pageMargin);
-                            body.Append(sectionProps);
+                        //Change Page Margin
+                        SectionProperties sectionProps = new SectionProperties();
+                        PageMargin pageMargin = new PageMargin() { Top = 1008, Right = (UInt32Value)500U, Bottom = 1008, Left = (UInt32Value)500U, Header = (UInt32Value)720U, Footer = (UInt32Value)120U, Gutter = (UInt32Value)0U };
+                        sectionProps.Append(pageMargin);
+                        body.Append(sectionProps);
 
                         // Add the table to the body
-                           body.AppendChild(tbl1);
+                        body.AppendChild(tbl1);
 
                         #region paragraph Second
                         //Header Paragraph
@@ -1914,8 +1914,8 @@ namespace CommiteeAndMeetings.Service.Sevices
                         #endregion
                         body.AppendChild(tbl);
 
-                            mainPart.Document.Save();
-                        
+                        mainPart.Document.Save();
+
                     }
                     return mem.ToArray();
                     #endregion
@@ -1923,7 +1923,7 @@ namespace CommiteeAndMeetings.Service.Sevices
 
                 }
             }
-            
+
 
             #endregion
             else
@@ -1973,8 +1973,8 @@ namespace CommiteeAndMeetings.Service.Sevices
 
 
                 currentRowNumber = currentRowNumber + 10;
-                wsDetailedData.Range(wsDetailedData.Cell( currentRowNumber, 14), wsDetailedData.Cell( currentRowNumber, 15)).Merge();
-                wsDetailedData.Range(wsDetailedData.Cell( currentRowNumber, 16), wsDetailedData.Cell( currentRowNumber, 17)).Merge();
+                wsDetailedData.Range(wsDetailedData.Cell(currentRowNumber, 14), wsDetailedData.Cell(currentRowNumber, 15)).Merge();
+                wsDetailedData.Range(wsDetailedData.Cell(currentRowNumber, 16), wsDetailedData.Cell(currentRowNumber, 17)).Merge();
 
 
                 wsDetailedData.Cell(currentRowNumber, 16).Value = "عنوان التكليف";
@@ -2018,9 +2018,9 @@ namespace CommiteeAndMeetings.Service.Sevices
                 for (int i = 0; i < gridDataResult.Count; i++)
                 {
 
-                        
-                        wsDetailedData.Range(wsDetailedData.Cell(i + currentRowNumber, 14), wsDetailedData.Cell(i + currentRowNumber, 15)).Merge();
-                        wsDetailedData.Range(wsDetailedData.Cell(i + currentRowNumber, 16), wsDetailedData.Cell(i + currentRowNumber, 17)).Merge();
+
+                    wsDetailedData.Range(wsDetailedData.Cell(i + currentRowNumber, 14), wsDetailedData.Cell(i + currentRowNumber, 15)).Merge();
+                    wsDetailedData.Range(wsDetailedData.Cell(i + currentRowNumber, 16), wsDetailedData.Cell(i + currentRowNumber, 17)).Merge();
 
 
                     wsDetailedData.Cell(i + currentRowNumber, 6).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
@@ -2065,7 +2065,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                 query = query.Where(x => x.CommiteeId == CommiteeId.Value);
             }
 
-            var dta = _Mapper.Map<List<CommiteeTaskDTO>>(query.ToList());
+            var dta = _Mapper.Map<List<CommiteeTaskDTO>>(query?.ToList());
 
             return dta;
 
@@ -2302,7 +2302,7 @@ namespace CommiteeAndMeetings.Service.Sevices
         }
         public override IEnumerable<CommiteeTaskDTO> Insert(IEnumerable<CommiteeTaskDTO> entities)
         {
-           IQueryable<CommiteeUsersRole> CreatedByRole = null;
+            IQueryable<CommiteeUsersRole> CreatedByRole = null;
             foreach (var item in entities)
             {
 
@@ -2316,7 +2316,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                 {
 
                     CreatedByRole = _unitOfWork.GetRepository<CommiteeUsersRole>().GetAll().Where(x => x.UserId == _sessionServices.UserId && x.CommiteeId == item.CommiteeId);
-                    CommiteeRole role =_UnitOfWork.GetRepository<CommiteeRole>().GetAll().Where(x => x.CommiteeRoleId == CreatedByRole.FirstOrDefault().RoleId).FirstOrDefault();
+                    CommiteeRole role = _UnitOfWork.GetRepository<CommiteeRole>().GetAll().Where(x => x.CommiteeRoleId == CreatedByRole.FirstOrDefault().RoleId).FirstOrDefault();
                     item.CreatedByRoleId = CreatedByRole.FirstOrDefault().RoleId;
 
                     //item.CreatedByRole = CreatedByRole.Select(x => new CommiteeDetailsUsersRoleDTO
@@ -2333,7 +2333,7 @@ namespace CommiteeAndMeetings.Service.Sevices
 
                 item.CreatedOn = new DateTimeOffset(DateTime.UtcNow, TimeSpan.Zero);
                 item.CreatedBy = _sessionServices.UserId;
-                
+
 
             }
 
@@ -2788,11 +2788,28 @@ namespace CommiteeAndMeetings.Service.Sevices
 
 
         }
-        public CommiteetaskMultiMissionDTO changeState(int missionId)
+        public CommiteetaskMultiMissionDTO changeState(int missionId, List<int> UserIds)
         {
             var mission = _unitOfWork.GetRepository<CommiteeTaskMultiMission>().GetAll().Where(x => x.CommiteeTaskMultiMissionId == missionId).FirstOrDefault();
             mission.state = !mission.state;
             _unitOfWork.GetRepository<CommiteeTaskMultiMission>().Update(mission);
+            var mainAssignedUser = _sessionServices;
+            var usersEmail = _unitOfWork.GetRepository<User>().GetAll().Where(x => UserIds.Contains(x.UserId) && x.UserId != mainAssignedUser.UserId).Select(x => x.Email );
+            foreach (var email in usersEmail)
+            {
+                string Message = $" نود إعلامك بأنه تم تغيير حالة المهمة الفرعية من "+ mainAssignedUser.EmployeeFullNameAr;
+                string mailSubject = "تنبيه بتغيير حالة مهمة فرعية";
+                var createdTaskTitle = _commiteeLocalizationService.GetLocaliztionByCode("CreatedTask", _sessionServices.CultureIsArabic);
+                //getMailMessage(item, ref Message, ref mailSubject, createdTaskTitle);
+                AlternateView htmlViewForIncoming = CreateAlternateView(Message, null, "text/html");
+                Task.Run(() =>
+                {
+                    mailServices.SendNotificationEmail(email, mailSubject,
+                        null, true, htmlViewForIncoming, null, Hosting.AngularRootPath, null
+                        );
+
+                });
+            }
 
             var missionDto = _Mapper.Map<CommiteeTaskMultiMission, CommiteetaskMultiMissionDTO>(mission);
 
@@ -3370,7 +3387,6 @@ namespace CommiteeAndMeetings.Service.Sevices
                 throw ex;
             }
         }
-
-
+        
     }
 }

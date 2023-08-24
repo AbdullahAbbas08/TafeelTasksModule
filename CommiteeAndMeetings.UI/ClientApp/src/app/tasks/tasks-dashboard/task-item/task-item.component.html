@@ -443,7 +443,12 @@
                 nz-checkbox
                 [ngModel]="data.state"
                 (ngModelChange)="
-                  updateMultiTasks($event, data.commiteeTaskMultiMissionId)
+                  ConfirmChangeStatus(
+                    $event,
+                    data.commiteeTaskMultiMissionId,
+                    index,
+                    data
+                  )
                 "
                 [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
               ></label>

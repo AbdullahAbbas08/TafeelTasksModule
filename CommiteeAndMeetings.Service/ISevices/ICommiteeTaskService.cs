@@ -21,7 +21,7 @@ namespace CommiteeAndMeetings.Service.ISevices
 
         List<CountResultDTO> getComitteeTaskStatistics(int? OrganizationId,int? userId,int? committeeId, DateTime? ValiditayPeriodFrom, DateTime? ValidatiyPeriodTo);
         CommiteetaskMultiMissionDTO InsertMultiMissionToTask(int commiteeTaskId, CommiteetaskMultiMissionDTO entity);
-        CommiteetaskMultiMissionDTO changeState(int missionId);
+        CommiteetaskMultiMissionDTO changeState(int missionId,List<int> usersIds);
         byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted , bool ExportWord = true, int? OrganaizationId = null);
 
     }

@@ -41,10 +41,11 @@ namespace CommiteeAndMeetings.UI.Controllers
            
         }
         [HttpPut("ChangeStateForMission")]
-        public CommiteetaskMultiMissionDTO ChangeStateForMission(string missionEncrypted)
+        public CommiteetaskMultiMissionDTO ChangeStateForMission(string missionEncrypted,int MainAssignUserId , List<int> AssistantUsersIds )
         {
             UserIdAndRoleIdAfterDecryptDTO UserIdAndUserRoleId = _SessionServices.UserIdAndRoleIdAfterDecrypt(missionEncrypted, false);
-            return _commiteeTaskService.changeState(UserIdAndUserRoleId.Id);
+            AssistantUsersIds.Add(MainAssignUserId);
+            return _commiteeTaskService.changeState(UserIdAndUserRoleId.Id, AssistantUsersIds);
 
         }
         [HttpGet("GetAllwithFilters")]

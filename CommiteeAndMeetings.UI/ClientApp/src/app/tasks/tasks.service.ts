@@ -284,8 +284,8 @@ export class TasksService {
       postData
     );
   }
-  updateMutiTasksForTask(multiMissionId: string) {
-    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId);
+  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds) {
+    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId, mainAssinedUserId, AssistantUserIds);
   }
 
   getTaskCategories() {
