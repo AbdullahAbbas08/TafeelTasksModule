@@ -154,8 +154,8 @@ export class CreateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
       groups: [[], []],
       isShared: [false, []],
       files: [null, []],
-      emailNotify: [false, []],
-      appNotify: [false, []],
+      emailNotify: [true, []],
+      appNotify: [true, []],
       smsNotify: [false, []],
       multiTasks: new FormArray([], []),
     });
