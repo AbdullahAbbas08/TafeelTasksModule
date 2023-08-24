@@ -7,12 +7,19 @@
         : '#f7f7f7'
   }"
   *ngIf="showItemFlag"
-  [ngClass]="task.endDate < dateNow && task.completed === false ? 'with-border' : 'withoutBorder'"
+  [ngClass]="
+    task.endDate < dateNow && task.completed === false
+      ? 'with-border'
+      : 'withoutBorder'
+  "
 >
-  <header class="item-header"  (click)="isCollapsed = !isCollapsed"
-  [attr.aria-expanded]="!isCollapsed"
-  aria-controls="collapseExample">
-    <div class="user-data" style="width: 181px;">
+  <header
+    class="item-header"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseExample"
+  >
+    <div class="user-data" style="width: 181px">
       <div class="img-wrapper">
         <img
           *ngIf="createdUserImage"
@@ -26,111 +33,107 @@
         <h5 class="m-0">
           {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
         </h5>
-        <h6 class="my-1"  [nzTooltipTitle]="committeeId ? createdUserTitle : task?.commiteeName"
-        nzTooltipPlacement="bottom"
-        nz-tooltip >
-          {{committeeId ? createdUserTitle :  task.commiteeName | maxLenth: 15 }}
+        <h6
+          class="my-1"
+          [nzTooltipTitle]="committeeId ? createdUserTitle : task?.commiteeName"
+          nzTooltipPlacement="bottom"
+          nz-tooltip
+        >
+          {{
+            committeeId ? createdUserTitle : (task.commiteeName | maxLenth : 15)
+          }}
         </h6>
-        <h6 class="my-1" 
-        [nzTooltipTitle]="task?.title"
-        nzTooltipPlacement="bottom"
-        nz-tooltip>
-         <strong> {{ task?.title | maxLenth: 15 }}</strong>
+        <h6
+          class="my-1"
+          [nzTooltipTitle]="task?.title"
+          nzTooltipPlacement="bottom"
+          nz-tooltip
+        >
+          <strong> {{ task?.title | maxLenth : 15 }}</strong>
         </h6>
       </div>
     </div>
     <nz-divider [nzText]="text" nzType="vertical">
       <ng-template #text>
-        <i
-          nz-icon
-          nzType="small-dash"
-          nzRotate="90"
-          style="color: #c1c2c1"
-        ></i>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
       </ng-template>
     </nz-divider>
-    <div class="main-user" style="width: 127px;">
+    <div class="main-user" style="width: 127px">
       <h5>{{ "TaskMainUser" | translate }}</h5>
-      <h6><strong *ngIf="currentLang === 'ar'">
-        {{ task?.mainAssinedUser.fullNameAr }}</strong
-      >
-      <strong *ngIf="currentLang === 'en'">
-        {{ task?.mainAssinedUser.fullNameEn }}</strong
-      ></h6>
+      <h6>
+        <strong *ngIf="currentLang === 'ar'">
+          {{ task?.mainAssinedUser.fullNameAr }}</strong
+        >
+        <strong *ngIf="currentLang === 'en'">
+          {{ task?.mainAssinedUser.fullNameEn }}</strong
+        >
+      </h6>
     </div>
     <nz-divider [nzText]="text" nzType="vertical">
       <ng-template #text>
-        <i
-          nz-icon
-          nzType="small-dash"
-          nzRotate="90"
-          style="color: #c1c2c1"
-        ></i>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
       </ng-template>
     </nz-divider>
     <div class="task-enddate">
       <h5>{{ "TaskStartDate" | translate }}</h5>
-      <h6><strong>
-        {{
-          currentLang === "ar"
-            ? (task.startDate | HijriDate)
-            : (task.startDate | date: "dd/MM/yyyy":"+0000")
-        }}</strong
-      >
-      <br>
-    <strong><span *ngIf="currentLang === 'ar'">{{this.dateService.getTasksDateInArabic(task.startDate)}}</span></strong></h6>
+      <h6>
+        <strong>
+          {{
+            currentLang === "ar"
+              ? (task.startDate | HijriDate)
+              : (task.startDate | date : "dd/MM/yyyy" : "+0000")
+          }}</strong
+        >
+        <br />
+        <strong
+          ><span *ngIf="currentLang === 'ar'">{{
+            this.dateService.getTasksDateInArabic(task.startDate)
+          }}</span></strong
+        >
+      </h6>
     </div>
     <nz-divider [nzText]="text" nzType="vertical">
       <ng-template #text>
-        <i
-          nz-icon
-          nzType="small-dash"
-          nzRotate="90"
-          style="color: #c1c2c1"
-        ></i>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
       </ng-template>
     </nz-divider>
     <div class="task-enddate">
       <h5>{{ "TaskEndDate" | translate }}</h5>
-      <h6><strong>
-        {{
-          currentLang === "ar"
-            ? (task.endDate | HijriDate)
-            : (task.endDate | date: "dd/MM/yyyy":"+0000")
-        }}</strong
-      >
-      <br>
-      <strong><span *ngIf="currentLang === 'ar'">{{this.dateService.getTasksDateInArabic(task.endDate)}}</span></strong>
-    </h6>
+      <h6>
+        <strong>
+          {{
+            currentLang === "ar"
+              ? (task.endDate | HijriDate)
+              : (task.endDate | date : "dd/MM/yyyy" : "+0000")
+          }}</strong
+        >
+        <br />
+        <strong
+          ><span *ngIf="currentLang === 'ar'">{{
+            this.dateService.getTasksDateInArabic(task.endDate)
+          }}</span></strong
+        >
+      </h6>
     </div>
     <nz-divider [nzText]="text" nzType="vertical">
       <ng-template #text>
-        <i
-          nz-icon
-          nzType="small-dash"
-          nzRotate="90"
-          style="color: #c1c2c1"
-        ></i>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
       </ng-template>
     </nz-divider>
     <div class="classification">
       <h5>{{ "Classification" | translate }}</h5>
       <h6>
         <strong *ngIf="currentLang === 'ar'">
-        {{ task?.comiteeTaskCategory?.categoryNameAr }}</strong
-      >
-      <strong *ngIf="currentLang === 'en'">
-        {{ task?.comiteeTaskCategory?.categoryNameEn }}</strong
-      ></h6>
+          {{ task?.comiteeTaskCategory?.categoryNameAr }}</strong
+        >
+        <strong *ngIf="currentLang === 'en'">
+          {{ task?.comiteeTaskCategory?.categoryNameEn }}</strong
+        >
+      </h6>
     </div>
     <nz-divider [nzText]="text" nzType="vertical">
       <ng-template #text>
-        <i
-          nz-icon
-          nzType="small-dash"
-          nzRotate="90"
-          style="color: #c1c2c1"
-        ></i>
+        <i nz-icon nzType="small-dash" nzRotate="90" style="color: #c1c2c1"></i>
       </ng-template>
     </nz-divider>
     <div
@@ -139,35 +142,40 @@
     >
       <div class="mx-1">
         <div class="d-flex align-items-center text-center">
-           <div class="mx-3">
-            <p class="mb-0 created-head">{{'taskCreated'  | translate}}</p>
-             <div class="d-flex align-items-center mt-1 created-date">
-              <h6 style="font-size:14px;margin: 0px 10px;"><strong>
-                {{
-                  currentLang === "ar"
-                    ? (task?.createdOn | HijriDate)
-                    : (task?.createdOn | date: "dd/MM/yyyy":"+0000")
-                }}</strong
-              ><br>
-              <strong><span *ngIf="currentLang === 'ar'">{{this.dateService.getTasksDateInArabic(task?.createdOn)}}</span></strong>
-            </h6>
+          <div class="mx-3">
+            <p class="mb-0 created-head">{{ "taskCreated" | translate }}</p>
+            <div class="d-flex align-items-center mt-1 created-date">
+              <h6 style="font-size: 14px; margin: 0px 10px">
+                <strong>
+                  {{
+                    currentLang === "ar"
+                      ? (task?.createdOn | HijriDate)
+                      : (task?.createdOn | date : "dd/MM/yyyy" : "+0000")
+                  }}</strong
+                ><br />
+                <strong
+                  ><span *ngIf="currentLang === 'ar'">{{
+                    this.dateService.getTasksDateInArabic(task?.createdOn)
+                  }}</span></strong
+                >
+              </h6>
               <!-- <p class="mb-0 mx-1 font-weight-bold" style="direction:ltr;font-size:13px;padding-top: 2px;">{{
                 (task.createdOn | date:"h:mm a" : 'offset')
                }}</p>
                <p class="mb-0 font-weight-bold">- {{currentLang === 'ar' ?  (task?.createdOn | customDate) : (task?.createdOn | date:'shortDate')}}</p> -->
-             </div>
-           </div>
-           <div>
+            </div>
+          </div>
+          <div>
             <i
-            class="control-icon"
-            nz-icon
-            nzType="ellipsis"
-            nz-popover
-            [nzPopoverContent]="controlTmp"
-            nzPopoverPlacement="bottom"
-            [(nzPopoverVisible)]="visible"
-          ></i>
-           </div>
+              class="control-icon"
+              nz-icon
+              nzType="ellipsis"
+              nz-popover
+              [nzPopoverContent]="controlTmp"
+              nzPopoverPlacement="bottom"
+              [(nzPopoverVisible)]="visible"
+            ></i>
+          </div>
         </div>
         <ng-template #controlTmp>
           <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
@@ -196,11 +204,11 @@
             <li (click)="editHistory()">
               {{ "editHistory" | translate }}
             </li>
-             <ng-container *ngIf="!task.commiteeId">
+            <ng-container *ngIf="!task.commiteeId">
               <li (click)="editGroup()" *ngIf="userPermittedToEditGroupTask()">
                 {{ "editgroup" | translate }}
               </li>
-             </ng-container>
+            </ng-container>
             <ng-container *appHasAuthUserViewPermission="['REOPENGENERALTASK']">
               <li
                 (click)="onToggleCompleted(); visible = false"
@@ -228,25 +236,32 @@
     <!-- <nz-divider nzDashed></nz-divider> -->
     <br />
     <div *ngIf="count > 0 && !isloadingComment" style="width: 95%">
-      <app-comments  [comments]="taskComments" [checkComponent]="checkComponent"  [count]="count"></app-comments>
-    </div>
-    <nz-spin  nzSimple *ngIf="isloadingComment"></nz-spin>
-    <footer class="item-footer" *ngIf='permittedShowComments'>
-      <app-add-comment
-        [checkAttachmentIcon]="checkAttachmentIcon"
-        [id]="task.commiteeTaskId"
-        (commentAdded)="addComment($event)"
+      <app-comments
+        [comments]="taskComments"
+        [checkComponent]="checkComponent"
         [count]="count"
-        *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
-      ></app-add-comment>
-    </footer>
+      ></app-comments>
+    </div>
+    <nz-spin nzSimple *ngIf="isloadingComment"></nz-spin>
+
+    <ng-container *ngIf="!taskViewOnly">
+      <footer class="item-footer" *ngIf="permittedShowComments">
+        <app-add-comment
+          [checkAttachmentIcon]="checkAttachmentIcon"
+          [id]="task.commiteeTaskId"
+          (commentAdded)="addComment($event)"
+          [count]="count"
+          *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
+        ></app-add-comment>
+      </footer>
+    </ng-container>
   </section>
 </div>
 
 <ng-template #itemContentTpl>
   <div class="">
     <h5 class="task-title">{{ task?.title }}</h5>
-    <h6 class="task-details">{{task?.taskDetails}}</h6>
+    <h6 class="task-details">{{ task?.taskDetails }}</h6>
     <div class="item-title mt-3">
       <div class="row">
         <div class="col-lg-4 col-12">
@@ -265,39 +280,45 @@
         <div class="col-lg-4 col-12">
           <div class="item">
             <span class="item-head">{{ "TaskEndDate" | translate }}</span>
-            <br>
+            <br />
             <div class="mt-2" style="display: contents">
               <strong>
                 {{
                   currentLang === "ar"
                     ? (task.endDate | HijriDate)
-                    : (task.endDate | date: "dd/MM/yyyy":"+0000")
+                    : (task.endDate | date : "dd/MM/yyyy" : "+0000")
                 }}</strong
               >
-              <br>
-              <strong *ngIf="currentLang === 'ar'">{{this.dateService.getTasksDateInArabic(task.endDate)}}</strong>
+              <br />
+              <strong *ngIf="currentLang === 'ar'">{{
+                this.dateService.getTasksDateInArabic(task.endDate)
+              }}</strong>
               <p id="time">
-                {{ task.endDate | date: "hh:mm a":"+0000" }}
+                {{ task.endDate | date : "hh:mm a" : "+0000" }}
               </p>
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-12" *ngIf="taskCompleteFlag">
           <div class="item">
-            <span class="item-head">{{ "Actualerminationdate" | translate }}</span>
-            <br>
+            <span class="item-head">{{
+              "Actualerminationdate" | translate
+            }}</span>
+            <br />
             <div class="mt-2" style="display: contents">
               <strong>
                 {{
                   currentLang === "ar"
                     ? (task.completeReasonDate | customDate)
-                    : (task.completeReasonDate | date: "dd/MM/yyyy")
+                    : (task.completeReasonDate | date : "dd/MM/yyyy")
                 }}</strong
               >
-              <br>
-              <strong *ngIf="currentLang === 'ar'">{{this.dateService.getTasksDateInArabic(task.completeReasonDate)}}</strong>
+              <br />
+              <strong *ngIf="currentLang === 'ar'">{{
+                this.dateService.getTasksDateInArabic(task.completeReasonDate)
+              }}</strong>
               <p id="time">
-                {{ task.completeReasonDate | date: "hh:mm a": 'offset' }}
+                {{ task.completeReasonDate | date : "hh:mm a" : "offset" }}
               </p>
             </div>
           </div>
@@ -305,46 +326,46 @@
         <div class="col-lg-4 col-12">
           <div class="item">
             <span class="item-head"> {{ "isCompleted" | translate }}</span>
-              <p class="mt-2">
-                <i
-                  class="completed-icon"
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="task?.completed"
-                ></i>
-                <i
-                  class="non-completed-icon"
-                  nz-icon
-                  nzType="close-circle"
-                  nzTheme="outline"
-                  *ngIf="!task?.completed"
-                ></i>
-              </p>
-            </div>
+            <p class="mt-2">
+              <i
+                class="completed-icon"
+                nz-icon
+                nzType="check-circle"
+                nzTheme="outline"
+                *ngIf="task?.completed"
+              ></i>
+              <i
+                class="non-completed-icon"
+                nz-icon
+                nzType="close-circle"
+                nzTheme="outline"
+                *ngIf="!task?.completed"
+              ></i>
+            </p>
+          </div>
         </div>
-        
+
         <div class="col-lg-4 col-12" *ngIf="task?.commiteeId">
           <div class="item">
             <span class="item-head">{{ "TaskisShared" | translate }}</span>
-      
-              <p class="mt-2">
-                <i
-                  class=""
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="!task?.isShared"
-                ></i>
-                <i
-                  class="completed-icon"
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="task?.isShared"
-                ></i>
-              </p>
-            </div>
+
+            <p class="mt-2">
+              <i
+                class=""
+                nz-icon
+                nzType="check-circle"
+                nzTheme="outline"
+                *ngIf="!task?.isShared"
+              ></i>
+              <i
+                class="completed-icon"
+                nz-icon
+                nzType="check-circle"
+                nzTheme="outline"
+                *ngIf="task?.isShared"
+              ></i>
+            </p>
+          </div>
         </div>
         <div class="col-lg-4 col-12">
           <div class="item">
@@ -359,18 +380,19 @@
             </p>
           </div>
         </div>
-      
       </div>
     </div>
     <div class="item-title with-bor" *ngIf="task.assistantUsers">
       <div class="row">
-        <div class="col-lg-4 col-12" *ngFor="let assistant of task.assistantUsers; let i = index">
-            <div
-            class="item"
-       
-          >
-          <span class="item-head">{{ "assistantUser" | translate }} {{ i + 1 }}</span>
-      
+        <div
+          class="col-lg-4 col-12"
+          *ngFor="let assistant of task.assistantUsers; let i = index"
+        >
+          <div class="item">
+            <span class="item-head"
+              >{{ "assistantUser" | translate }} {{ i + 1 }}</span
+            >
+
             <p class="mt-2 text-center">
               <strong *ngIf="currentLang === 'ar'">
                 {{ assistant.user.fullNameAr }}</strong
@@ -386,33 +408,72 @@
   </div>
   <!-- Multi Tasks -->
   <div class="pt-3 multi-tasks" *ngIf="multiTasks.length > 0">
-    <div class="sub-title text-center" style="color: #359afe;">{{ "MultiTasks" | translate }}</div>
+    <div class="sub-title text-center" style="color: #359afe">
+      {{ "MultiTasks" | translate }}
+    </div>
     <div>
-      <nz-table #basicTable [nzData]="task.multiMission" [nzHideOnSinglePage]="true">
-          <thead>
-            <tr style="font-size: 16px;">
-              <th class="text-center font-weight-bold">{{'currentStatus' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'Subject' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'subTaskEndDate' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'AssistantUsers' | translate}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of basicTable.data;index as i" style="font-size: 15px;">
-               <td>
-                <label  nz-checkbox  [ngModel]="data.state"  (ngModelChange)="updateMultiTasks($event,data.commiteeTaskMultiMissionId)"  [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"></label>
-             </td>
-              <td>{{data.name}}</td>
-              <td>{{this.translateService.currentLang === "ar" ? (data.endDateMultiMission | customDate) : (data.endDateMultiMission | date: "dd/MM/yyyy")}}<br>{{this.dateService.getTasksDateInArabic(data.endDateMultiMission)}}</td>
-              <td>
-                <ng-container *ngFor="let user of data.commiteeTaskMultiMissionUserDTOs">
-                  <p class="mb-1">{{user.userDetailsDto.fullNameAr}}</p>
-                </ng-container>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
-  </div>
+      <nz-table
+        #basicTable
+        [nzData]="task.multiMission"
+        [nzHideOnSinglePage]="true"
+      >
+        <thead>
+          <tr style="font-size: 16px">
+            <th class="text-center font-weight-bold">
+              {{ "currentStatus" | translate }}
+            </th>
+            <th class="text-center font-weight-bold">
+              {{ "Subject" | translate }}
+            </th>
+            <th class="text-center font-weight-bold">
+              {{ "subTaskEndDate" | translate }}
+            </th>
+            <th class="text-center font-weight-bold">
+              {{ "AssistantUsers" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of basicTable.data; index as i"
+            style="font-size: 15px"
+          >
+            <td>
+              <label
+                nz-checkbox
+                [ngModel]="data.state"
+                (ngModelChange)="
+                  ConfirmChangeStatus(
+                    $event,
+                    data.commiteeTaskMultiMissionId,
+                    index,
+                    data
+                  )
+                "
+                [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
+              ></label>
+            </td>
+            <td>{{ data.name }}</td>
+            <td>
+              {{
+                this.translateService.currentLang === "ar"
+                  ? (data.endDateMultiMission | customDate)
+                  : (data.endDateMultiMission | date : "dd/MM/yyyy")
+              }}<br />{{
+                this.dateService.getTasksDateInArabic(data.endDateMultiMission)
+              }}
+            </td>
+            <td>
+              <ng-container
+                *ngFor="let user of data.commiteeTaskMultiMissionUserDTOs"
+              >
+                <p class="mb-1">{{ user.userDetailsDto.fullNameAr }}</p>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
   </div>
 
   <!-- Attachments  -->

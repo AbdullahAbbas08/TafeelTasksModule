@@ -335,7 +335,9 @@ namespace CommiteeAndMeetings.UI
                     options.Queues = HangfireHelper.GetQueues();
                 });
 
-                
+               
+
+
             }
 
 
@@ -781,6 +783,7 @@ namespace CommiteeAndMeetings.UI
                 endpoints.MapControllers();
                 endpoints.MapHub<SignalRHub>("/api/SignalR");
             });
+           
             if (Convert.ToString(Configuration["HangFireSettings:IsEnabled"]).Equals("1"))
             {
                 app.UseHangfireServer();
@@ -811,8 +814,12 @@ namespace CommiteeAndMeetings.UI
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+                    spa.Options.StartupTimeout = TimeSpan.FromMinutes(10);
                 }
             });
+
+
+
 
             app.UseMvc();
 

@@ -18,9 +18,7 @@
       {{ userTitle ? userTitle : ("anonymous" | translate) }}
     </div> -->
 
-
-
-  <div
+    <div
       class="date"
       [nzTooltipTitle]="
         sendDate != null
@@ -32,32 +30,84 @@
       nzTooltipPlacement="top"
       nz-tooltip
     >
-      {{ sendDate | date: "dd/MM/yyyy HH:mm:ss" }}
-    </div> 
-    <div nz-tooltip [nzTooltipTitle]="attendee.alternativeAttendee ? replaceAttendeName : false"  style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._2 && attendee.reasonForReplacing">
-      {{attendee.reasonForReplacing}}
+      {{ sendDate | date : "dd/MM/yyyy HH:mm:ss" : "offset" }}
     </div>
-    <div nz-tooltip [nzTooltipTitle]="delegateAttende" style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._2 && attendee.userDelegate">
-      {{'delegate' | translate}}
+    <div
+      nz-tooltip
+      [nzTooltipTitle]="
+        attendee.alternativeAttendee ? replaceAttendeName : false
+      "
+      style="flex: 0 1 17rem"
+      *ngIf="userType === meetingUserType._2 && attendee.reasonForReplacing"
+    >
+      {{ attendee.reasonForReplacing }}
+    </div>
+    <div
+      nz-tooltip
+      [nzTooltipTitle]="delegateAttende"
+      style="flex: 0 1 17rem"
+      *ngIf="userType === meetingUserType._2 && attendee.userDelegate"
+    >
+      {{ "delegate" | translate }}
     </div>
     <ng-template #delegateAttende>
-      <span>{{'DelegateFrom' | translate}} : {{this.translateService.currentLang === 'ar' ? attendee.userDelegate?.fullNameAr : attendee.userDelegate?.fullNameEn}}</span>
-    </ng-template>  
+      <span
+        >{{ "DelegateFrom" | translate }} :
+        {{
+          this.translateService.currentLang === "ar"
+            ? attendee.userDelegate?.fullNameAr
+            : attendee.userDelegate?.fullNameEn
+        }}</span
+      >
+    </ng-template>
     <ng-template #replaceAttendeName>
-      <span>{{'Iwasnominatedinstead' | translate}}{{this.translateService.currentLang === 'ar' ? attendee.alternativeAttendee?.fullNameAr : attendee.alternativeAttendee?.fullNameEn}}</span>
-    </ng-template>  
-    <div nz-tooltip [nzTooltipTitle]="coordinator.alternativeCoordinator ? replaceCordinateName : false"  style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._1 && coordinator.reasonForReplacing">
-      {{coordinator?.reasonForReplacing}}
+      <span
+        >{{ "Iwasnominatedinstead" | translate
+        }}{{
+          this.translateService.currentLang === "ar"
+            ? attendee.alternativeAttendee?.fullNameAr
+            : attendee.alternativeAttendee?.fullNameEn
+        }}</span
+      >
+    </ng-template>
+    <div
+      nz-tooltip
+      [nzTooltipTitle]="
+        coordinator.alternativeCoordinator ? replaceCordinateName : false
+      "
+      style="flex: 0 1 17rem"
+      *ngIf="userType === meetingUserType._1 && coordinator.reasonForReplacing"
+    >
+      {{ coordinator?.reasonForReplacing }}
     </div>
-    <div nz-tooltip [nzTooltipTitle]="delegatorName" style="flex: 0 1 17rem;" *ngIf="userType === meetingUserType._1 && coordinator.userDelegate">
-      {{'delegate' | translate}}
+    <div
+      nz-tooltip
+      [nzTooltipTitle]="delegatorName"
+      style="flex: 0 1 17rem"
+      *ngIf="userType === meetingUserType._1 && coordinator.userDelegate"
+    >
+      {{ "delegate" | translate }}
     </div>
     <ng-template #replaceCordinateName>
-      <span>{{'Iwasnominatedinstead' | translate}}{{this.translateService.currentLang === 'ar' ? coordinator.alternativeCoordinator?.fullNameAr : coordinator.alternativeCoordinator?.fullNameEn}}</span>
-    </ng-template> 
+      <span
+        >{{ "Iwasnominatedinstead" | translate
+        }}{{
+          this.translateService.currentLang === "ar"
+            ? coordinator.alternativeCoordinator?.fullNameAr
+            : coordinator.alternativeCoordinator?.fullNameEn
+        }}</span
+      >
+    </ng-template>
     <ng-template #delegatorName>
-      <span>{{'DelegateFrom' | translate}} : {{this.translateService.currentLang === 'ar' ? coordinator.userDelegate?.fullNameAr : coordinator.userDelegate?.fullNameEn}}</span>
-    </ng-template> 
+      <span
+        >{{ "DelegateFrom" | translate }} :
+        {{
+          this.translateService.currentLang === "ar"
+            ? coordinator.userDelegate?.fullNameAr
+            : coordinator.userDelegate?.fullNameEn
+        }}</span
+      >
+    </ng-template>
     <div
       class="date"
       [nzTooltipTitle]="
@@ -71,7 +121,7 @@
       nz-tooltip
       style="color: #117a8b"
     >
-      {{ replyDate | date: "dd/MM/yyyy HH:mm:ss" }}
+      {{ replyDate | date : "dd/MM/yyyy HH:mm:ss" : "offset" }}
     </div>
     <label
       nz-checkbox
@@ -79,12 +129,12 @@
       (ngModelChange)="changeIsAttendde()"
       *ngIf="userType === meetingUserType._1"
       [nzDisabled]="
-      singleMeeting.meeting?.isFinished ||
-      singleMeeting.meeting?.isCanceled ||
-      !(
-        singleMeeting.meeting?.isCreator ||
-        singleMeeting.meeting?.isCoordinator
-      ) 
+        singleMeeting.meeting?.isFinished ||
+        singleMeeting.meeting?.isCanceled ||
+        !(
+          singleMeeting.meeting?.isCreator ||
+          singleMeeting.meeting?.isCoordinator
+        )
       "
     >
       {{ translateService.currentLang == "ar" ? "الحضور" : "Attendee" }}
@@ -156,15 +206,12 @@
       }}</span>
     </div>
     <div *ngSwitchCase="stateType._4" class="container-reject">
-      <span class="reject" *ngIf="userType === meetingUserType._1">{{
-        "NotAccepted" | translate
-      }}
-
-    </span>
-      <span class="reject" *ngIf="userType === meetingUserType._2">{{
-        "RejectedAttendance" | translate
-      }}
-    </span>
+      <span class="reject" *ngIf="userType === meetingUserType._1"
+        >{{ "NotAccepted" | translate }}
+      </span>
+      <span class="reject" *ngIf="userType === meetingUserType._2"
+        >{{ "RejectedAttendance" | translate }}
+      </span>
     </div>
   </div>
 

@@ -449,6 +449,7 @@ export class GlobalControlsComponent implements OnInit, OnDestroy {
         assistantUser,
         undefined,
         undefined,
+        undefined,
         undefined
       )
       .subscribe((result) => {
@@ -473,7 +474,8 @@ export class GlobalControlsComponent implements OnInit, OnDestroy {
         assistantUser,
         undefined,
         undefined,
-        meetingId
+        meetingId,
+        undefined,
       )
       .subscribe((result) => {
         if(result){

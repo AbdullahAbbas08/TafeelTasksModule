@@ -10,7 +10,7 @@
         >
           <div
             class="item-container d-flex justify-content-between"
-            [ngClass]="{ active: tab === 'tab' + i }"
+            [ngClass]="{ active: tab === 'tab' + (i + 1) }"
           >
             <div>
               <h6 class="stats-title">{{ stats.name | translate }}</h6>
@@ -38,6 +38,7 @@
             [periodState]="validityPeriod?.periodState"
             [CommitteName]="CommitteName"
             [isForGeneralTasks]="!committeeId"
+            [requiredTaskEnum]="requiredTaskEnum"
           ></app-task-item>
         </div>
       </ng-container>

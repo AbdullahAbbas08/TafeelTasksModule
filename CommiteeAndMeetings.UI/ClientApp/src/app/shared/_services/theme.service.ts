@@ -5,9 +5,11 @@ import { SwaggerClient } from 'src/app/core/_services/swagger/SwaggerClient.serv
   providedIn: 'root',
 })
 export class ThemeService {
+  private GradientType = 'left';
   private primary = '#bdbdbd';
   private secondary = '#444';
   private accent = '#111';
+  private isGradientTheme = '0';
 
   private primary2 = '#9b2226';
   private secondary2 = '#001219';
@@ -37,19 +39,25 @@ export class ThemeService {
     this.swagger
       .apiCommitteeMeetingSystemSettingSpecificThemeGet(ThemeCode)
       .subscribe((theme) => {
+
         this.primary = theme?.firstColorHex
           ? theme.firstColorHex
           : this.primary;
+
         this.secondary = theme?.secondColorHex
           ? theme.secondColorHex
           : this.secondary;
+
         this.accent = theme?.thirdColorHex ? theme.thirdColorHex : this.accent;
+        this.isGradientTheme = theme?.isGradientTheme;
+        this.GradientType = theme?.gradientType;
       });
   }
 
   get primaryBackground() {
-    // return { backgroundColor: this.primary, color: '#ffffff' };
-    return { 'background-image': `linear-gradient(to left, ${this.secondary}, ${this.accent})` };
+    if (this.isGradientTheme == '1')
+      return { 'background-image': `linear-gradient(to ${this.GradientType}, ${this.secondary}, ${this.accent})` };
+    else return { backgroundColor: this.secondary, color: '#ffffff' };
   }
 
   get secondaryBackground() {

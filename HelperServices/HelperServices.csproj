@@ -7,7 +7,6 @@
     <_HasReferenceToSystemRuntime>true</_HasReferenceToSystemRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="iTextSharp" Version="5.5.13.2" />
     <PackageReference Include="Laserfiche102Core" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
@@ -35,6 +34,9 @@
   <ItemGroup>
     <Reference Include="FileNet.Api">
       <HintPath>..\FileNetIntegration\bin\Debug\FileNet.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\..\..\Users\user1\.nuget\packages\itextsharp\5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>

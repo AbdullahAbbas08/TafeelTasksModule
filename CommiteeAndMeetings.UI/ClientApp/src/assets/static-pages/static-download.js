@@ -170,18 +170,18 @@ var service = (function () {
          </tr>`;
          for (let r of model.meeting.meetingCoordinators){
             meetingAttendees += `<tr> 
-            <td>${r.coordinator.fullNameAr} </td>
-            <td>${r.coordinator.jobTitleName}</td>
-            <td>${r.coordinator.mobile}</td>
-            <td>${r.coordinator.email}</td>   
+            <td>${r.coordinator.fullNameAr ? r.coordinator.fullNameAr:'-'} </td>
+            <td>${r.coordinator.jobTitleName ?r.coordinator.jobTitleName:'-'}</td>
+            <td>${r.coordinator.mobile ?r.coordinator.mobile:'-'}</td>
+            <td>${r.coordinator.email?r.coordinator.email:'-'}</td>   
         </tr>`;
          }
          for (let r of model.meeting.meetingAttendees){
             meetingAttendees += `<tr> 
-            <td>${r.attendee.fullNameAr} </td>
-            <td>${r.attendee.jobTitleName}</td>
-            <td>${r.attendee.mobile}</td>
-            <td>${r.attendee.email}</td>   
+            <td>${r.attendee.fullNameAr?r.attendee.fullNameAr:'-'} </td>
+            <td>${r.attendee.jobTitleName?r.attendee.jobTitleName:'-'}</td>
+            <td>${r.attendee.mobile?r.attendee.mobile:'-'}</td>
+            <td>${r.attendee.email?r.attendee.email:'-'}</td>   
         </tr>`;
          }
          document.getElementById("meetingAttendes").innerHTML = meetingAttendees;

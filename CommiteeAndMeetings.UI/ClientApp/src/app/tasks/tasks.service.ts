@@ -30,8 +30,8 @@ export class ExtendedTaskDTO extends CommiteeTaskDTO {
   expand?: boolean;
 
 }
-export class ExtendedCountDTO extends CountResultDTO{
-  permissionValue?:string
+export class ExtendedCountDTO extends CountResultDTO {
+  permissionValue?: string
 }
 export class ExtendedTaskDTODataSourceResult extends CommiteeTaskDTODataSourceResult {
   data?: ExtendedTaskDTO[];
@@ -39,13 +39,13 @@ export class ExtendedTaskDTODataSourceResult extends CommiteeTaskDTODataSourceRe
 export interface TaskFilters {
   typeId?: any;
   classificationId?: number;
-  searchtxt?:string;
-  body?:any
+  searchtxt?: string;
+  body?: any
 }
-export interface StatsArray{
-  index:number;
-  value:number;
-  name:any;
+export interface StatsArray {
+  index: number;
+  value: number;
+  name: any;
 }
 @Injectable({
   providedIn: 'root',
@@ -61,17 +61,17 @@ export class TasksService {
   filterEnumChanged: BehaviorSubject<number> = new BehaviorSubject<number>(
     null
   );
-  fromNotifications:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  fromNotifications: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   filterWithClick: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-  toggleCompeleteTask:BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  shareTaskStats:BehaviorSubject<CountResultDTO[]> = new BehaviorSubject<CountResultDTO[]>(null);
+  toggleCompeleteTask: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  shareTaskStats: BehaviorSubject<CountResultDTO[]> = new BehaviorSubject<CountResultDTO[]>(null);
   constructor(
     private http: HttpClient,
     private swaggerService: SwaggerClient,
     @Inject(API_BASE_URL) baseUrl: string,
     private translateService: TranslateService,
-    private BrowserService:BrowserStorageService,
-    private authService:AuthService,
+    private BrowserService: BrowserStorageService,
+    private authService: AuthService,
     private layoutService: LayoutService
   ) {
     this.baseUrl = baseUrl;
@@ -83,16 +83,16 @@ export class TasksService {
     filters: any[] = [],
     filteLogic = undefined,
     filterNum: number,
-    userId:string,
-    orgId:string,
-    fromDate?:Date,
-    toDate?:Date,
-    mainUserId?:number,
-    assistantUser?:number,
-    validityPeriodFrom?:Date,
-    validityPeriodTo?:Date,
-    selectedCommitee?:number,
-    selectedMeeting?:number
+    userId: string,
+    orgId: string,
+    fromDate?: Date,
+    toDate?: Date,
+    mainUserId?: number,
+    assistantUser?: number,
+    validityPeriodFrom?: Date,
+    validityPeriodTo?: Date,
+    selectedCommitee?: number,
+    selectedMeeting?: number
   ) {
     return this.swaggerService.apiCommiteeTasksGetAllwithFiltersGet(
       take,
@@ -116,13 +116,13 @@ export class TasksService {
       selectedCommitee,
       selectedMeeting
     ).pipe(map((res) => {
-      if(res && res.data.length){
+      if (res && res.data.length) {
         return {
           ...res,
-          data:res.data.map((item) => {
+          data: res.data.map((item) => {
             return {
               ...item,
-              expand:false
+              expand: false
             } as ExtendedTaskDTO
           }),
         } as ExtendedTaskDTODataSourceResult
@@ -133,92 +133,95 @@ export class TasksService {
   }
 
 
-  getAllUserTasks(userId:string) {
+  getAllUserTasks(userId: string) {
     return this.swaggerService.apiCommiteeTasksGetAllForPrintGet(
       1,
       undefined,
       undefined,
       undefined,
       userId,
-      undefined,undefined,undefined,undefined,undefined,undefined,undefined
+      undefined,
+      undefined,
+      undefined,
+      undefined, undefined, undefined, undefined, undefined
     );
   }
-  getAllMeetingUsers(meetingId:number):Observable<UserDetailsDTO[]>{
+  getAllMeetingUsers(meetingId: number): Observable<UserDetailsDTO[]> {
     return this.swaggerService.apiMeetingsUsersInMeetingPost(meetingId)
   }
-  getOrganizationByOrganizationName(){
+  getOrganizationByOrganizationName() {
     return this.swaggerService.apiCommiteesGetOrgnaztionFromSessionGet()
   }
-  saveNewGroup(values): Observable<Group>{
-     const group = new GroupDto({
-      groupNameAr:values['NameAr'],
-      groupNameEn:values['NameEn'],
-      groupUsers:values['allUsers'].map((id) => {
-        return new GroupUsersDto({userId:id})
+  saveNewGroup(values): Observable<Group> {
+    const group = new GroupDto({
+      groupNameAr: values['NameAr'],
+      groupNameEn: values['NameEn'],
+      groupUsers: values['allUsers'].map((id) => {
+        return new GroupUsersDto({ userId: id })
       })
-     })
+    })
     return this.swaggerService.apiGroupInsertGroupPost(group)
   }
-  editTaskGroup(values,groupId:number): Observable<GroupDto[]>{
+  editTaskGroup(values, groupId: number): Observable<GroupDto[]> {
     const group = new GroupDto({
-    groupId:groupId,
-     groupNameAr:values['NameAr'],
-     groupNameEn:values['NameEn'],
-     groupUsers:values['allUsers'].map((id) => {
-       return new GroupUsersDto({userId:id})
-     })
+      groupId: groupId,
+      groupNameAr: values['NameAr'],
+      groupNameEn: values['NameEn'],
+      groupUsers: values['allUsers'].map((id) => {
+        return new GroupUsersDto({ userId: id })
+      })
     })
-   return this.swaggerService.apiGroupUpdatePut([group])
- }
-  getGroupById(id:number): Observable<GroupDto>{
+    return this.swaggerService.apiGroupUpdatePut([group])
+  }
+  getGroupById(id: number): Observable<GroupDto> {
     return this.swaggerService.apiGroupGetByGroupIdGet(id)
   }
-  updategroupTask(values,task:CommiteeTaskDTO){
+  updategroupTask(values, task: CommiteeTaskDTO) {
     const taskGroup = new CommiteeTaskDTO({
-      taskGroups:values['groups'].map((id) => {
-        return new TaskGroupDto({groupId:id})
-      }),   
+      taskGroups: values['groups'].map((id) => {
+        return new TaskGroupDto({ groupId: id })
+      }),
       commiteeTaskId: task.commiteeTaskId,
-      title:task.title,
-      endDate:task.endDate,
-      taskDetails:task.taskDetails,
-      mainAssinedUserId:task.mainAssinedUserId,
-      assistantUsers:task.assistantUsers,
-      taskAttachments:task.taskAttachments,
-      isShared:task.isShared,
-      multiMission:task.multiMission,
-      comiteeTaskCategoryId:task.comiteeTaskCategoryId,
-      isEmail:task.isEmail,
-      isSMS:task.isSMS,
-      isNotification:task.isNotification,
-      startDate:task.startDate
+      title: task.title,
+      endDate: task.endDate,
+      taskDetails: task.taskDetails,
+      mainAssinedUserId: task.mainAssinedUserId,
+      assistantUsers: task.assistantUsers,
+      taskAttachments: task.taskAttachments,
+      isShared: task.isShared,
+      multiMission: task.multiMission,
+      comiteeTaskCategoryId: task.comiteeTaskCategoryId,
+      isEmail: task.isEmail,
+      isSMS: task.isSMS,
+      isNotification: task.isNotification,
+      startDate: task.startDate
     });
     return this.swaggerService.apiCommiteeTasksUpdatePut([taskGroup]);
   }
-  insertNewSubTask(taskId:string,CommiteetaskMultiMissionDTO:CommiteetaskMultiMissionDTO):Observable<CommiteetaskMultiMissionDTO>{
-    return this.swaggerService.apiCommiteeTasksInsertMultiMissionToTaskPost(taskId,CommiteetaskMultiMissionDTO)
+  insertNewSubTask(taskId: string, CommiteetaskMultiMissionDTO: CommiteetaskMultiMissionDTO): Observable<CommiteetaskMultiMissionDTO> {
+    return this.swaggerService.apiCommiteeTasksInsertMultiMissionToTaskPost(taskId, CommiteetaskMultiMissionDTO)
   }
   saveCommitteeTask(
     values,
-    startDate:Date,
+    startDate: Date,
     endDate: Date,
     committeeId,
     taskId?,
     existingAttachments: CommitteeTaskAttachmentDTO[] = [],
     multiTasks: CommiteetaskMultiMissionDTO[] = [],
-    meetingId?:number
+    meetingId?: number
   ) {
     const task = new CommiteeTaskDTO({
       title: values['title'],
-      startDate:startDate,
+      startDate: startDate,
       endDate: endDate, // Active status
-      taskDetails:values['details'],
+      taskDetails: values['details'],
       mainAssinedUserId: values['mainAssinedUserId'],
       // assistantUsers: values['assistantUsers'].map((id) => {
       //   return new UserTaskDTO({ userId: id, commiteeTaskId: taskId });
       // }),
-      taskGroups:values['groups'].map((id) => {
-        return new TaskGroupDto({groupId:id})
+      taskGroups: values['groups'].map((id) => {
+        return new TaskGroupDto({ groupId: id })
       }),
       commiteeIdEncrypted: committeeId,
       taskComments: [],
@@ -230,7 +233,7 @@ export class TasksService {
       isEmail: values['emailNotify'],
       isSMS: values['smsNotify'],
       isNotification: values['appNotify'],
-      meetingId:meetingId
+      meetingId: meetingId
     });
 
     if (taskId) {
@@ -271,18 +274,18 @@ export class TasksService {
       postData
     );
   }
-  postCommentAttachment(files:File[],commentId){
+  postCommentAttachment(files: File[], commentId) {
     const postData = new FormData();
-    if(files) files.forEach((file) => postData.append(file.name, file))
-    postData.append('commentId',this.BrowserService.encrypteString(commentId));
+    if (files) files.forEach((file) => postData.append(file.name, file))
+    postData.append('commentId', this.BrowserService.encrypteString(commentId));
 
     return this.http.post(
       `${this.baseUrl}/api/Document/UploadAttachmentToComment`,
       postData
     );
   }
-  updateMutiTasksForTask(multiMissionId:string) {
-    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId);
+  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds) {
+    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId, mainAssinedUserId, AssistantUserIds);
   }
 
   getTaskCategories() {
@@ -305,17 +308,17 @@ export class TasksService {
     );
   }
 
-  getStatistisTasksNumber(orgId:string,userId:any,committeId?: string,validityPeriodFrom?:Date,validityPeriodTo?:Date): Observable<CountResultDTO[]> {
-    return this.swaggerService.apiCommiteeTasksGetStatisticsGet(orgId,userId,committeId,validityPeriodFrom,validityPeriodTo);
+  getStatistisTasksNumber(orgId: string, userId: any, committeId?: string, validityPeriodFrom?: Date, validityPeriodTo?: Date): Observable<CountResultDTO[]> {
+    return this.swaggerService.apiCommiteeTasksGetStatisticsGet(orgId, userId, committeId, validityPeriodFrom, validityPeriodTo);
   }
-  getTaskDetails(id:string): Observable<CommiteeTaskDTO>{
+  getTaskDetails(id: string): Observable<CommiteeTaskDTO> {
     return this.swaggerService.apiCommiteeTasksGetDetailsByIdGet(id);
   }
-  exportDocument(requiredTasks,userIdEncrpted,exportType){
+  exportDocument(requiredTasks, userIdEncrpted, exportType, selectedOrganization) {
     this.layoutService.toggleSpinner(true);
     var accessToken = this.authService.getToken()
     fetch(
-      `${this.baseUrl}/api/CommiteeTasks/Export?requiredTasks=${requiredTasks}&userIdEncrpted=${userIdEncrpted}&exportType=${exportType}`,
+      `${this.baseUrl}/api/CommiteeTasks/Export?requiredTasks=${requiredTasks}&userIdEncrpted=${userIdEncrpted}&exportType=${exportType}&organizationId=${selectedOrganization}`,
       {
         method: "POST",
         body: JSON.stringify({}),
@@ -326,53 +329,53 @@ export class TasksService {
       }
     )
       .then((response) => {
-       if(response){
-        return response.blob()
-       }
+        if (response) {
+          return response.blob()
+        }
       }).then(blob => {
-        switch(requiredTasks){
+        switch (requiredTasks) {
           case 1:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = 'كل المهام';
-           link.click();
-          break;
+            link.href = downloadURL;
+            link.download = 'كل المهام';
+            link.click();
+            break;
           case 2:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = 'المهام المتاخرة';
-           link.click();
-          break;
+            link.href = downloadURL;
+            link.download = 'المهام المتاخرة';
+            link.click();
+            break;
           case 7:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = ' تحت الإجراء';
-           link.click();
-          break;
+            link.href = downloadURL;
+            link.download = ' تحت الإجراء';
+            link.click();
+            break;
           case 9:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = ' المهام المغلقة ';
-           link.click();
-           break;
-           case 8:
+            link.href = downloadURL;
+            link.download = ' المهام المغلقة ';
+            link.click();
+            break;
+          case 8:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = ' تكليف فرعي';
-           link.click();
-           break;
-           case 10:
+            link.href = downloadURL;
+            link.download = ' تكليف فرعي';
+            link.click();
+            break;
+          case 10:
             var downloadURL = window.URL.createObjectURL(blob);
             var link = document.createElement('a');
-           link.href = downloadURL;
-           link.download = 'مهام للإطلاع';
-           link.click();
-           break;
+            link.href = downloadURL;
+            link.download = 'مهام للإطلاع';
+            link.click();
+            break;
         }
         this.layoutService.toggleSpinner(false);
       })
