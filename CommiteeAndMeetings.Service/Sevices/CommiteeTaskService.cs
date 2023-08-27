@@ -124,7 +124,6 @@ namespace CommiteeAndMeetings.Service.Sevices
         public DataSourceResult<CommiteeTaskDTO> GetAllwithfilters(DataSourceRequest dataSourceRequest, TaskFilterEnum requiredTasks, ParamsSearchFilterDTO paramsSearchFilterDTO = null, int? userId = null, int? organizationId = null, bool WithTracking = true)
         {
             bool filter = Convert.ToBoolean(dataSourceRequest.Filter.Filters?.Any(z => z.Field == "commiteeId"));
-
             if (organizationId != null)
             {
                 var returnFromStoredEnumerable = _context.vm_EmpInOrgaHierarchies.FromSqlInterpolated($"exec [dbo].[sp_GetEmployeesByOrganizationHierarchyToReport] {organizationId}").ToList();
@@ -718,6 +717,7 @@ namespace CommiteeAndMeetings.Service.Sevices
         }
         public List<CommiteeTaskDTO> GetAllForPrint(TaskFilterEnum requiredTasks, int? CommiteeId, int? ComiteeTaskCategoryId, string SearchText, int? userId = null, ParamsSearchFilterDTO paramsSearchFilterDTO = null, int? organizationId = null)
         {
+            if (userId != null) organizationId = null;
             if (organizationId != null)
             {
                 var returnFromStoredEnumerable = _context.vm_EmpInOrgaHierarchies.FromSqlInterpolated($"exec [dbo].[sp_GetEmployeesByOrganizationHierarchyToReport] {organizationId}").ToList();
@@ -998,7 +998,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
             else
             {
-
                 //(CommiteeId == null || x.CommiteeId == Convert.ToInt32(CommiteeId)) /*&& ComiteeTaskCategoryId == null|| SearchText == "" || x.ComiteeTaskCategoryId == ComiteeTaskCategoryId.Value*/ &&
                 var query = this._UnitOfWork.GetRepository<CommiteeTask>().GetAll()/*.Include(x => x.Meeting)*/.OrderByDescending(x => x.CreatedOn).Where(x =>
                 (
@@ -1007,14 +1006,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                 (x.IsShared && CommiteeId != null) || x.MainAssinedUserId == userId || x.AssistantUsers.Any(z => z.UserId == userId) ||
                 x.TaskGroups.Any(a => a.Group.GroupUsers.Any(w => w.UserId == userId)) || x.CreatedBy == userId) ||
                 x.MultiMission.Any(a => a.CommiteeTaskMultiMissionUsers.Any(w => w.UserId == userId)) &&
-
                     (SearchText == "" || SearchText == null || x.Title.Contains(SearchText)));
-
-
-
-
-
-
                 switch (requiredTasks)
                 {
                     case TaskFilterEnum.All:
@@ -1051,7 +1043,6 @@ namespace CommiteeAndMeetings.Service.Sevices
                     default:
                         break;
                 }
-
                 if (paramsSearchFilterDTO.FromDate.HasValue)
                 {
                     query = query.Where(x => x.EndDate >= paramsSearchFilterDTO.FromDate.Value);
@@ -1060,7 +1051,6 @@ namespace CommiteeAndMeetings.Service.Sevices
                 {
                     query = query.Where(x => x.EndDate <= paramsSearchFilterDTO.ToDate.Value);
                 }
-
                 if (paramsSearchFilterDTO.MainUserId.HasValue)
                 {
                     query = query.Where(x => x.MainAssinedUserId == paramsSearchFilterDTO.MainUserId.Value);
@@ -1073,9 +1063,7 @@ namespace CommiteeAndMeetings.Service.Sevices
                 {
                     query = query.Where(x => x.ComiteeTaskCategoryId == ComiteeTaskCategoryId.Value);
                 }
-
                 var dta = _Mapper.Map<List<CommiteeTaskDTO>>(query.ToList());
-
                 if (requiredTasks == TaskFilterEnum.late || (requiredTasks == TaskFilterEnum.All && (query.Where(x => x.EndDate < DateTimeOffset.Now && !x.Completed).Any())))
                 {
                     dta.ForEach(x => x.Islated = true);

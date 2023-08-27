@@ -67,6 +67,8 @@ export class TaskItemComponent implements OnInit {
   permittedShowComments: boolean = false;
   committeeId: any
   taskViewOnly: boolean = false;
+  CheckTaskStatus: boolean = false
+  SubTaskStatus: boolean
   constructor(
     private commentService: CommentsService,
     private swagger: SwaggerClient,
@@ -269,7 +271,7 @@ export class TaskItemComponent implements OnInit {
     });
   }
 
-  updateMultiTasks(data, multimissionId,mainAssinedUserId,AssistantUserIds) {
+  updateMultiTasks(index, multimissionId, mainAssinedUserId, AssistantUserIds) {
     // const missions = this.task.multiMission.map((res) => {
     //   if(res.commiteeTaskMultiMissionId === multimissionId){
     //      return {...res,state:data}
@@ -279,8 +281,12 @@ export class TaskItemComponent implements OnInit {
     // })
     // this.task.multiMission = missions;
     this.taskService.updateMutiTasksForTask(this.BrowserService.encrypteString(multimissionId),
-    mainAssinedUserId,AssistantUserIds
-    ).subscribe();
+      mainAssinedUserId, AssistantUserIds
+    ).subscribe(res => {
+      if (res) {
+        this.task.multiMission[index].state = res.state
+      }
+    });
   }
 
   userPermittedToReopenGeneralTask() {
@@ -338,15 +344,18 @@ export class TaskItemComponent implements OnInit {
       this.task.multiMission[index].commiteeTaskMultiMissionUserDTOs.some((user) => user.userId == this.authService.getUser().userId))
   }
 
-  ConfirmChangeStatus(data, multimissionId, index, datavalue): void {
+  showConfirm(datavalue, multimissionId, index): void {
     const AssistantUserIds: number[] = []
     datavalue.commiteeTaskMultiMissionUserDTOs.map((user) => AssistantUserIds.push(user.userDetailsDto.userId))
     AssistantUserIds.push(this.task.createdByUser.userId)
-    
+
 
     this.modal.confirm({
       nzTitle: '<i>هل انت متأكد من تغيير حالة المهمة ؟ </i>',
-      nzOnOk: () => this.updateMultiTasks(data, multimissionId,this.task.mainAssinedUserId,AssistantUserIds)
+      nzOnOk: () => this.updateMultiTasks(index, multimissionId, this.task.mainAssinedUserId, AssistantUserIds),
+      nzOnCancel: () => {
+        this.CheckTaskStatus = false
+      }
     });
   }
 
