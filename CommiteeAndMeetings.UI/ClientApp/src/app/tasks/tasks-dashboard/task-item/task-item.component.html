@@ -453,13 +453,22 @@
                 [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
               ></label> -->
               <button
-                class="mx-2"
+                class="mx-2 btn-state"
                 nz-button
                 nzType="primary"
                 (click)="showConfirm(data, data.commiteeTaskMultiMissionId, i)"
                 [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
+                [ngStyle]="{
+                  'background-color': data.state ? '#e3306f' : 'green',
+                  color: 'white'
+                }"
               >
-                {{ data.state ? "إنهاء" : "تفعيل" }}
+                <span *ngIf="data.state; else enable">
+                  {{ "CancelTask" | translate }}
+                </span>
+                <ng-template #enable>
+                  {{ "EanbleTask" | translate }}
+                </ng-template>
               </button>
             </td>
             <td>{{ data.name }}</td>
