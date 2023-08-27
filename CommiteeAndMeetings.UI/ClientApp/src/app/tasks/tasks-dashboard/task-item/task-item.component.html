@@ -439,9 +439,9 @@
             style="font-size: 15px"
           >
             <td>
-              <label
+              <!-- <label
                 nz-checkbox
-                [ngModel]="data.state"
+                [(ngModel)]="CheckTaskStatus ? SubTaskStatus : data.state"
                 (ngModelChange)="
                   ConfirmChangeStatus(
                     $event,
@@ -451,7 +451,16 @@
                   )
                 "
                 [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
-              ></label>
+              ></label> -->
+              <button
+                class="mx-2"
+                nz-button
+                nzType="primary"
+                (click)="showConfirm(data, data.commiteeTaskMultiMissionId, i)"
+                [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
+              >
+                {{ data.state ? "إنهاء" : "تفعيل" }}
+              </button>
             </td>
             <td>{{ data.name }}</td>
             <td>

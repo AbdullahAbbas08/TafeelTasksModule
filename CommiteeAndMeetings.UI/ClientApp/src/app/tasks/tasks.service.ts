@@ -284,7 +284,7 @@ export class TasksService {
       postData
     );
   }
-  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds) {
+  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds): Observable<CommiteetaskMultiMissionDTO> {
     return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId, mainAssinedUserId, AssistantUserIds);
   }
 
