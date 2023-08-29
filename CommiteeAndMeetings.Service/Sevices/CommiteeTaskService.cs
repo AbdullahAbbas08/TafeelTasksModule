@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+
 using Models;
 using Org.BouncyCastle.Asn1.Crmf;
 using System;
@@ -59,6 +60,7 @@ namespace CommiteeAndMeetings.Service.Sevices
         ISmsServices smsServices;
         public readonly MasarContext _context;
         private readonly IHostingEnvironment _hostingEnvironment;
+
         public CommiteeTaskService(IUnitOfWork unitOfWork, IHostingEnvironment hostingEnvironment, IMapper mapper, IStringLocalizer stringLocalizer, ISmsServices _smsServices, ICommitteeMeetingSystemSettingService systemSettingsService, ISecurityService securityService, IHelperServices.ISessionServices sessionServices, IOptions<AppSettings> appSettings, IMailServices _mailServices, IUsersService usersService, ICommitteeNotificationService committeeNotificationService, ICommiteeLocalizationService commiteeLocalizationService)
              : base(unitOfWork, mapper, stringLocalizer, securityService, sessionServices, appSettings)
         {
@@ -3366,7 +3368,38 @@ namespace CommiteeAndMeetings.Service.Sevices
                 throw ex;
             }
         }
-        
+
+        //public void CreateEventOnOutlookCalender()
+        //{
+        //    var newEvent = new Event
+        //    {
+        //        Subject = model.Subject,
+        //        Start = new DateTimeTimeZone
+        //        {
+        //            DateTime = model.StartTime,
+        //            TimeZone = "UTC"
+        //        },
+        //        End = new DateTimeTimeZone
+        //        {
+        //            DateTime = model.EndTime,
+        //            TimeZone = "UTC"
+        //        },
+        //    };
+
+        //    try
+        //    {
+        //        await _graphClient.Me.Calendar.Events
+        //            .Request()
+        //            .AddAsync(newEvent);
+
+        //        return Ok("Event created successfully.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error creating event");
+        //        return StatusCode(500, "An error occurred while creating the event.");
+        //    }
+        //}
 
     }
 }
