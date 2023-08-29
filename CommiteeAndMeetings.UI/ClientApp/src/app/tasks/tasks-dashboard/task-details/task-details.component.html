@@ -1,278 +1,313 @@
 <div class="container" *ngIf="!isloading">
   <div *ngIf="task">
     <div
-  class="item-container p-3 mb-2"
-  *ngIf="showItemFlag"
-  [ngClass]="task.endDate < dateNow && task.completed === false ? 'with-border' : 'withoutBorder'"
->
-  <header class="item-header">
-    <div class="user-data">
-      <div class="img-wrapper">
-        <img
-          *ngIf="createdUserImage"
-          [src]="'data:image/png;base64,' + createdUserImage"
-          [alt]=""
-        />
-        <img *ngIf="!createdUserImage" [src]="'assets/images/unknown.png'" />
-        <span class="active-state"></span>
-      </div>
-      <div class="user-name">
-        <h5 class="m-0">
-          {{ createdUserName ? createdUserName : ("anonymous" | translate) }}
-        </h5>
-        <h6 class="my-1" *ngIf="task.commiteeId">
-          {{ createdUserTitle ? createdUserTitle : ("member" | translate) }}
-        </h6>
-        <h6 class="my-1" 
-        [nzTooltipTitle]="task?.title"
-        nzTooltipPlacement="bottom"
-        nz-tooltip>
-         <strong> {{ task?.title | maxLenth: 15 }}</strong>
-        </h6>
-      </div>
-    </div>
-    <div
-      class="item-control-options"
-      *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
+      class="item-container p-3 mb-2"
+      *ngIf="showItemFlag"
+      [ngClass]="
+        task.endDate < dateNow && task.completed === false
+          ? 'with-border'
+          : 'withoutBorder'
+      "
     >
-      <div class="mx-1">
-        <div class="d-flex align-items-center">
-           <div class="mx-3">
-            <p class="mb-0 created-head">{{'taskCreated'  | translate}}</p>
-             <div class="d-flex align-items-center mt-1 created-date">
-              <p class="mb-0 mx-1 font-weight-bold" style="direction:ltr;font-size:13px;padding-top: 2px;">{{
-                (task.createdOn | date:"h:mm a" : 'offset')
-               }}</p>
-               <p class="mb-0 font-weight-bold">- {{currentLang === 'ar' ?  (task?.createdOn | customDate) : (task?.createdOn | date:'shortDate')}}</p>
-             </div>
-           </div>
-           <div>
-            <i
-            class="control-icon"
-            nz-icon
-            nzType="ellipsis"
-            nz-popover
-            [nzPopoverContent]="controlTmp"
-            nzPopoverPlacement="bottom"
-            [(nzPopoverVisible)]="visible"
-          ></i>
-           </div>
-        </div>
-        <ng-template #controlTmp>
-          <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
-            <li
-              (click)="onToggleCompleted(); visible = false"
-              *ngIf="isCreatedByOrAssignedUser() && !task?.completed"
+      <header class="item-header">
+        <div class="user-data">
+          <div class="img-wrapper">
+            <img
+              *ngIf="createdUserImage"
+              [src]="'data:image/png;base64,' + createdUserImage"
+              [alt]=""
+            />
+            <img
+              *ngIf="!createdUserImage"
+              [src]="'assets/images/unknown.png'"
+            />
+            <span class="active-state"></span>
+          </div>
+          <div class="user-name">
+            <h5 class="m-0">
+              {{
+                createdUserName ? createdUserName : ("anonymous" | translate)
+              }}
+            </h5>
+            <h6 class="my-1" *ngIf="task.commiteeId">
+              {{ createdUserTitle ? createdUserTitle : ("member" | translate) }}
+            </h6>
+            <h6
+              class="my-1"
+              [nzTooltipTitle]="task?.title"
+              nzTooltipPlacement="bottom"
+              nz-tooltip
             >
-              {{ "MarkComplete" | translate }}
-            </li>
-            <ng-container *appHasAuthUserViewPermission="['EDITTASK']">
-              <li
-                (click)="editTask(); visible = false"
-                *ngIf="userPermittedToEditGeneralTask()"
-              >
-                {{ "Edit" | translate }}
-              </li>
-            </ng-container>
+              <strong> {{ task?.title | maxLenth : 15 }}</strong>
+            </h6>
+          </div>
+        </div>
+        <div
+          class="item-control-options"
+          *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
+        >
+          <div class="mx-1">
+            <div class="d-flex align-items-center">
+              <div class="mx-3">
+                <p class="mb-0 created-head">{{ "taskCreated" | translate }}</p>
+                <div class="d-flex align-items-center mt-1 created-date">
+                  <p
+                    class="mb-0 mx-1 font-weight-bold"
+                    style="direction: ltr; font-size: 13px; padding-top: 2px"
+                  >
+                    {{ task.createdOn | date : "h:mm a" : "offset" }}
+                  </p>
+                  <p class="mb-0 font-weight-bold">
+                    -
+                    {{
+                      currentLang === "ar"
+                        ? (task?.createdOn | customDate)
+                        : (task?.createdOn | date : "shortDate")
+                    }}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <i
+                  class="control-icon"
+                  nz-icon
+                  nzType="ellipsis"
+                  nz-popover
+                  [nzPopoverContent]="controlTmp"
+                  nzPopoverPlacement="bottom"
+                  [(nzPopoverVisible)]="visible"
+                ></i>
+              </div>
+            </div>
+            <ng-template #controlTmp>
+              <ul class="list-unstyled p-0 m-0 dashboard-filter-list">
+                <li
+                  (click)="onToggleCompleted(); visible = false"
+                  *ngIf="isCreatedByOrAssignedUser() && !task?.completed"
+                >
+                  {{ "MarkComplete" | translate }}
+                </li>
+                <ng-container *appHasAuthUserViewPermission="['EDITTASK']">
+                  <li
+                    (click)="editTask(); visible = false"
+                    *ngIf="userPermittedToEditGeneralTask()"
+                  >
+                    {{ "Edit" | translate }}
+                  </li>
+                </ng-container>
 
-            <li
-              (click)="editTask(); visible = false"
-              *ngIf="userPermittedToEditCommitteeTask()"
-            >
-              {{ "Edit" | translate }}
-            </li>
+                <li
+                  (click)="editTask(); visible = false"
+                  *ngIf="userPermittedToEditCommitteeTask()"
+                >
+                  {{ "Edit" | translate }}
+                </li>
 
-            <li (click)="editHistory()">
-              {{ "editHistory" | translate }}
-            </li>
-             <ng-container *ngIf="!task.commiteeId">
-              <li (click)="editGroup()" *ngIf="userPermittedToEditGroupTask()">
-                {{ "editgroup" | translate }}
-              </li>
-             </ng-container>
-            <ng-container *appHasAuthUserViewPermission="['REOPENGENERALTASK']">
-              <li
-                (click)="onToggleCompleted(); visible = false"
-                *ngIf="userPermittedToReopenGeneralTask()"
-              >
-                {{ "ReOpen" | translate }}
-              </li>
-            </ng-container>
-            <li
-              (click)="onToggleCompleted(); visible = false"
-              *ngIf="userPermittedToReopenCommitteeTask()"
-            >
-              {{ "ReOpen" | translate }}
-            </li>
-            <li (click)="navigateTo(task?.commiteeTaskId)">
-              {{ "TaskDetails" | translate }}
-            </li>
-          </ul>
-        </ng-template>
-      </div>
+                <li (click)="editHistory()">
+                  {{ "editHistory" | translate }}
+                </li>
+                <ng-container *ngIf="!task.commiteeId">
+                  <li
+                    (click)="editGroup()"
+                    *ngIf="userPermittedToEditGroupTask()"
+                  >
+                    {{ "editgroup" | translate }}
+                  </li>
+                </ng-container>
+                <ng-container
+                  *appHasAuthUserViewPermission="['REOPENGENERALTASK']"
+                >
+                  <li
+                    (click)="onToggleCompleted(); visible = false"
+                    *ngIf="userPermittedToReopenGeneralTask()"
+                  >
+                    {{ "ReOpen" | translate }}
+                  </li>
+                </ng-container>
+                <li
+                  (click)="onToggleCompleted(); visible = false"
+                  *ngIf="userPermittedToReopenCommitteeTask()"
+                >
+                  {{ "ReOpen" | translate }}
+                </li>
+                <li (click)="navigateTo(task?.commiteeTaskId)">
+                  {{ "TaskDetails" | translate }}
+                </li>
+              </ul>
+            </ng-template>
+          </div>
+        </div>
+      </header>
+      <nz-divider nzDashed></nz-divider>
+      <section class="item-content">
+        <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
+        <nz-divider nzDashed></nz-divider>
+        <br />
+        <div *ngIf="count > 0 && !isloadingComment" style="width: 95%">
+          <app-comments
+            [comments]="taskComments"
+            [checkComponent]="checkComponent"
+            [count]="count"
+          ></app-comments>
+        </div>
+        <nz-spin nzSimple *ngIf="isloadingComment"></nz-spin>
+        <footer class="item-footer">
+          <app-add-comment
+            [checkAttachmentIcon]="checkAttachmentIcon"
+            [id]="task.commiteeTaskId"
+            (commentAdded)="addComment($event)"
+            [count]="count"
+            *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
+          ></app-add-comment>
+        </footer>
+      </section>
     </div>
-  </header>
-  <nz-divider nzDashed></nz-divider>
-  <section class="item-content">
-    <ng-container *ngTemplateOutlet="itemContentTpl"></ng-container>
-    <nz-divider nzDashed></nz-divider>
-    <br />
-    <div *ngIf="count > 0 && !isloadingComment" style="width: 95%">
-      <app-comments  [comments]="taskComments" [checkComponent]="checkComponent"  [count]="count"></app-comments>
-    </div>
-    <nz-spin  nzSimple *ngIf="isloadingComment"></nz-spin>
-    <footer class="item-footer">
-      <app-add-comment
-        [checkAttachmentIcon]="checkAttachmentIcon"
-        [id]="task.commiteeTaskId"
-        (commentAdded)="addComment($event)"
-        [count]="count"
-        *ngIf="(periodState !== 2 && committeeActive) || isForGeneralTasks"
-      ></app-add-comment>
-    </footer>
-  </section>
-</div>
 
-<ng-template #itemContentTpl>
-  <div class="">
-    <h5 class="task-title">{{ task?.title }}</h5>
-    <h6 class="task-details">{{task?.taskDetails}}</h6>
-    <div class="item-title mt-3">
-      <div class="row">
-        <div class="col-lg-4 col-12">
-          <div class="item">
-            <span class="item-head">{{ "TaskMainUser" | translate }}</span>
-            <p class="mt-2 text-center">
-              <strong *ngIf="currentLang === 'ar'">
-                {{ task?.mainAssinedUser.fullNameAr }}</strong
-              >
-              <strong *ngIf="currentLang === 'en'">
-                {{ task?.mainAssinedUser.fullNameEn }}</strong
-              >
-            </p>
-          </div>
-        </div>
-        <div class="col-lg-4 col-12">
-          <div class="item">
-            <span class="item-head">{{ "TaskEndDate" | translate }}</span>
-            <br>
-            <div class="mt-2" style="display: contents">
-              <strong>
-                {{
-                  currentLang === "ar"
-                    ? (task.endDate | HijriDate)
-                    : (task.endDate | date: "dd/MM/yyyy":"+0000")
-                }}</strong
-              >
-              <p id="time">
-                {{ task.endDate | date: "hh:mm a":"+0000" }}
-              </p>
+    <ng-template #itemContentTpl>
+      <div class="">
+        <h5 class="task-title">{{ task?.title }}</h5>
+        <h6 class="task-details">{{ task?.taskDetails }}</h6>
+        <div class="item-title mt-3">
+          <div class="row">
+            <div class="col-lg-4 col-12">
+              <div class="item">
+                <span class="item-head">{{ "TaskMainUser" | translate }}</span>
+                <p class="mt-2 text-center">
+                  <strong *ngIf="currentLang === 'ar'">
+                    {{ task?.mainAssinedUser.fullNameAr }}</strong
+                  >
+                  <strong *ngIf="currentLang === 'en'">
+                    {{ task?.mainAssinedUser.fullNameEn }}</strong
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-12">
+              <div class="item">
+                <span class="item-head">{{ "TaskEndDate" | translate }}</span>
+                <br />
+                <div class="mt-2" style="display: contents">
+                  <strong>
+                    {{
+                      currentLang === "ar"
+                        ? (task.endDate | HijriDate)
+                        : (task.endDate | date : "dd/MM/yyyy" : "+0000")
+                    }}</strong
+                  >
+                  <p id="time">
+                    {{ task.endDate | date : "hh:mm a" : "+0000" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-12" *ngIf="taskCompleteFlag">
+              <div class="item">
+                <span class="item-head">{{
+                  "Actualerminationdate" | translate
+                }}</span>
+                <br />
+                <div class="mt-2" style="display: contents">
+                  <strong>
+                    {{
+                      currentLang === "ar"
+                        ? (task.completeReasonDate | customDate)
+                        : (task.completeReasonDate | date : "dd/MM/yyyy")
+                    }}</strong
+                  >
+                  <p id="time">
+                    {{ task.completeReasonDate | date : "hh:mm a" : "offset" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-12">
+              <div class="item">
+                <span class="item-head"> {{ "isCompleted" | translate }}</span>
+                <p class="mt-2">
+                  <i
+                    class="completed-icon"
+                    nz-icon
+                    nzType="check-circle"
+                    nzTheme="outline"
+                    *ngIf="task?.completed"
+                  ></i>
+                  <i
+                    class="non-completed-icon"
+                    nz-icon
+                    nzType="close-circle"
+                    nzTheme="outline"
+                    *ngIf="!task?.completed"
+                  ></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12" *ngIf="task?.commiteeId">
+              <div class="item">
+                <span class="item-head">{{ "TaskisShared" | translate }}</span>
+
+                <p class="mt-2">
+                  <i
+                    class=""
+                    nz-icon
+                    nzType="check-circle"
+                    nzTheme="outline"
+                    *ngIf="!task?.isShared"
+                  ></i>
+                  <i
+                    class="completed-icon"
+                    nz-icon
+                    nzType="check-circle"
+                    nzTheme="outline"
+                    *ngIf="task?.isShared"
+                  ></i>
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-12">
+              <div class="item">
+                <span class="item-head">{{
+                  "Classification" | translate
+                }}</span>
+                <p class="mt-2 text-center">
+                  <strong *ngIf="currentLang === 'ar'">
+                    {{ task?.comiteeTaskCategory?.categoryNameAr }}</strong
+                  >
+                  <strong *ngIf="currentLang === 'en'">
+                    {{ task?.comiteeTaskCategory?.categoryNameEn }}</strong
+                  >
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-12" *ngIf="taskCompleteFlag">
-          <div class="item">
-            <span class="item-head">{{ "Actualerminationdate" | translate }}</span>
-            <br>
-            <div class="mt-2" style="display: contents">
-              <strong>
-                {{
-                  currentLang === "ar"
-                    ? (task.completeReasonDate | customDate)
-                    : (task.completeReasonDate | date: "dd/MM/yyyy")
-                }}</strong
-              >
-              <p id="time">
-                {{ task.completeReasonDate | date: "hh:mm a": 'offset' }}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-12">
-          <div class="item">
-            <span class="item-head"> {{ "isCompleted" | translate }}</span>
-              <p class="mt-2">
-                <i
-                  class="completed-icon"
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="task?.completed"
-                ></i>
-                <i
-                  class="non-completed-icon"
-                  nz-icon
-                  nzType="close-circle"
-                  nzTheme="outline"
-                  *ngIf="!task?.completed"
-                ></i>
-              </p>
-            </div>
-        </div>
-        
-        <div class="col-lg-4 col-12" *ngIf="task?.commiteeId">
-          <div class="item">
-            <span class="item-head">{{ "TaskisShared" | translate }}</span>
-      
-              <p class="mt-2">
-                <i
-                  class=""
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="!task?.isShared"
-                ></i>
-                <i
-                  class="completed-icon"
-                  nz-icon
-                  nzType="check-circle"
-                  nzTheme="outline"
-                  *ngIf="task?.isShared"
-                ></i>
-              </p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-12">
-          <div class="item">
-            <span class="item-head">{{ "Classification" | translate }}</span>
-            <p class="mt-2 text-center">
-              <strong *ngIf="currentLang === 'ar'">
-                {{ task?.comiteeTaskCategory?.categoryNameAr }}</strong
-              >
-              <strong *ngIf="currentLang === 'en'">
-                {{ task?.comiteeTaskCategory?.categoryNameEn }}</strong
-              >
-            </p>
-          </div>
-        </div>
-      
-      </div>
-    </div>
-    <div class="item-title" *ngIf="task.assistantUsers">
-      <div class="row">
-        <div class="col-lg-4 col-12" *ngFor="let assistant of task.assistantUsers; let i = index">
+        <div class="item-title" *ngIf="task.assistantUsers">
+          <div class="row">
             <div
-            class="item"
-       
-          >
-          <span class="item-head">{{ "assistantUser" | translate }} {{ i + 1 }}</span>
-      
-            <p class="mt-2 text-center">
-              <strong *ngIf="currentLang === 'ar'">
-                {{ assistant.user.fullNameAr }}</strong
-              >
-              <strong *ngIf="currentLang === 'en'">
-                {{ assistant.user.fullNameEn }}</strong
-              >
-            </p>
+              class="col-lg-4 col-12"
+              *ngFor="let assistant of task.assistantUsers; let i = index"
+            >
+              <div class="item">
+                <span class="item-head"
+                  >{{ "assistantUser" | translate }} {{ i + 1 }}</span
+                >
+
+                <p class="mt-2 text-center">
+                  <strong *ngIf="currentLang === 'ar'">
+                    {{ assistant.user.fullNameAr }}</strong
+                  >
+                  <strong *ngIf="currentLang === 'en'">
+                    {{ assistant.user.fullNameEn }}</strong
+                  >
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Multi Tasks -->
-  <!-- <div class="pt-3" *ngIf="multiTasks.length > 0">
+      <!-- Multi Tasks -->
+      <!-- <div class="pt-3" *ngIf="multiTasks.length > 0">
     <div class="sub-title">{{ "MultiTasks" | translate }}</div>
     <nz-checkbox-group
       class="multiTasks"
@@ -281,57 +316,88 @@
       [nzDisabled]="!isMainOrAssistantOrUser()"
     ></nz-checkbox-group>
   </div> -->
-  <div class="pt-3 multi-tasks" *ngIf="multiTasks.length > 0">
-    <div class="sub-title text-center" style="color: #359afe;">{{ "MultiTasks" | translate }}</div>
-    <div>
-      <nz-table #basicTable [nzData]="task.multiMission" [nzHideOnSinglePage]="true">
-          <thead>
-            <tr style="font-size: 16px;">
-              <th class="text-center font-weight-bold">{{'currentStatus' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'Subject' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'subTaskEndDate' | translate}}</th>
-              <th class="text-center font-weight-bold">{{'AssistantUsers' | translate}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of basicTable.data;index as i" style="font-size: 15px;">
-               <td>
+      <div class="pt-3 multi-tasks" *ngIf="multiTasks.length > 0">
+        <div class="sub-title text-center" style="color: #359afe">
+          {{ "MultiTasks" | translate }}
+        </div>
+        <div>
+          <nz-table
+            #basicTable
+            [nzData]="task.multiMission"
+            [nzHideOnSinglePage]="true"
+          >
+            <thead>
+              <tr style="font-size: 16px">
+                <!-- <th class="text-center font-weight-bold">{{'currentStatus' | translate}}</th> -->
+                <th class="text-center font-weight-bold">
+                  {{ "Subject" | translate }}
+                </th>
+                <th class="text-center font-weight-bold">
+                  {{ "subTaskEndDate" | translate }}
+                </th>
+                <th class="text-center font-weight-bold">
+                  {{ "AssistantUsers" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let data of basicTable.data; index as i"
+                style="font-size: 15px"
+              >
+                <!-- <td>
                 <label  nz-checkbox  [ngModel]="data.state"  (ngModelChange)="updateMultiTasks($event,data.commiteeTaskMultiMissionId)"  [nzDisabled]="true"></label>
-             </td>
-              <td>{{data.name}}</td>
-              <td>{{this.translateService.currentLang === "ar" ? (data.endDateMultiMission | customDate) : (data.endDateMultiMission | date: "dd/MM/yyyy")}}<br>{{this.dateService.getTasksDateInArabic(data.endDateMultiMission)}}</td>
-              <td>
-                <ng-container *ngFor="let user of data.commiteeTaskMultiMissionUserDTOs">
-                  <p class="mb-1">{{user.userDetailsDto.fullNameAr}}</p>
-                </ng-container>
-              </td>
-            </tr>
-          </tbody>
-        </nz-table>
+             </td> -->
+                <td>{{ data.name }}</td>
+                <td>
+                  {{
+                    this.translateService.currentLang === "ar"
+                      ? (data.endDateMultiMission | customDate)
+                      : (data.endDateMultiMission | date : "dd/MM/yyyy")
+                  }}<br />{{
+                    this.dateService.getTasksDateInArabic(
+                      data.endDateMultiMission
+                    )
+                  }}
+                </td>
+                <td>
+                  <ng-container
+                    *ngFor="let user of data.commiteeTaskMultiMissionUserDTOs"
+                  >
+                    <p class="mb-1">{{ user.userDetailsDto.fullNameAr }}</p>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      <!-- Attachments  -->
+      <div class="pt-3" *ngIf="attachments?.length > 0">
+        <div class="sub-title" style="margin-bottom: -4px">
+          {{ "Attachments" | translate }}
+        </div>
+        <ng-container>
+          <app-attachment-item-files
+            [attachments]="attachments"
+          ></app-attachment-item-files>
+        </ng-container>
+        <br />
+      </div>
+    </ng-template>
   </div>
+  <div
+    *ngIf="!task"
+    style="
+      background-color: #e1f0fe;
+      text-align: center;
+      font-size: 31px;
+      padding: 20px;
+      margin-top: 50px;
+      border-radius: 16px;
+      box-shadow: 0px 3px 6px rgb(0 0, 0, 16%);
+    "
+  >
+    {{ "You cannot see the data for this task" | translate }}
   </div>
-  <!-- Attachments  -->
-  <div class="pt-3" *ngIf="attachments?.length > 0">
-    <div class="sub-title" style="margin-bottom: -4px">
-      {{ "Attachments" | translate }}
-    </div>
-    <ng-container>
-      <app-attachment-item-files
-        [attachments]="attachments"
-      ></app-attachment-item-files>
-    </ng-container>
-    <br />
-  </div>
-</ng-template>
-  </div>
-  <div *ngIf="!task" style="background-color: #e1f0fe;
-  text-align: center;
-  font-size: 31px;
-  padding: 20px;
-  margin-top: 50px;
-  border-radius: 16px;
-  box-shadow: 0px 3px 6px rgb(0 0,0,16%);">
-{{'You cannot see the data for this task' | translate}}
-  </div>
-
-</div>  
+</div>

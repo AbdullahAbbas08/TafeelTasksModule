@@ -457,13 +457,13 @@
                 nz-button
                 nzType="primary"
                 (click)="showConfirm(data, data.commiteeTaskMultiMissionId, i)"
-                [nzDisabled]="!isMainOrAssistantOrUser(i) || !checkIsArchived()"
+                *ngIf="isMainOrAssistantOrUser(i) || !checkIsArchived()"
                 [ngStyle]="{
-                  'background-color': data.state ? '#e3306f' : 'green',
+                  'background-color': !data.state ? '#e3306f' : 'green',
                   color: 'white'
                 }"
               >
-                <span *ngIf="data.state; else enable">
+                <span *ngIf="!data.state; else enable">
                   {{ "CancelTask" | translate }}
                 </span>
                 <ng-template #enable>

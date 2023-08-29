@@ -120,11 +120,11 @@ export class TasksComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.fromNotification = this.taskservice.fromNotifications.subscribe((res) => {
-      if (res) {
-        this.filterWzClick(2)
-      }
-    })
+    // this.fromNotification = this.taskservice.fromNotifications.subscribe((res) => {
+    //   if (res) {
+    //     this.filterWzClick(2)
+    //   }
+    // })
     this.subscribeToPeriodChangeForCommittee();
     if (this.committeeId) {
       this.CommitteName = this.committeeService.CommitteName;
@@ -170,8 +170,17 @@ export class TasksComponent implements OnInit, OnDestroy {
           this.validityPeriod = period;
           this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId, this.validityPeriod.validityPeriodFrom, this.validityPeriod.validityPeriodTo)
         } else {
-          this.selectedFilterObject = { typeId: 7 }
-          this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId)
+          // this.selectedFilterObject = { typeId: 7 }
+          // this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId)
+          this.fromNotification = this.taskservice.fromNotifications.subscribe((res) => {
+            if (res) {
+              this.selectedFilterObject = { typeId: res }
+              this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId)
+            } else {
+              this.selectedFilterObject = { typeId: 7 }
+              this.getfilteredTasks(false, this.selectedFilterObject, this.committeeId)
+            }
+          })
         }
         this.getTasksStatisticsNum();
       });

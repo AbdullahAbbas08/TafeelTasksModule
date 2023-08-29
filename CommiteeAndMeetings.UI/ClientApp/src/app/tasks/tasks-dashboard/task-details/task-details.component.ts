@@ -270,7 +270,7 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
       }
     })
     this.task.multiMission = missions;
-    this.taskService.updateMutiTasksForTask(this.task.multiMission, undefined, undefined).subscribe();
+    this.taskService.updateMutiTasksForTask(this.task.multiMission, undefined, undefined, '').subscribe();
   }
   userPermittedToReopenGeneralTask() {
     return (

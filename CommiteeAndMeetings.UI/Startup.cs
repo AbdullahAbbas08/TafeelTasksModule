@@ -64,6 +64,8 @@ using CommiteeAndMeetings.BLL.BaseObjects.RepositoriesInterfaces;
 using CommiteeAndMeetings.BLL.BaseObjects.Repositories;
 using CommiteeAndMeetings.UI.Filter;
 using CommiteeAndMeetings.UI.Helpers;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CommiteeAndMeetings.UI
 {
@@ -84,6 +86,7 @@ namespace CommiteeAndMeetings.UI
             services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
             services.Configure<AppSettings>(options => Configuration.Bind(options));
 
+           
             //services.Configure<KestrelServerOptions>(options =>
             //{
             //    options.AllowSynchronousIO = true;
@@ -283,7 +286,16 @@ namespace CommiteeAndMeetings.UI
                        }
                    };
                })
-               .AddIdentityCookies();
+               .AddCookie()
+               .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+               {
+                   options.Authority = $"https://login.microsoftonline.com/{Configuration["AzurePortalSettings:tenantID"]}";
+                   options.ClientId = Configuration["AzurePortalSettings:tenantID"];
+                   options.ClientSecret = "your_client_secret";
+                   options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+                   options.SaveTokens = true;
+                   options.UsePkce = true;
+               });
 
             services.AddMvc(
                 // for  Global Authorization
@@ -335,7 +347,7 @@ namespace CommiteeAndMeetings.UI
                     options.Queues = HangfireHelper.GetQueues();
                 });
 
-               
+
 
 
             }
@@ -783,7 +795,7 @@ namespace CommiteeAndMeetings.UI
                 endpoints.MapControllers();
                 endpoints.MapHub<SignalRHub>("/api/SignalR");
             });
-           
+
             if (Convert.ToString(Configuration["HangFireSettings:IsEnabled"]).Equals("1"))
             {
                 app.UseHangfireServer();

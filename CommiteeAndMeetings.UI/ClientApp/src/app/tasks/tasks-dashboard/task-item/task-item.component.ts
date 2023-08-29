@@ -280,8 +280,11 @@ export class TaskItemComponent implements OnInit {
     //   }
     // })
     // this.task.multiMission = missions;
-    this.taskService.updateMutiTasksForTask(this.BrowserService.encrypteString(multimissionId),
-      mainAssinedUserId, AssistantUserIds
+    this.taskService.updateMutiTasksForTask(
+      this.BrowserService.encrypteString(multimissionId),
+      mainAssinedUserId,
+      AssistantUserIds,
+      this.task.title
     ).subscribe(res => {
       if (res) {
         this.task.multiMission[index].state = res.state

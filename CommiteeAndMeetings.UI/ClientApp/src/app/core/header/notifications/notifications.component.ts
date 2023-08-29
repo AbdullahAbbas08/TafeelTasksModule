@@ -110,8 +110,17 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.router.navigate(["/tasks/", id]);
     }
     else {
-      this.taskService.fromNotifications.next(true)
-      this.router.navigateByUrl(`/tasks`)
+      // this.taskService.fromNotifications.next(true)
+      // this.router.navigateByUrl(`/tasks`)
+
+      if (announcement.textEn.includes('late') || announcement.textAR.includes('متاخره')) {
+        this.taskService.fromNotifications.next(2)
+        this.router.navigateByUrl(`/tasks`)
+      } else if (announcement.textEn.includes('New Task') || announcement.textAR.includes('مهمه جديدة')) {
+        this.taskService.fromNotifications.next(7)
+        this.router.navigateByUrl(`/tasks`)
+      }
+
     }
     this.toggleNotificationlist = !this.toggleNotificationlist;
   }

@@ -61,7 +61,7 @@ export class TasksService {
   filterEnumChanged: BehaviorSubject<number> = new BehaviorSubject<number>(
     null
   );
-  fromNotifications: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  fromNotifications: BehaviorSubject<number> = new BehaviorSubject<number>(null)
   filterWithClick: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   toggleCompeleteTask: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   shareTaskStats: BehaviorSubject<CountResultDTO[]> = new BehaviorSubject<CountResultDTO[]>(null);
@@ -284,8 +284,8 @@ export class TasksService {
       postData
     );
   }
-  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds): Observable<CommiteetaskMultiMissionDTO> {
-    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId, mainAssinedUserId, AssistantUserIds);
+  updateMutiTasksForTask(multiMissionId: string, mainAssinedUserId, AssistantUserIds,tasktitle): Observable<CommiteetaskMultiMissionDTO> {
+    return this.swaggerService.apiCommiteeTasksChangeStateForMissionPut(multiMissionId, mainAssinedUserId,tasktitle, AssistantUserIds);
   }
 
   getTaskCategories() {

@@ -59,7 +59,6 @@ namespace CommiteeAndMeetings.Service.Sevices
         ISmsServices smsServices;
         public readonly MasarContext _context;
         private readonly IHostingEnvironment _hostingEnvironment;
-
         public CommiteeTaskService(IUnitOfWork unitOfWork, IHostingEnvironment hostingEnvironment, IMapper mapper, IStringLocalizer stringLocalizer, ISmsServices _smsServices, ICommitteeMeetingSystemSettingService systemSettingsService, ISecurityService securityService, IHelperServices.ISessionServices sessionServices, IOptions<AppSettings> appSettings, IMailServices _mailServices, IUsersService usersService, ICommitteeNotificationService committeeNotificationService, ICommiteeLocalizationService commiteeLocalizationService)
              : base(unitOfWork, mapper, stringLocalizer, securityService, sessionServices, appSettings)
         {
@@ -82,7 +81,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             res.Data = res.Data.ToList();
             return res;
         }
-
         // Get Details by CommiteeTaskId
         public CommiteeTaskDTO GetDetailsById(int CommiteeTaskId)
         {
@@ -120,7 +118,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             //return committeTask;
 
         }
-
         public DataSourceResult<CommiteeTaskDTO> GetAllwithfilters(DataSourceRequest dataSourceRequest, TaskFilterEnum requiredTasks, ParamsSearchFilterDTO paramsSearchFilterDTO = null, int? userId = null, int? organizationId = null, bool WithTracking = true)
         {
             bool filter = Convert.ToBoolean(dataSourceRequest.Filter.Filters?.Any(z => z.Field == "commiteeId"));
@@ -1071,7 +1068,6 @@ namespace CommiteeAndMeetings.Service.Sevices
                 return dta;
             }
         }
-
         public byte[] Export(TaskFilterEnum requiredTasks, int? UserIdEncrpted, bool ExportWord = true, int? OrganaizationId = null)
         {
             //count of tasks
@@ -2641,27 +2637,27 @@ namespace CommiteeAndMeetings.Service.Sevices
                             }
 
                             //For CommiteeTaskMultiMission
-                            foreach (var itemMission in item.MultiMission)
-                            {
+                            //foreach (var itemMission in item.MultiMission)
+                            //{
 
 
-                                itemMission.CommiteeTaskMultiMissionUserDTOs =
-                                    _unitOfWork.GetRepository<CommiteeTaskMultiMissionUser>().GetAll().Select(w => new CommiteeTaskMultiMissionUserDTO
-                                    {
-                                        UserId = w.UserId,
-                                        CommiteeTaskMultiMissionId = w.CommiteeTaskMultiMissionId,
-                                        CommiteeTaskMultiMissionUserId = w.CommiteeTaskMultiMissionUserId,
-                                        UserDetailsDto = new UserDetailsDTO()
-                                        {
-                                            UserId = w.User.UserId,
-                                            UserName = w.User.Username,
-                                            FullNameAr = w.User.FullNameAr,
-                                            FullNameEn = w.User.FullNameEn,
-                                            ProfileImage = w.User.ProfileImage,
-                                        }
-                                    }).ToList();
+                            //    itemMission.CommiteeTaskMultiMissionUserDTOs =
+                            //        _unitOfWork.GetRepository<CommiteeTaskMultiMissionUser>().GetAll().Select(w => new CommiteeTaskMultiMissionUserDTO
+                            //        {
+                            //            UserId = w.UserId,
+                            //            CommiteeTaskMultiMissionId = w.CommiteeTaskMultiMissionId,
+                            //            CommiteeTaskMultiMissionUserId = w.CommiteeTaskMultiMissionUserId,
+                            //            UserDetailsDto = new UserDetailsDTO()
+                            //            {
+                            //                UserId = w.User.UserId,
+                            //                UserName = w.User.Username,
+                            //                FullNameAr = w.User.FullNameAr,
+                            //                FullNameEn = w.User.FullNameEn,
+                            //                ProfileImage = w.User.ProfileImage,
+                            //            }
+                            //        }).ToList();
 
-                            }
+                            //}
 
 
                             if (itemUser.UserId != _sessionServices.UserId)
@@ -2709,7 +2705,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             return entities;
             //return insertedEntity;
         }
-
         public CommiteetaskMultiMissionDTO InsertMultiMissionToTask(int commiteeTaskId, CommiteetaskMultiMissionDTO entity)
         {
             // obj Mapping
@@ -2776,7 +2771,7 @@ namespace CommiteeAndMeetings.Service.Sevices
 
 
         }
-        public CommiteetaskMultiMissionDTO changeState(int missionId, List<int> UserIds)
+        public CommiteetaskMultiMissionDTO changeState(int missionId, List<int> UserIds,string TaskTitle)
         {
             var mission = _unitOfWork.GetRepository<CommiteeTaskMultiMission>().GetAll().Where(x => x.CommiteeTaskMultiMissionId == missionId).FirstOrDefault();
             mission.state = !mission.state;
@@ -2785,7 +2780,8 @@ namespace CommiteeAndMeetings.Service.Sevices
             var usersEmail = _unitOfWork.GetRepository<User>().GetAll().Where(x => UserIds.Contains(x.UserId) && x.UserId != mainAssignedUser.UserId).Select(x => x.Email );
             foreach (var email in usersEmail)
             {
-                string Message = $" نود إعلامك بأنه تم تغيير حالة المهمة الفرعية من "+ mainAssignedUser.EmployeeFullNameAr;
+                //string Message =  " نود إعلامك بأنه تم تغيير حالة المهمة الفرعية  "+" ( "+ TaskTitle +" ) "+ " من " + mainAssignedUser.EmployeeFullNameAr;
+                string Message = $"نود إعلامك بإنه تم تغيير حالة المهمة الفرعية ( {TaskTitle} ) من {mainAssignedUser.EmployeeFullNameAr}";
                 string mailSubject = "تنبيه بتغيير حالة مهمة فرعية";
                 var createdTaskTitle = _commiteeLocalizationService.GetLocaliztionByCode("CreatedTask", _sessionServices.CultureIsArabic);
                 //getMailMessage(item, ref Message, ref mailSubject, createdTaskTitle);
@@ -2804,9 +2800,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             return missionDto;
 
         }
-
-
-
         public override IEnumerable<CommiteeTaskDTO> Update(IEnumerable<CommiteeTaskDTO> entities)
         {
 
@@ -3151,7 +3144,6 @@ namespace CommiteeAndMeetings.Service.Sevices
                 return false;
             }
         }
-
         public AlternateView CreateAlternateView(string message, object p, string v)
         {
             AlternateView htmlView = AlternateView.CreateAlternateViewFromString(message, null, "text/html");
@@ -3190,7 +3182,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             //htmlView.LinkedResources.Add(imagelink_Footer);
             return htmlView;
         }
-
         public void getMailMessage(CommiteeTaskDTO task, ref string mailMessage, ref string mailSubject, string mailTitle)
         {
             try
@@ -3376,5 +3367,6 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
         }
         
+
     }
 }

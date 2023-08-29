@@ -1,5 +1,9 @@
 <section class="announcements__wrapper" id="announcement">
-  <div class="announcements__wrapper__icon" (click)="toggleNotificationList()"  [ngStyle]="themeService.primaryTextColor">
+  <div
+    class="announcements__wrapper__icon"
+    (click)="toggleNotificationList()"
+    [ngStyle]="themeService.secondaryTextColor"
+  >
     <!-- <img
       class="announcements__wrapper__icon--symbole"
       src="assets/images/megaphone.svg"
@@ -12,16 +16,9 @@
     class="announcements__wrapper__list"
     *ngIf="toggleNotificationlist"
     [class.shown]="toggleNotificationlist"
-  
   >
     <div
-      class="
-        announcements__wrapper__list--container
-        d-flex
-        align-items-center
-        justify-content-start
-        flex-column
-      "
+      class="announcements__wrapper__list--container d-flex align-items-center justify-content-start flex-column"
     >
       <div class="heading">
         <h3>{{ "AllNotifications" | translate }}</h3>
@@ -65,7 +62,10 @@
                         : announcement.createdByUser.fullNameEn
                     }}
                   </h5>
-                  <p *ngIf="announcement?.commitee" (click)="navigateTo(announcement)">
+                  <p
+                    *ngIf="announcement?.commitee"
+                    (click)="navigateTo(announcement)"
+                  >
                     {{ "Committee" | translate }} :
                     {{
                       announcement?.commitee?.name
@@ -73,14 +73,20 @@
                         : ("NoName" | translate)
                     }}
                   </p>
-                  <p  ngbTooltip="{{announcement?.textAR}}" (click)="navigateTo(announcement)">
+                  <p
+                    ngbTooltip="{{ announcement?.textAR }}"
+                    (click)="navigateTo(announcement)"
+                  >
                     {{
                       currentLang === "ar"
                         ? announcement?.textAR
                         : announcement?.textEn
                     }}
                   </p>
-                  <p *ngIf="announcement?.meeting" (click)="navigateTo(announcement)">
+                  <p
+                    *ngIf="announcement?.meeting"
+                    (click)="navigateTo(announcement)"
+                  >
                     {{ "Meeting" | translate }} :
                     {{
                       announcement?.meeting?.title
@@ -90,14 +96,10 @@
                   </p>
                 </div>
                 <span
-                 *ngIf="!announcement.isRead"
+                  *ngIf="!announcement.isRead"
                   class="delete-icon text-success fas fa-check-circle"
                   appClickStopPropagation
-                  (click)="
-                    makeNotificationRead(
-                      announcement
-                    )
-                  "
+                  (click)="makeNotificationRead(announcement)"
                   ngbTooltip="{{ 'MarkNotificationAsRead' | translate }}"
                   [placement]="currentLang === 'ar' ? 'right' : 'left'"
                 ></span>
@@ -106,13 +108,7 @@
           </ng-container>
           <ng-container *ngIf="!notifications?.length && !loading">
             <div
-              class="
-                item
-                alert alert-warning
-                justify-content-center
-                text-dark
-                font-weight-bold
-              "
+              class="item alert alert-warning justify-content-center text-dark font-weight-bold"
             >
               {{ "NoNotifications" | translate }}
             </div>
