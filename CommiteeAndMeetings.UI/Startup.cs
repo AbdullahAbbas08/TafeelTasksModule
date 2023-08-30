@@ -290,8 +290,8 @@ namespace CommiteeAndMeetings.UI
                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
                {
                    options.Authority = $"https://login.microsoftonline.com/{Configuration["AzurePortalSettings:tenantID"]}";
-                   options.ClientId = Configuration["AzurePortalSettings:tenantID"];
-                   options.ClientSecret = "your_client_secret";
+                   options.ClientId = Configuration["AzurePortalSettings:client_id"];
+                   options.ClientSecret = Configuration["AzurePortalSettings:client_secret"];
                    options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
                    options.SaveTokens = true;
                    options.UsePkce = true;

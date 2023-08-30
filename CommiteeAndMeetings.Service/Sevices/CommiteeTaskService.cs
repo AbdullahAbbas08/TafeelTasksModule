@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Azure.Core;
 using Castle.Core.Internal;
 using ClosedXML.Excel;
 using CommiteeAndMeetings.BLL;
@@ -30,7 +31,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-
+using Microsoft.Graph;
 using Models;
 using Org.BouncyCastle.Asn1.Crmf;
 using System;
@@ -3369,37 +3370,41 @@ namespace CommiteeAndMeetings.Service.Sevices
             }
         }
 
+
         //public void CreateEventOnOutlookCalender()
         //{
-        //    var newEvent = new Event
+        //    var scopes = new[] { "User.Read" };
+
+        //    // Multi-tenant apps can use "common",
+        //    // single-tenant apps must use the tenant ID from the Azure portal
+        //    var tenantId = "common";
+
+        //    // Value from app registration
+        //    var clientId = "YOUR_CLIENT_ID";
+
+        //    // using Azure.Identity;
+        //    var options = new DeviceCodeCredentialOptions
         //    {
-        //        Subject = model.Subject,
-        //        Start = new DateTimeTimeZone
+        //        AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+        //        ClientId = clientId,
+        //        TenantId = tenantId,
+        //        // Callback function that receives the user prompt
+        //        // Prompt contains the generated device code that user must
+        //        // enter during the auth process in the browser
+        //        DeviceCodeCallback = (code, cancellation) =>
         //        {
-        //            DateTime = model.StartTime,
-        //            TimeZone = "UTC"
-        //        },
-        //        End = new DateTimeTimeZone
-        //        {
-        //            DateTime = model.EndTime,
-        //            TimeZone = "UTC"
+        //            Console.WriteLine(code.Message);
+        //            return Task.FromResult(0);
         //        },
         //    };
 
-        //    try
-        //    {
-        //        await _graphClient.Me.Calendar.Events
-        //            .Request()
-        //            .AddAsync(newEvent);
+        //    // https://learn.microsoft.com/dotnet/api/azure.identity.devicecodecredential
+        //    var deviceCodeCredential = new DeviceCodeCredential(options);
 
-        //        return Ok("Event created successfully.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error creating event");
-        //        return StatusCode(500, "An error occurred while creating the event.");
-        //    }
+        //    var graphClient = new GraphServiceClient(deviceCodeCredential, scopes);
+
+          
         //}
 
-    }
+}
 }

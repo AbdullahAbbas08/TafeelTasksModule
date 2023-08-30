@@ -53,6 +53,5 @@ namespace CommiteeAndMeetings.BLL.BaseObjects.RepositoriesInterfaces
         public bool IsExisted(CheckUniqueDTO checkUniqueDTO);
         //IBackgroundJobClient BackgroundJobClient { get; }
         //GraphServiceClient graphClient;
-
     }
 }
