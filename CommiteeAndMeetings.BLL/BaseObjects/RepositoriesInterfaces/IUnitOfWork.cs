@@ -3,7 +3,6 @@ using Hangfire;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Threading.Tasks;
-//using Microsoft.Graph;
 
 namespace CommiteeAndMeetings.BLL.BaseObjects.RepositoriesInterfaces
 {
@@ -52,6 +51,5 @@ namespace CommiteeAndMeetings.BLL.BaseObjects.RepositoriesInterfaces
         void TrackGraph(object rootEntity, Action<EntityEntryGraphNode> callback);
         public bool IsExisted(CheckUniqueDTO checkUniqueDTO);
         //IBackgroundJobClient BackgroundJobClient { get; }
-        //GraphServiceClient graphClient;
     }
 }

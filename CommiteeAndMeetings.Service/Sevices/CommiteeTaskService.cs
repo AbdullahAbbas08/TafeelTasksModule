@@ -61,9 +61,10 @@ namespace CommiteeAndMeetings.Service.Sevices
         ISmsServices smsServices;
         public readonly MasarContext _context;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly AppSettings appSettings;
 
-        public CommiteeTaskService(IUnitOfWork unitOfWork, IHostingEnvironment hostingEnvironment, IMapper mapper, IStringLocalizer stringLocalizer, ISmsServices _smsServices, ICommitteeMeetingSystemSettingService systemSettingsService, ISecurityService securityService, IHelperServices.ISessionServices sessionServices, IOptions<AppSettings> appSettings, IMailServices _mailServices, IUsersService usersService, ICommitteeNotificationService committeeNotificationService, ICommiteeLocalizationService commiteeLocalizationService)
-             : base(unitOfWork, mapper, stringLocalizer, securityService, sessionServices, appSettings)
+        public CommiteeTaskService(IUnitOfWork unitOfWork, IHostingEnvironment hostingEnvironment, IMapper mapper, IStringLocalizer stringLocalizer, ISmsServices _smsServices, ICommitteeMeetingSystemSettingService systemSettingsService, ISecurityService securityService, IHelperServices.ISessionServices sessionServices, IOptions<AppSettings> _appSettings, IMailServices _mailServices, IUsersService usersService, ICommitteeNotificationService committeeNotificationService, ICommiteeLocalizationService commiteeLocalizationService)
+             : base(unitOfWork, mapper, stringLocalizer, securityService, sessionServices, _appSettings)
         {
             _unitOfWork = unitOfWork;
             _committeeNotificationService = committeeNotificationService;
@@ -75,6 +76,7 @@ namespace CommiteeAndMeetings.Service.Sevices
             _systemSettingsService = systemSettingsService;
             _context = new MasarContext();
             _hostingEnvironment = hostingEnvironment;
+            appSettings = _appSettings.Value;
         }
         public override DataSourceResult<CommiteeTaskDTO> GetAll<CommiteeTaskDTO>(DataSourceRequest dataSourceRequest, bool WithTracking = true)
         {
@@ -3301,7 +3303,10 @@ namespace CommiteeAndMeetings.Service.Sevices
                 string tr_display = @" display: {displayOption}; ";
 
                 // Add url
-                string HtmlString_new = $@"                                           
+                string HtmlString_new = "";
+                if (appSettings.EmailSetting?.SendEmailDelegationWithURL == "1")
+                {
+                    HtmlString_new = $@"                                           
                                           <div style='{Email_style}'>
                                            <img style='{Email_image_style}' src='cid:TopHeader'>
                                            <div style='
@@ -3339,6 +3344,44 @@ namespace CommiteeAndMeetings.Service.Sevices
                                             </table>
                                                 </div>                                                     
                                                     </div>";
+                }
+                else
+                {
+                    HtmlString_new = $@"                                           
+                                          <div style='{Email_style}'>
+                                           <img style='{Email_image_style}' src='cid:TopHeader'>
+                                           <div style='
+		                                        width: 100%;
+		                                        display: flex;
+		                                        flex-direction: column;
+		                                        justify-content: center;
+		                                        margin: 0;
+		                                        padding: 0;
+                                                
+	                                        '>		
+		                                 <table style='width: 100%' border='1'>
+			                                <tr style='{tr_style}'>
+				                                <td colspan='5' style='{td_style}'>
+				                                    <h2 style=' text-align: center; background: #13817E; padding: 9px 0; font-weight: 900; margin-bottom: 0px; color: #fff;'> {mailTitle} </h2>
+                                                </td>
+			                                </tr>
+                                            <tr style='{tr_style}'>
+                                                <td style='{td_style_En + ';' + w_20}text-align: center;'> {JobTitleEn} </td>   
+				                                <td colspan='3' style='{td_style + ';' + rtl}text-align: center;'><span style='unicode-bidi: bidi-override;'>{task.Title}</span></td>
+				                                <td style='{td_style + ';' + w_20 + rtl}text-align: center;'> {JobTitleAr} </td>
+                                                
+
+                                            </tr >  
+                                            <tr style='{tr_style}'>
+				                                <td style='{td_style_En + ';' + w_20}text-align: center;'> {taskCreatorEn} </td>
+				                                <td colspan='3' style='{td_style + ';' + rtl}text-align: center;'>{_sessionServices.EmployeeFullNameAr}</td>
+                                                <td style ='{td_style + ';' + w_20 + rtl}text-align: center;'> {taskCreatorAr} </td>   
+                                            </tr > 
+                                            </table>
+                                                </div>                                                     
+                                                    </div>";
+                }
+       
                 //text-align:center
 
                 //< td style = '{td_style_En + '; ' + w_20};background:{EmailLblColor}' >{ lblRequiredActionEn} </ td > 

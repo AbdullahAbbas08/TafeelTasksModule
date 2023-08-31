@@ -64,8 +64,6 @@ using CommiteeAndMeetings.BLL.BaseObjects.RepositoriesInterfaces;
 using CommiteeAndMeetings.BLL.BaseObjects.Repositories;
 using CommiteeAndMeetings.UI.Filter;
 using CommiteeAndMeetings.UI.Helpers;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace CommiteeAndMeetings.UI
 {
@@ -286,16 +284,7 @@ namespace CommiteeAndMeetings.UI
                        }
                    };
                })
-               .AddCookie()
-               .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-               {
-                   options.Authority = $"https://login.microsoftonline.com/{Configuration["AzurePortalSettings:tenantID"]}";
-                   options.ClientId = Configuration["AzurePortalSettings:client_id"];
-                   options.ClientSecret = Configuration["AzurePortalSettings:client_secret"];
-                   options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-                   options.SaveTokens = true;
-                   options.UsePkce = true;
-               });
+               .AddIdentityCookies();
 
             services.AddMvc(
                 // for  Global Authorization
